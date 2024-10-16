@@ -9,7 +9,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+            <title>JSP Page</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Background Image Example</title>
         <style>
@@ -24,6 +24,17 @@
         </style>
     </head>
     <body>
+        <audio id="background-music" src="images/Nico Nico Nii (Remix).mp3" autoplay loop></audio>
+        
+        <button onclick="playAudio()">Play Background Music</button>
+        
+        <script>
+            var audio = document.getElementById("background-music");
+            function playAudio() {
+                audio.volume = 0.01;
+                audio.play();
+            }
+        </script>
         <h1>Hello World!</h1>
         <%String hola = "Hello World Desde Java!! =)";%>
         <%=hola%>
