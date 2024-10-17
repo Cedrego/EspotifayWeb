@@ -177,4 +177,36 @@ public class Ctrl implements ICtrl{
     public List<DataPorDefecto> traerporDefectos(){
         return null /*controlPersist.traerporDefectos()*/;
     }
+    @Override
+    public boolean existeCliente(String nick){
+        if(controlPersist.findCliente(nick)!=null){
+            return false;
+        }else{
+            return true;
+        }
+    }
+    @Override
+    public boolean existeArtista(String nick){
+        if(controlPersist.findArtista(nick)!=null){
+            return false;
+        }else{
+            return true;
+        }
+    }
+    @Override
+    public boolean existePassC(String nick,String pass){
+        Cliente cli= controlPersist.findCliente(nick);
+        if(cli.getPassword().equalsIgnoreCase(pass)){
+            return true;
+       }
+        return false;
+    }
+    @Override
+    public boolean existePassA(String nick,String pass){
+        Artista art= controlPersist.findArtista(nick);
+        if(art.getPassword().equalsIgnoreCase(pass)){
+            return true;
+       }
+        return false;
+    }
 }

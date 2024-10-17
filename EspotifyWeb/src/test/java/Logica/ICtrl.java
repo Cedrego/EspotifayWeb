@@ -31,4 +31,9 @@ public interface ICtrl {
     public abstract List<DataAlbum> traerAlbumes();
     public abstract List<DataParticular> traerParticulares();
     public abstract List<DataPorDefecto> traerporDefectos();
+    
+    public abstract boolean existeCliente(String nick);
+    public abstract boolean existeArtista(String nick);
+    public boolean existePassC(String nick,String pass);
+    public boolean existePassA(String nick,String pass);
 }

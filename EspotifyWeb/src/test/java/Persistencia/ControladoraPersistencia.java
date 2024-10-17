@@ -105,4 +105,8 @@ public class ControladoraPersistencia{
     public Cliente findCliente(String cli){
         return cliJpa.findCliente(cli);
     }
+    
+    public Artista findArtista(String art){
+        return artJpa.findArtista(art);
+    }
 }

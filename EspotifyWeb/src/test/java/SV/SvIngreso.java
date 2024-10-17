@@ -4,6 +4,8 @@
  */
 package SV;
 
+import Logica.Factory;
+import Logica.ICtrl;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,7 +19,8 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet("/SvIngreso")
 public class SvIngreso extends HttpServlet {
-
+    Factory fabric =Factory.getInstance();
+    ICtrl ctrl = fabric.getICtrl();
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {       
@@ -34,13 +37,21 @@ public class SvIngreso extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String option = request.getParameter("option");
-        System.out.println("Opción seleccionada: " + option);
-        if ("Invitado".equals(option)) {
-            response.sendRedirect("Invitado.jsp");
-        } else if ("Usuario".equals(option)) {
-            response.sendRedirect("Usuario.jsp");
+        String NOE = request.getParameter("NOE");
+        String Contra = request.getParameter("pass");
+        
+        if(ctrl.existeCliente(NOE)){//Verifico si ingreso bien el nick(DESPUES VER PARA EMAIL)
+            if(ctrl.existePassC(NOE,Contra)){//Verifico si ingreso bien el pass
+                response.sendRedirect("Clietne.jsp");
+            }
+            
         }
+        if(ctrl.existeArtista(NOE)){
+            if(ctrl.existePassA(NOE,Contra)){//Verifico si ingreso bien el pass
+                response.sendRedirect("Artista.jsp");
+            }
+        }
+        
     }
     
     @Override
