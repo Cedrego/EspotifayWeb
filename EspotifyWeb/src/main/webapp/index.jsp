@@ -22,6 +22,15 @@
                 background-position: center; /* Center the image */
             }
         </style>
+            <script>
+            function redirect(option) {
+                if (option === "Invitado") {
+                    window.location.href = "JSP/Invitado.jsp";  // Ruta actualizada
+                } else if (option === "Usuario") {
+                    window.location.href = "JSP/Usuario.jsp";  // Ruta actualizada
+                }
+            }
+        </script>
     </head>
     <body>
         <audio id="background-music" src="images/Nico Nico Nii (Remix).mp3" autoplay loop></audio>
@@ -35,9 +44,10 @@
                 audio.play();
             }
         </script>
-        <h1>Hello World!</h1>
-        <%String hola = "Hello World Desde Java!! =)";%>
-        <%=hola%>
+        <h1>Como Desea Ingresar</h1>
+        <button onclick="redirect('Invitado')">Invitado</button>
+        <button onclick="redirect('Usuario')">Usuario</button>
+        
         <br><img src="images\MikuDance.gif" alt="A Wild Miku Appears!"/>
     </body>
 </html>
