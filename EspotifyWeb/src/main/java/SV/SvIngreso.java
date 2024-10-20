@@ -4,6 +4,7 @@
  */
 package SV;
 
+
 import Logica.Factory;
 import Logica.ICtrl;
 import java.io.IOException;
@@ -42,10 +43,10 @@ public class SvIngreso extends HttpServlet {
         
         if(ctrl.obtenerNombresDeCliente().contains(NOE) || ctrl.obtenerMailDeCliente().contains(NOE) ){//Verifico si ingreso bien el nick(DESPUES VER PARA EMAIL)
             if(ctrl.existePassC(NOE,Contra)){//Verifico si ingreso bien el pass
-                response.sendRedirect("Clietne.jsp");
+                response.sendRedirect("Cliente.jsp");
             }
         }
-        if(ctrl.existeArtista(NOE)){
+        if(ctrl.obtenerNombresDeArtista().contains(NOE) || ctrl.obtenerMailDeArtista().contains(NOE)){
             if(ctrl.existePassA(NOE,Contra)){//Verifico si ingreso bien el pass
                 response.sendRedirect("Artista.jsp");
             }
