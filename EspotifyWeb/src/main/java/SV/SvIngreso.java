@@ -40,11 +40,10 @@ public class SvIngreso extends HttpServlet {
         String NOE = request.getParameter("NOE");
         String Contra = request.getParameter("pass");
         
-        if(ctrl.existeCliente(NOE)){//Verifico si ingreso bien el nick(DESPUES VER PARA EMAIL)
+        if(ctrl.obtenerNombresDeCliente().contains(NOE) || ctrl.obtenerMailDeCliente().contains(NOE) ){//Verifico si ingreso bien el nick(DESPUES VER PARA EMAIL)
             if(ctrl.existePassC(NOE,Contra)){//Verifico si ingreso bien el pass
                 response.sendRedirect("Clietne.jsp");
             }
-            
         }
         if(ctrl.existeArtista(NOE)){
             if(ctrl.existePassA(NOE,Contra)){//Verifico si ingreso bien el pass
