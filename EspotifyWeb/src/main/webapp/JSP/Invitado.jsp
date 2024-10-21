@@ -12,6 +12,9 @@
         <title>Invitado</title>
     </head>
     <body>
+        <%@page import="Logica.Ctrl"%>
+        <%Ctrl ctrl = new Ctrl();%>
+        <%ctrl.existeGenero("algo");%>
         <h1>Hello World!</h1>
     </body>
 </html>
