@@ -15,6 +15,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -88,6 +89,7 @@ public class SvRegistro extends HttpServlet {
         String bio = request.getParameter("bio");
         String fecha = request.getParameter("fech");
         String artista = request.getParameter("esArtista");
+        HttpSession sesion = request.getSession();
         List<String> nicknames = new ArrayList<>();
         List<String> mails = new ArrayList<>();
         for (String Nickname : ctrl.obtenerNombresDeCliente()) {
@@ -133,7 +135,7 @@ public class SvRegistro extends HttpServlet {
         }
         
         if (error != null) {
-            request.setAttribute("errorMessage", error); // Agrega el mensaje de error al request
+            sesion.setAttribute("error", error);
             request.getRequestDispatcher("Registro.jsp").forward(request, response); // Redirige al JSP
         } else {
             // Lógica para crear usuario
