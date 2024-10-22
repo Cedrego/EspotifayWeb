@@ -8,11 +8,13 @@ package SV;
 import Logica.Factory;
 import Logica.ICtrl;
 import java.io.IOException;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -42,15 +44,22 @@ public class SvIngreso extends HttpServlet {
         String Contra = request.getParameter("pass");
         if(ctrl.obtenerNombresDeCliente().contains(NOE) || ctrl.obtenerMailDeCliente().contains(NOE) ){//Verifico si ingreso bien el nick(DESPUES VER PARA EMAIL)
             if(ctrl.existePassC(NOE,Contra)){//Verifico si ingreso bien el pass
-                
+                HttpSession misesion = request.getSession();
+                List<String>sesion = ctrl.ContraXCliente(NOE,Contra);
+                misesion.setAttribute("NickSesion",sesion.getFirst());
                 response.sendRedirect("JSP/Cliente.jsp");
             }
-        }
-        if(ctrl.obtenerNombresDeArtista().contains(NOE) || ctrl.obtenerMailDeArtista().contains(NOE)){
+        }else if(ctrl.obtenerNombresDeArtista().contains(NOE) || ctrl.obtenerMailDeArtista().contains(NOE)){
             if(ctrl.existePassA(NOE,Contra)){//Verifico si ingreso bien el pass
-                
+                HttpSession misesion = request.getSession();
+                List<String>sesion = ctrl.ContraXArtista(NOE,Contra);
+                misesion.setAttribute("NickSesion",sesion.getFirst());
                 response.sendRedirect("JSP/Artista.jsp");
             }
+        }else{/*
+            String error = null;
+            error = "ERROR: El nick, email o contraseña no son validos";
+            response.sendRedirect("JSP/Usuario.jsp"); // Redirige al JSP*/
         }
         
     }

@@ -66,9 +66,9 @@ public class SvConsultarPerfil extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession misesion = request.getSession();
-        List<String>sesion = ctrl.ContraXCliente((String)misesion.getAttribute("NOE"),misesion.getAttribute("Contra"));
-        misesion.setAttribute("NickSesion",sesion.getFirst());
+        /*HttpSession misesion = request.getSession();
+        List<String>sesion = ctrl.ContraXCliente(NOE,Contra);
+        misesion.setAttribute("NickSesion",sesion.getFirst());*/
 //        String nick = ctrl.
 //        nickname, correo electrónico, nombre, apellido, fecha de nacimiento;
         

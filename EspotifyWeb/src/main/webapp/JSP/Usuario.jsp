@@ -19,5 +19,15 @@
         <button type="submit">Consultar</button>
     </form>
         <button onclick="window.location.href = '<%= request.getContextPath() %>/JSP/Registro.jsp'">Registrar</button>
+        <%-- Mostrar mensaje de error si existe --%>
+        <%
+            String errorMessage = (String) request.getSession().getAttribute("error");
+            if (errorMessage != null) {
+        %>
+        <p><label style="color: red;"> <%= errorMessage%> </label></p>
+        <%
+                request.getSession().removeAttribute("error"); // Limpiar el mensaje para que no persista
+            }
+        %>
     </body>
 </html>
