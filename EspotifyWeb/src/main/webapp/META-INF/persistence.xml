@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence" version="2.2">
+  <persistence-unit name="pantallaPU" transaction-type="RESOURCE_LOCAL">
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <class>Logica.Album</class> 
+    <class>Logica.Artista</class> 
+    <class>Logica.Cliente</class> 
+    <class>Logica.Genero</class> 
+    <class>Logica.Particular</class> 
+    <class>Logica.Tema</class> 
+    <class>Logica.porDefecto</class> 
+    <properties>
+      <!-- Configuración de la base de datos -->
+      <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
+      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/espotify"/>
+      <property name="javax.persistence.jdbc.user" value="root"/>
+      <property name="javax.persistence.jdbc.password" value=""/>
+
+      <!-- Configuración de EclipseLink -->
+      <property name="eclipselink.logging.level" value="FINE"/>
+      <property name="eclipselink.ddl-generation" value="update"/>
+    </properties>
+  </persistence-unit>
+</persistence>
