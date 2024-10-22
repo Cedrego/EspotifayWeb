@@ -37,26 +37,30 @@
             <p><label>Contraseña<br></label><input type="password" name="pass"></p>
             <p><label>Confirmar contraseña<br></label><input type="password" name="pass2"></p>
             <p><label>Fecha Nacimiento<br></label><input type="date" name="fech"></p>
-
+            
             <p>
                 <input type="checkbox" id="artista" name="esArtista" onclick="toggleFields()">
                 <label for="artista">Perfil de artista</label>
             </p>
-
+            
             <div id="extraFields" style="display: none;">
                 <p><label>Página Web<br></label><input type="text" name="web"></p>
                 <p><label>Biografía:</label></p>
                 <p><textarea name="bio" rows="4" cols="50"></textarea></p>
             </div>
-
             <button type="submit">Crear perfil</button>
         </form>
-
         <%-- Mostrar mensaje de error si existe --%>
-    <c:if test="${not empty errorMessage}">
-        <div style="color: red;">
-            <strong>${errorMessage}</strong>
-        </div>
-    </c:if>
+        <%
+            String errorMessage = (String) request.getSession().getAttribute("error");
+            if (errorMessage != null) {
+        %>
+        <p><label style="color: red;"> <%= errorMessage%> </label></p>
+        <%
+                request.getSession().removeAttribute("error"); // Limpiar el mensaje para que no persista
+            }
+        %>
+
+        
 </body>
 </html>

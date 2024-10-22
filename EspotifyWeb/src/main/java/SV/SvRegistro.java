@@ -89,6 +89,17 @@ public class SvRegistro extends HttpServlet {
         String bio = request.getParameter("bio");
         String fecha = request.getParameter("fech");
         String artista = request.getParameter("esArtista");
+        //date = año-mes-dia
+        System.out.println("==============");
+        System.out.println("Nickname:   "+nick);
+        System.out.println("Nombre:   "+nom);
+        System.out.println("Apellido:   "+ape);
+        System.out.println("correo:   "+mail);
+        System.out.println("Contraseña:   "+pass);
+        System.out.println("Pagina:   "+web);
+        System.out.println("Biografia:   "+bio);
+        System.out.println("Fecha:   "+fecha);
+        
         HttpSession sesion = request.getSession();
         List<String> nicknames = new ArrayList<>();
         List<String> mails = new ArrayList<>();
@@ -136,9 +147,18 @@ public class SvRegistro extends HttpServlet {
         
         if (error != null) {
             sesion.setAttribute("error", error);
-            request.getRequestDispatcher("Registro.jsp").forward(request, response); // Redirige al JSP
+            request.getRequestDispatcher("JSP/Registro.jsp").forward(request, response); // Redirige al JSP
         } else {
-            // Lógica para crear usuario
+            if(artista!=null){
+                //crear artista
+                int dia = 0;
+                String mes = "a";
+                int ano = 0;
+                ctrl.crearArtista(nick, nom, ape, mail, pass, dia, mes, ano, bio, web);
+            }else{
+                //crear cliente
+            }
+            request.getRequestDispatcher("JSP/Usuario.jsp").forward(request, response); // Redirige al JSP
         }
     }
 
