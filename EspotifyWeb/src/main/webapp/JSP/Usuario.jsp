@@ -16,7 +16,7 @@
     <form action="SvIniciarSesion" method="POST">
         <p><lable>Nick o Email:</lable><input type="text" name="NOE"</p>
         <p><lable>Contraseña:</lable><input type="password" name="pass"</p>
-        <button type="submit">Ingresar</button>
+        <button type="submit">Consultar</button>
     </form>
     </body>
 </html>
