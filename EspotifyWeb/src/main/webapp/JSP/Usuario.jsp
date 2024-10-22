@@ -18,6 +18,6 @@
         <p><lable>Contraseña:</lable><input type="password" name="pass"</p>
         <button type="submit">Consultar</button>
     </form>
-        <button onclick="window.location.href = 'Registro.jsp'">Registrar</button>
+        <button onclick="window.location.href = '<%= request.getContextPath() %>/JSP/Registro.jsp'">Registrar</button>
     </body>
 </html>
