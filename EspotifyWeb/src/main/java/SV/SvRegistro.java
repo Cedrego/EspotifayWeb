@@ -8,8 +8,11 @@ import Logica.Factory;
 import Logica.ICtrl;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.time.LocalDate;
+import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -90,16 +93,11 @@ public class SvRegistro extends HttpServlet {
         String fecha = request.getParameter("fech");
         String artista = request.getParameter("esArtista");
         //date = año-mes-dia
-        System.out.println("==============");
-        System.out.println("Nickname:   "+nick);
-        System.out.println("Nombre:   "+nom);
-        System.out.println("Apellido:   "+ape);
-        System.out.println("correo:   "+mail);
-        System.out.println("Contraseña:   "+pass);
-        System.out.println("Pagina:   "+web);
-        System.out.println("Biografia:   "+bio);
-        System.out.println("Fecha:   "+fecha);
-        
+        LocalDate date = LocalDate.parse(fecha);
+        int anio = date.getYear();
+        int dia = date.getDayOfMonth();
+        int month = date.getMonthValue();
+        String mes = new String();
         HttpSession sesion = request.getSession();
         List<String> nicknames = new ArrayList<>();
         List<String> mails = new ArrayList<>();
@@ -115,7 +113,32 @@ public class SvRegistro extends HttpServlet {
         for (String Correo : ctrl.obtenerNombresDeArtista()) {
             mails.add(Correo);
         }
-        
+        //Obtener mes
+        if(month==1){
+            mes = "Enero";
+        } else if (month == 2) {
+            mes = "Febrero";
+        } else if (month == 3) {
+            mes = "Marzo";
+        } else if (month == 4) {
+            mes = "Abril";
+        } else if (month == 5) {
+            mes = "Mayo";
+        } else if (month == 6) {
+            mes = "Junio";
+        } else if (month == 7) {
+            mes = "Julio";
+        } else if (month == 8) {
+            mes = "Agosto";
+        } else if (month == 9) {
+            mes = "Septiembre";
+        } else if (month == 10) {
+            mes = "Octubre";
+        } else if (month == 11) {
+            mes = "Noviembre";
+        } else if (month == 12) {
+            mes = "Diciembre";
+        }
         // Verificación de errores
         if (nick == null || nick.isEmpty()) {
             error = "ERROR: campo nickname vacío";
@@ -129,6 +152,8 @@ public class SvRegistro extends HttpServlet {
             error = "ERROR: campo contraseña vacío";
         } else if (fecha == null || fecha.isEmpty()) {
             error = "ERROR: campo fecha de nacimiento vacío";
+        } else if(anio >= 2024){
+            error = "ERROR: ingrese una fecha valida(31/12/2023 o anterior)";
         } else if (nicknames.contains(nick)) {
             error = "ERROR: ese nickname ya está en uso";
         } else if (mails.contains(mail)) {
@@ -136,29 +161,33 @@ public class SvRegistro extends HttpServlet {
         } else if (!pass.equals(pass2)) {
             error = "ERROR: las contraseñas no coinciden";
         }
-        
-        if (artista != null && artista.equals("on")) {
+        // Verificacion de errores de artista
+        if (artista != null) {
             if (web == null || web.isEmpty()) {
                 error = "ERROR: campo página vacío";
             } else if (bio == null || bio.isEmpty()) {
                 error = "ERROR: campo biografía vacío";
             }
         }
-        
+        // Control de nickname y mail
+        if(nicknames.contains(nick)){
+            error = "ERROR: ese nickname ya esta en uso, elija otro";
+        }else if(mails.contains(mail)){
+            error = "ERROR: ese correo ya esta en uso, elija otro";
+        }
+        // Crear usuario
         if (error != null) {
             sesion.setAttribute("error", error);
             request.getRequestDispatcher("JSP/Registro.jsp").forward(request, response); // Redirige al JSP
         } else {
             if(artista!=null){
                 //crear artista
-                int dia = 0;
-                String mes = "a";
-                int ano = 0;
-                ctrl.crearArtista(nick, nom, ape, mail, pass, dia, mes, ano, bio, web);
+                ctrl.crearArtista(nick, nom, ape, mail, pass, dia, mes, anio, bio, web);
             }else{
                 //crear cliente
+                ctrl.crearCliente(nick, nom, ape, pass, mail, dia, mes, anio);
             }
-            request.getRequestDispatcher("JSP/Usuario.jsp").forward(request, response); // Redirige al JSP
+            request.getRequestDispatcher("index.jsp").forward(request, response); // Redirige al JSP
         }
     }
 

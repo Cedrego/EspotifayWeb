@@ -8,6 +8,7 @@ import Logica.Factory;
 import Logica.ICtrl;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -21,8 +22,8 @@ import javax.servlet.http.HttpSession;
  */
 @WebServlet(name = "SvConsultarPerfil", urlPatterns = {"/SvConsultarPerfil"})
 public class SvConsultarPerfil extends HttpServlet {
-//    Factory fabric = Factory.getInstance();
-//    ICtrl ctrl = fabric.getICtrl();
+    Factory fabric = Factory.getInstance();
+    ICtrl ctrl = fabric.getICtrl();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -65,10 +66,12 @@ public class SvConsultarPerfil extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession misesion = request.getSession();
+        /*HttpSession misesion = request.getSession();
+        List<String>sesion = ctrl.ContraXCliente(NOE,Contra);
+        misesion.setAttribute("NickSesion",sesion.getFirst());*/
 //        String nick = ctrl.
 //        nickname, correo electrónico, nombre, apellido, fecha de nacimiento;
-//        misesion.setAttribute("",);
+        
         processRequest(request, response);
     }
 
