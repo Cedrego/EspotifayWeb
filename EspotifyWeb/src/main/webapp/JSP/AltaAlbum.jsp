@@ -11,56 +11,140 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
+        
+        <script>
+            // Array para almacenar los géneros seleccionados
+            let generosSeleccionados = [];
+
+            // Función para agregar género seleccionado al array y mostrarlo
+            function agregarGenero() {
+                const selectGeneros = document.getElementById("generos");
+                const generoSeleccionado = selectGeneros.value;
+
+                if (generoSeleccionado !== "") {
+                    // Agregar género al array
+                    generosSeleccionados.push(generoSeleccionado);
+                    
+                    // Mostrar los géneros seleccionados en la página
+                    const listaGeneros = document.getElementById("generos-seleccionados");
+                    listaGeneros.innerHTML += "<li>" + generoSeleccionado + "</li>";
+                    
+                    // Actualizar el campo oculto para enviar los géneros al servidor
+                    document.getElementById("generosInput").value = generosSeleccionados.join(",");
+                } else {
+                    alert("Seleccione un género antes de agregar.");
+                }
+            }
+            
+            
+            // Función para agregar tema
+            function agregarTema() {
+                const temasContainer = document.getElementById("temasContainer");
+                const temaDiv = document.createElement("div");
+
+                // Crear campos para nombre, duración y posición
+                temaDiv.innerHTML = 
+                    '
+                    <p>
+                    <span>
+                        <label>Nombre Tema</label>
+                        <input type="text" name="nombresTemas[]">
+                    </span>
+                    <span>
+                        <label>Duración</label>
+                        <input type="text" name="duraciones[]">
+                    </span>
+                    <span>
+                        <label>Posición</label>
+                        <input type="text" name="posiciones[]">
+                    </span>
+                    <span>
+                        <button type="button" onclick="agregarDireccion(this)">Agregar Dirección</button>
+                    </span>
+                    </p>
+                    '
+                ;
+                temasContainer.appendChild(temaDiv);
+            }
+
+            // Función para abrir el pop-up y elegir entre URL o Archivo
+            function agregarDireccion(button) {
+                const seleccion = prompt("Seleccione 'URL' o 'Archivo'");
+
+                if (seleccion.toLowerCase() === 'url') {
+                    const url = prompt("Ingrese la URL:");
+                    const input = document.createElement("input");
+                    input.type = "hidden";
+                    input.name = "direcciones[]";
+                    input.value = url;
+                    button.parentElement.appendChild(input);
+                } else if (seleccion.toLowerCase() === 'archivo') {
+                    const inputFile = document.createElement("input");
+                    inputFile.type = "file";
+                    inputFile.name = "direcciones[]";
+                    button.parentElement.appendChild(inputFile);
+                } else {
+                    alert("Selección inválida. Elija 'URL' o 'Archivo'.");
+                }
+            }
+        </script>
     </head>
         
     <body>
         <h1>Bienvenido a Alta de Album</h1>
-        
-        
-  
-        <form action=${pageContext.request.contextPath}"\SvAltaAlbum.java" method="POST">
-            <p><lable>Nickname Artista<br></lable><input type="text" name="nick"</p>
-            <p><lable>Nombre del Album<br></lable><input type="text" name="nomAlb"</p>
+        <form action="${pageContext.request.contextPath}/SvAltaAlbum" method="POST">
+            <p><label>Nickname Artista<br></lable><input type="text" name="nickArtista" required></p>
+            <p><label>Nombre del Album<br></lable><input type="text" name="nombreAlbum" required></p>
             <p><label for="anioCreacion">Año de Creación:</label>
-            <select id="anioCreacion" name="anioCreacion" required>
+            <select id="anioCreacion" name="anio" required>
                 <% for (int anioCreacion = 2024; anioCreacion > 1950; anioCreacion--) {%>
                     <option value="<%= anioCreacion %>"><%= anioCreacion %></option>
                 <% }%>
             </select><br>
             
             
-            <%List<String> generos = (List<String>) request.getAttribute("generos");%>
-            <label for="generos">Géneros:</label>
-            <select id="generos" name="generos" required>
+            
+            <div class="input-container">
+                <label for="generos">Géneros:</label>
+                <select id="generos" name="generos">
                 <option value="">Seleccione un género</option>
-               
-                    <%--Llenar el <select> con los géneros--%>
-                     <%if (generos != null) {%>
-                         <%for (String genero : generos) {%>
-                
-                            <option value="<%= genero %>"><%= genero %></option>
-                
-                         <%}%>
-                     <%}%>
-                
-            </select><br>
-            <p><lable>Contraseña<br></lable><input type="password" name="pass"</p>
-            <p><lable>Confirmar contraseña<br></lable><input type="password" name="pass2"</p>
+                    <%List<String> generos = (List<String>) request.getAttribute("generos");%>
+                        <%if (generos != null && !generos.isEmpty()) {%>
+                            <%for (String genero : generos) {%>
+                    
+                                <option value="<%= genero %>"><%= genero %></option>
+                    <%}%>
+                        <%} else { %>
+                            <option value="">No hay géneros disponibles</option>
+                    <%}%>
+                </select>
 
-            <!-- Checkbox para mostrar u ocultar los campos adicionales -->
-            <p>
-                <input type="checkbox" id="showFields" onclick="toggleFields()">
-                <label for="showFields">Perfil de artista</label>
-            </p>
-
-            <!-- Campos adicionales (textField y textArea) ocultos inicialmente -->
-            <div id="extraFields" style="display: none;">
-                <p><label>Pagina Web<br></label><input type="text" name="web"></p>
-                <p><label>Biografía:</label></p>
-                <p><textarea name="bio" rows="4" cols="50"></textarea></p> <!-- TextArea aparece debajo -->
+                <button type="button" onclick="agregarGenero()">Agregar Género</button>
             </div>
 
-            <button type="submit">Crear perfil</button>
+            <!-- Lista de géneros seleccionados -->
+            <ul id="generos-seleccionados"></ul>
+
+            <!-- Campo oculto para enviar los géneros seleccionados -->
+            <input type="hidden" name="generosSeleccionados" id="generosInput">
+      
+            
+            <style>
+            .input-group {
+              display: inline-block;
+              margin-right: 10px;
+            }
+            </style>
+            <p>
+                <div id="temasContainer">
+                    <span class="input-group">
+                        <button type="button" onclick="agregarTema()">Agregar Tema</button><br><br>
+                    </span>
+                </div>
+            </p>                                     
+            
+
+            <button type="submit">Dar Album de Alta</button>
         </form>
     </body>
 </html>

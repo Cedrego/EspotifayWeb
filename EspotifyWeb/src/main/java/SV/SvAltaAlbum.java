@@ -6,7 +6,6 @@ package SV;
 
 import Logica.Factory;
 import Logica.ICtrl;
-import Logica.AltaAlbum;
 import Capa_Presentacion.DataTema;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,6 +13,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -23,55 +23,70 @@ import javax.servlet.http.HttpSession;
  *
  * @author Franco
  */
-@WebServlet("/altaAlbum")
+@WebServlet(name = "SvAltaAlbum", urlPatterns = {"/SvAltaAlbum"})
 public class SvAltaAlbum extends HttpServlet {
+    Factory factory = Factory.getInstance();
+    ICtrl ctrl = factory.getICtrl();
+    
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        List<String> listaGeneros = new ArrayList<>();
+        System.out.println("Cargando generos");
+        /*
+        for(String gen : ctrl.obtenerNombresDeGeneros()){
+            listaGeneros.add(gen);
+        }*/
+        listaGeneros.add("genero1");
+        listaGeneros.add("genero2");
+        
+        request.setAttribute("generos", listaGeneros);
+        request.getRequestDispatcher("/WEB-INF/AltaAlbum.jsp").forward(request, response);
+    }
     
     
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Factory factory = Factory.getInstance();
-        ICtrl ctrl = factory.getICtrl();
-        // obtener la lista de géneros con la funcion del .jar
-        List<String> generos = new ArrayList();
-        for(String gen : ctrl.obtenerNombresDeGeneros()){
-            generos.add(gen);
-        }
-        
-        // almacenar la lista en el request
-        request.setAttribute("generos", generos);
-        
-        // redirigir a JSP
-        request.getRequestDispatcher("/AltaAlbum.jsp").forward(request, response);
+        processRequest(request, response);  
     }
     
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Obtener el artista de la sesión
-        HttpSession session = request.getSession();
-        String nombreArtista = (String) session.getAttribute("nombreArtista");
-        
-        // Obtener datos del formulario
+        //HttpSession session = request.getSession();
+        String nickArtista = request.getParameter("nickArtista");
+                    
         String nombreAlbum = request.getParameter("nombreAlbum");
         String anio = request.getParameter("anio");
-        String[] generos = request.getParameterValues("generos");
+        
+        String generosSeleccionados = request.getParameter("generosSeleccionados");
+        String[] generosArray = generosSeleccionados.split(",");
+
         String[] nombresTemas = request.getParameterValues("nombresTemas");
         String[] duraciones = request.getParameterValues("duraciones");
         String[] posiciones = request.getParameterValues("posiciones");
         String[] direcciones = request.getParameterValues("direcciones");
 
         // Crear lista de temas
-        List<DataTema> temas = new ArrayList();
-        for (int i = 0; i < nombresTemas.length; i++) {
-            //DataTema(String nombreTema,String alb,String duracionTema, int ordenAlbumT, String guardadoT,List<String> Generos)
-            DataTema tema = new DataTema(nombresTemas[i], nombreAlbum, duraciones[i], Integer.parseInt(posiciones[i]), direcciones[i],List.of(generos));
+        List<DataTema> temas = new ArrayList<>();
+        for (int i = -1; i < nombresTemas.length; i++) {
+            if(i==-1){
+                
+            }else{
+            DataTema tema = new DataTema(nombresTemas[i], nombreAlbum, duraciones[i], Integer.parseInt(posiciones[i]), direcciones[i], List.of(generosArray));
             temas.add(tema);
+            }
         }
 
         // Crear el álbum
-        AltaAlbum altaAlbum = new AltaAlbum(nombreAlbum, nombreArtista, Integer.parseInt(anio), List.of(generos), temas);
-
-        // Redirigir a la página de éxito o error
-        response.sendRedirect("resultado.jsp?exito=true");
-    
+        ctrl.CrearAlbum(nombreAlbum, nickArtista, Integer.parseInt(anio), List.of(generosArray), temas);
+        request.getRequestDispatcher("index.jsp").forward(request, response); // Redirige al JSP
     }
 }
