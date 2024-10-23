@@ -43,8 +43,7 @@
                 const temaDiv = document.createElement("div");
 
                 // Crear campos para nombre, duración y posición
-                temaDiv.innerHTML = 
-                    '
+                temaDiv.innerHTML = `
                     <p>
                     <span>
                         <label>Nombre Tema</label>
@@ -62,11 +61,10 @@
                         <button type="button" onclick="agregarDireccion(this)">Agregar Dirección</button>
                     </span>
                     </p>
-                    '
-                ;
+                `;
                 temasContainer.appendChild(temaDiv);
             }
-
+            
             // Función para abrir el pop-up y elegir entre URL o Archivo
             function agregarDireccion(button) {
                 const seleccion = prompt("Seleccione 'URL' o 'Archivo'");

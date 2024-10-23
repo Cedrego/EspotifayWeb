@@ -41,15 +41,13 @@ public class SvAltaAlbum extends HttpServlet {
             throws ServletException, IOException {
         List<String> listaGeneros = new ArrayList<>();
         System.out.println("Cargando generos");
-        /*
+        
         for(String gen : ctrl.obtenerNombresDeGeneros()){
             listaGeneros.add(gen);
-        }*/
-        listaGeneros.add("genero1");
-        listaGeneros.add("genero2");
+        }
         
         request.setAttribute("generos", listaGeneros);
-        request.getRequestDispatcher("/WEB-INF/AltaAlbum.jsp").forward(request, response);
+        request.getRequestDispatcher("/JSP/AltaAlbum.jsp").forward(request, response);
     }
     
     
@@ -69,10 +67,10 @@ public class SvAltaAlbum extends HttpServlet {
         String generosSeleccionados = request.getParameter("generosSeleccionados");
         String[] generosArray = generosSeleccionados.split(",");
 
-        String[] nombresTemas = request.getParameterValues("nombresTemas");
-        String[] duraciones = request.getParameterValues("duraciones");
-        String[] posiciones = request.getParameterValues("posiciones");
-        String[] direcciones = request.getParameterValues("direcciones");
+        String[] nombresTemas = request.getParameterValues("nombresTemas[]");
+        String[] duraciones = request.getParameterValues("duraciones[]");
+        String[] posiciones = request.getParameterValues("posiciones[]");
+        String[] direcciones = request.getParameterValues("direcciones[]");
 
         // Crear lista de temas
         List<DataTema> temas = new ArrayList<>();
@@ -80,8 +78,8 @@ public class SvAltaAlbum extends HttpServlet {
             if(i==-1){
                 
             }else{
-            DataTema tema = new DataTema(nombresTemas[i], nombreAlbum, duraciones[i], Integer.parseInt(posiciones[i]), direcciones[i], List.of(generosArray));
-            temas.add(tema);
+                DataTema tema = new DataTema(nombresTemas[i], nombreAlbum, duraciones[i], Integer.parseInt(posiciones[i]), direcciones[i], List.of(generosArray));
+                temas.add(tema);
             }
         }
 
