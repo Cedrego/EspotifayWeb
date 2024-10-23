@@ -42,24 +42,23 @@ public class SvIngreso extends HttpServlet {
             throws ServletException, IOException {
         String NOE = request.getParameter("NOE");
         String Contra = request.getParameter("pass");
+        HttpSession misesion = request.getSession();
         if(ctrl.obtenerNombresDeCliente().contains(NOE) || ctrl.obtenerMailDeCliente().contains(NOE) ){//Verifico si ingreso bien el nick(DESPUES VER PARA EMAIL)
             if(ctrl.existePassC(NOE,Contra)){//Verifico si ingreso bien el pass
-                HttpSession misesion = request.getSession();
                 List<String>sesion = ctrl.ContraXCliente(NOE,Contra);
                 misesion.setAttribute("NickSesion",sesion.getFirst());
                 response.sendRedirect("JSP/Cliente.jsp");
             }
         }else if(ctrl.obtenerNombresDeArtista().contains(NOE) || ctrl.obtenerMailDeArtista().contains(NOE)){
             if(ctrl.existePassA(NOE,Contra)){//Verifico si ingreso bien el pass
-                HttpSession misesion = request.getSession();
                 List<String>sesion = ctrl.ContraXArtista(NOE,Contra);
                 misesion.setAttribute("NickSesion",sesion.getFirst());
                 response.sendRedirect("JSP/Artista.jsp");
             }
-        }else{/*
-            String error = null;
-            error = "ERROR: El nick, email o contraseña no son validos";
-            response.sendRedirect("JSP/Usuario.jsp"); // Redirige al JSP*/
+        }else{
+            String error = "ERROR: El nick, email o contraseña no son validos";
+            misesion.setAttribute("error", error);
+            request.getRequestDispatcher("JSP/Usuario.jsp").forward(request, response); // Redirige al JSP
         }
         
     }

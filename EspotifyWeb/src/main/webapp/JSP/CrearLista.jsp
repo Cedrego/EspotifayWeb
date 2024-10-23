@@ -1,6 +1,6 @@
 <%-- 
-    Document   : Usuario
-    Created on : 17 oct. 2024, 2:45:14 p. m.
+    Document   : CrearLista
+    Created on : 22 oct. 2024, 8:53:45 p. m.
     Author     : User
 --%>
 
@@ -9,17 +9,15 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Iniciar Sesion</title>
+        <title>CrearLista</title>
     </head>
     <body>
-        <h1>Inicie Sesion</h1>
-    <form action="${pageContext.request.contextPath}/SvIngreso" method="POST">
-        <p><lable>Nick o Email:</lable><input type="text" name="NOE"</p>
-        <p><lable>Contraseña:</lable><input type="password" name="pass"</p>
+        <h1>CrearLista</h1>
+        <form action="${pageContext.request.contextPath}/SvCrearLista" method="POST" enctype="multipart/form-data">
+        <p><lable>Nombre de la lista:</lable><input type="text" name="NomLista"</p>
+        <p>Selecciona una imagen: <input type="file" name="imagen" accept="image/*" /></p>
         <br>
-        <button type="submit">Consultar</button>
-    </form>
-        <button onclick="window.location.href = '<%= request.getContextPath() %>/JSP/Registro.jsp'">Registrar</button>
+        <button type="submit">Crear</button>
         <%-- Mostrar mensaje de error si existe --%>
         <%
             String errorMessage = (String) request.getSession().getAttribute("error");
@@ -30,5 +28,6 @@
                 request.getSession().removeAttribute("error"); // Limpiar el mensaje para que no persista
             }
         %>
+    </form>
     </body>
 </html>
