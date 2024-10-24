@@ -92,7 +92,7 @@ public class SvSeguir extends HttpServlet {
         
         for(String nick : ctrl.obtenerNombresDeArtista()){
             if(ctrl.listaArtistasQueSiguesSW(nickname).contains(nick)){
-                listaArtistas.remove(nick);
+                //omitir
             }else{
                 listaArtistas.add(nick);
             }

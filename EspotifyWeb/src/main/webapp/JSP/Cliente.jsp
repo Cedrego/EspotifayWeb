@@ -69,7 +69,7 @@
             <button onclick="window.location.href = '<%= request.getContextPath() %>/JSP/Registro.jsp'">Contratar Suscripción</button>
             <button onclick="window.location.href = '<%= request.getContextPath() %>/JSP/Registro.jsp'">Actualizar estado de Suscripción</button>
             <button onclick="window.location.href = '<%= request.getContextPath() %>/SvSeguir'">Seguir Usuario (Cliente/Artista)</button>
-            <button onclick="window.location.href = '<%= request.getContextPath() %>/JSP/Registro.jsp'">Dejar de Seguir a Usuario (Cliente/Artista)</button>
+            <button onclick="window.location.href = '<%= request.getContextPath() %>/SvDejarSeguir'">Dejar de Seguir a Usuario (Cliente/Artista)</button>
             <button onclick="window.location.href = '<%= request.getContextPath() %>/JSP/Registro.jsp'">Consulta de Álbum</button>
             <button onclick="window.location.href = '<%= request.getContextPath() %>/JSP/Registro.jsp'">Consulta de Lista de Reproducción</button>
             
