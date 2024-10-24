@@ -46,7 +46,7 @@
         <h1>Como Desea Ingresar</h1>
         <button onclick="redirect('Invitado')">Invitado</button>
         <button onclick="redirect('Usuario')">Usuario</button>
-        
+        <button onclick="window.location.href='<%= request.getContextPath() %>/SvAltaAlbum'">Alta Album</button>
         <br><img src="images\MikuDance.gif" alt="A Wild Miku Appears!"/>
     </body>
 </html>
