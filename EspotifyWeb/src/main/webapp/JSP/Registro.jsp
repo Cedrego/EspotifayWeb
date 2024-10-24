@@ -9,7 +9,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Registro</title>
+        <title>Espotify</title>
         <script>
         function toggleFields() {
             const checkbox = document.getElementById('artista'); // Usamos el ID correcto del checkbox
