@@ -63,13 +63,13 @@
         <div class="button-container">
             <button onclick="window.location.href = '<%= request.getContextPath() %>/JSP/ConsultaPerfil.jsp'"> Consulta de Perfil de Usuario</button>
             <button onclick="window.location.href = '<%= request.getContextPath() %>/JSP/CrearLista.jsp'">Crear lista de reproducción</button>
-            <button onclick="window.location.href = '<%= request.getContextPath() %>/JSP/Registro.jsp'"> Agregar Tema a Lista</button>
+            <button onclick="window.location.href = '<%= request.getContextPath() %>/SvAddTemaLista'"> Agregar Tema a Lista</button>
             <button onclick="window.location.href = '<%= request.getContextPath() %>/JSP/Registro.jsp'">Publicar Lista</button>
             <button onclick="window.location.href = '<%= request.getContextPath() %>/JSP/GuardarTLA.jsp'">Guardar Tema/Lista/Álbum</button>
             <button onclick="window.location.href = '<%= request.getContextPath() %>/JSP/Registro.jsp'">Contratar Suscripción</button>
             <button onclick="window.location.href = '<%= request.getContextPath() %>/JSP/Registro.jsp'">Actualizar estado de Suscripción</button>
-            <button onclick="window.location.href = '<%= request.getContextPath() %>/JSP/Registro.jsp'">Seguir Usuario (Cliente/Artista)</button>
-            <button onclick="window.location.href = '<%= request.getContextPath() %>/JSP/Registro.jsp'">Dejar de Seguir a Usuario (Cliente/Artista)</button>
+            <button onclick="window.location.href = '<%= request.getContextPath() %>/SvSeguir'">Seguir Usuario (Cliente/Artista)</button>
+            <button onclick="window.location.href = '<%= request.getContextPath() %>/SvDejarSeguir'">Dejar de Seguir a Usuario (Cliente/Artista)</button>
             <button onclick="window.location.href = '<%= request.getContextPath() %>/JSP/Registro.jsp'">Consulta de Álbum</button>
             <button onclick="window.location.href = '<%= request.getContextPath() %>/JSP/Registro.jsp'">Consulta de Lista de Reproducción</button>
             

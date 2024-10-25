@@ -32,10 +32,6 @@
         </script>
     </head>
     <body>
-        <audio id="background-music" src="images/Nico Nico Nii (Remix).mp3" autoplay loop></audio>
-        
-        <button onclick="playAudio()">Play Background Music</button>
-        
         <script>
             var audio = document.getElementById("background-music");
             function playAudio() {
@@ -47,6 +43,5 @@
         <button onclick="redirect('Invitado')">Invitado</button>
         <button onclick="redirect('Usuario')">Usuario</button>
         <button onclick="window.location.href='<%= request.getContextPath() %>/SvAltaAlbum'">Alta Album</button>
-        <br><img src="images\MikuDance.gif" alt="A Wild Miku Appears!"/>
     </body>
 </html>
