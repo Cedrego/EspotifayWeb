@@ -27,16 +27,7 @@ import javax.servlet.http.HttpSession;
 public class SvAltaAlbum extends HttpServlet {
     Factory factory = Factory.getInstance();
     ICtrl ctrl = factory.getICtrl();
-    
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         List<String> listaGeneros = new ArrayList<>();
@@ -58,8 +49,8 @@ public class SvAltaAlbum extends HttpServlet {
     
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        //HttpSession session = request.getSession();
-        String nickArtista = request.getParameter("nickArtista");
+        
+        String nickArtista = (String) request.getAttribute("NickSesion");
                     
         String nombreAlbum = request.getParameter("nombreAlbum");
         String anio = request.getParameter("anio");

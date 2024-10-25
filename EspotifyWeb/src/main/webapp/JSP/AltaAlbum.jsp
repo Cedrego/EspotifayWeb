@@ -13,23 +13,23 @@
         <title>JSP Page</title>
         
         <script>
-            // Array para almacenar los géneros seleccionados
+            // array para almacenar los géneros seleccionados
             let generosSeleccionados = [];
 
-            // Función para agregar género seleccionado al array y mostrarlo
+            // función para agregar género seleccionado al array y mostrarlo
             function agregarGenero() {
                 const selectGeneros = document.getElementById("generos");
                 const generoSeleccionado = selectGeneros.value;
 
                 if (generoSeleccionado !== "") {
-                    // Agregar género al array
+                    // agregar género al array
                     generosSeleccionados.push(generoSeleccionado);
                     
-                    // Mostrar los géneros seleccionados en la página
+                    // mostrar los géneros seleccionados en la página
                     const listaGeneros = document.getElementById("generos-seleccionados");
                     listaGeneros.innerHTML += "<li>" + generoSeleccionado + "</li>";
                     
-                    // Actualizar el campo oculto para enviar los géneros al servidor
+                    // actualizar el campo oculto para enviar los géneros al servidor
                     document.getElementById("generosInput").value = generosSeleccionados.join(",");
                 } else {
                     alert("Seleccione un género antes de agregar.");
@@ -91,7 +91,7 @@
     <body>
         <h1>Bienvenido a Alta de Album</h1>
         <form action="${pageContext.request.contextPath}/SvAltaAlbum" method="POST">
-            <p><label>Nickname Artista<br></lable><input type="text" name="nickArtista" required></p>
+            
             <p><label>Nombre del Album<br></lable><input type="text" name="nombreAlbum" required></p>
             <p><label for="anioCreacion">Año de Creación:</label>
             <select id="anioCreacion" name="anio" required>
