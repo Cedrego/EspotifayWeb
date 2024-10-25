@@ -186,7 +186,7 @@ public class SvGuardarTLA extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
-        
+        HttpSession sesion = request.getSession();
         String error;
         
         String nickCliente = (String) request.getAttribute("NickSesion");
