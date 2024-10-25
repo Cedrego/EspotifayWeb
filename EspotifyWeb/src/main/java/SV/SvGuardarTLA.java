@@ -189,7 +189,8 @@ public class SvGuardarTLA extends HttpServlet {
         HttpSession sesion = request.getSession();
         String error;
         
-        String nickCliente = (String) request.getAttribute("NickSesion");
+        HttpSession misesion = request.getSession(false); // No crear una nueva si no existe
+        String nickCliente = (String) misesion.getAttribute("NickSesion");
         
         String tipoDelObjeto = request.getParameter("tipoDelObjeto");
         String nombreDelObjeto = request.getParameter("NombreDelObjeto");

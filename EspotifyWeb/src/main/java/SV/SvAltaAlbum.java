@@ -50,7 +50,8 @@ public class SvAltaAlbum extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         
-        String nickArtista = (String) request.getAttribute("NickSesion");
+        HttpSession misesion = request.getSession(false); // No crear una nueva si no existe
+        String  nickArtista = (String) misesion.getAttribute("NickSesion");
                     
         String nombreAlbum = request.getParameter("nombreAlbum");
         String anio = request.getParameter("anio");
@@ -76,6 +77,6 @@ public class SvAltaAlbum extends HttpServlet {
 
         // Crear el álbum
         ctrl.CrearAlbum(nombreAlbum, nickArtista, Integer.parseInt(anio), List.of(generosArray), temas);
-        request.getRequestDispatcher("index.jsp").forward(request, response); // Redirige al JSP
+        request.getRequestDispatcher("JSP/Artista.jsp").forward(request, response); // Redirige al JSP
     }
 }

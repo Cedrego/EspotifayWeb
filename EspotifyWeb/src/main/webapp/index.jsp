@@ -42,6 +42,5 @@
         <h1>Como Desea Ingresar</h1>
         <button onclick="redirect('Invitado')">Invitado</button>
         <button onclick="redirect('Usuario')">Usuario</button>
-        <button onclick="window.location.href='<%= request.getContextPath() %>/SvAltaAlbum'">Alta Album</button>
     </body>
 </html>
