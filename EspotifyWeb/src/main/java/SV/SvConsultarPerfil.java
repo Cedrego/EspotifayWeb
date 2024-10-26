@@ -4,10 +4,12 @@
  */
 package SV;
 
+import Capa_Presentacion.DataArtistaAlt;
 import Logica.Factory;
 import Logica.ICtrl;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -39,18 +41,19 @@ public class SvConsultarPerfil extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet SvConsultarPerfil</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet SvConsultarPerfil at " + request.getContextPath() + "</h1>");
-            out.println("<label>");
-            out.println("label");
-            out.println("</label>");
-            out.println("</body>");
-            out.println("</html>");
+            String nU = (String) request.getAttribute("NickUsuario");
+            if(ctrl.obtenerNombresDeCliente().contains(nU)){//Es Cliente
+                request.setAttribute("DataCliente",ctrl.getDataClienteAlt(nU));
+            }else if(ctrl.obtenerNombresDeArtista().contains(nU)){//Es Artista
+                request.setAttribute("DataArtista",ctrl.getDataArtistaAlt(nU));
+            }else{//Es Invitado
+                List<DataArtistaAlt>DataArtistas = new ArrayList();
+                for(String nA : ctrl.obtenerNombresDeArtista()){
+                    DataArtistas.add(ctrl.getDataArtistaAlt(nA));
+                }
+                request.setAttribute("DataArtistas",DataArtistas);
+                request.setAttribute("DataClientes",ctrl.getDataClienteMin());
+            }
         }
     }
 
