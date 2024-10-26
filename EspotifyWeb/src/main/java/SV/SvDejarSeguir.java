@@ -38,16 +38,11 @@ public class SvDejarSeguir extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        List<String> listClientes = new ArrayList<>();
         HttpSession session = request.getSession(false);
         String nickname = (String) session.getAttribute("NickSesion");
         
-        List<String> listaSeguidos = ctrl.listaSeguidosCliente(nickname);
-        
-        for(String x : listaSeguidos){
-            listClientes.add(x);
-        }
-        
+        List<String> listClientes = ctrl.listaSeguidoresClienteSW(nickname);
+
         request.setAttribute("listClientes", listClientes);
 
         // Redirigir a la JSP
@@ -66,24 +61,19 @@ public class SvDejarSeguir extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        /*
         processRequest(request, response);
         response.setContentType("text/html;charset=UTF-8");
-        List<String> listClientes = new ArrayList<>();
         HttpSession session = request.getSession(false);
         String nickname = (String) session.getAttribute("NickSesion");
-
-        for (String c : ctrl.listaClientesQueSiguesSW(nickname)) {
-            listClientes.add(c);
-        }
-
-        for (String a : ctrl.listaArtistasQueSiguesSW(nickname)) {
-            listClientes.add(a);
-        }
+        
+        List<String> listClientes = ctrl.listaSeguidoresClienteSW(nickname);
 
         request.setAttribute("listClientes", listClientes);
 
         // Redirigir a la JSP
         request.getRequestDispatcher("JSP/DejarSeguir.jsp").forward(request, response);
+        */
     }
 
     /**

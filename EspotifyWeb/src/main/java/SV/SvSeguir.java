@@ -37,29 +37,27 @@ public class SvSeguir extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        List<String> listClientes = new ArrayList<>();
-        List<String> listArtistas = new ArrayList<>();
+        /*
+        HttpSession session = request.getSession(false);
+        String nickname = (String) session.getAttribute("NickSesion");
+        List<String> listaClientes = ctrl.obtenerNombresDeCliente();
+        List<String> listaArtistas = ctrl.obtenerNombresDeArtista();
 
-        if (listClientes.isEmpty()) {
-            System.out.println("listClientes in empty");
-            listClientes = ctrl.obtenerNombresDeCliente();
-        } else {
-            System.out.println("listClientes else");
+        for (String nick : ctrl.listaSeguidoresClienteSW(nickname)) {
+            listaClientes.remove(nick);
         }
 
-        if (listArtistas.isEmpty()) {
-            System.out.println("listArtistas in empty");
-            listArtistas = ctrl.obtenerNombresDeArtista();
-        } else {
-            System.out.println("listArtistas else");
+        for (String nick : ctrl.listaSeguidoresClienteSW(nickname)) {
+            listaArtistas.remove(nick);
         }
 
         // Configurar las listas como atributos en la solicitud
-        request.setAttribute("listClientes", listClientes);
-        request.setAttribute("listArtistas", listArtistas);
+        request.setAttribute("listClientes", listaClientes);
+        request.setAttribute("listArtistas", listaArtistas);
 
         // Redirigir a la JSP
         request.getRequestDispatcher("JSP/Seguir.jsp").forward(request, response);
+        */
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -77,29 +75,17 @@ public class SvSeguir extends HttpServlet {
         // Obtener las listas desde tu controlador o servicio
         HttpSession session = request.getSession(false);
         String nickname = (String) session.getAttribute("NickSesion");
-        List<String> listaClientes = new ArrayList<>();
-        List<String> listaArtistas = new ArrayList<>();
+        List<String> listaClientes = ctrl.obtenerNombresDeCliente();
+        List<String> listaArtistas = ctrl.obtenerNombresDeArtista();
         
-        for(String nick : ctrl.obtenerNombresDeCliente()){
-            if(ctrl.listaClientesQueSiguesSW(nickname).contains(nick)){
-                //omitir
-            }else if (nick.equals(nickname)){
-                //omitir
-            }else{
-                listaClientes.add(nick);
-            }
+        for(String nick : ctrl.listaSeguidoresClienteSW(nickname)){
+            listaClientes.remove(nick);
         }
+        listaClientes.remove(nickname);
         
-        for(String nick : ctrl.obtenerNombresDeArtista()){
-            if(ctrl.listaArtistasQueSiguesSW(nickname).contains(nick)){
-                //omitir
-            }else{
-                listaArtistas.add(nick);
-            }
+        for(String nick : ctrl.listaSeguidoresClienteSW(nickname)){
+            listaArtistas.remove(nick);
         }
-        
-        listaArtistas = ctrl.obtenerNombresDeArtista();
-        
         
         // Configurar las listas como atributos en la solicitud
         request.setAttribute("listClientes", listaClientes);
