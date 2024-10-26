@@ -13,7 +13,6 @@
         <title>JSP Page</title>
         
         <script>
-         const contextPath = '${pageContext.request.contextPath}';
         // función para actualizar la segunda ComboBox según la selección de la primera
         function actualizarFiltros() {
             const tipoSeleccionado = document.getElementById("tipoDelObjeto").value;
