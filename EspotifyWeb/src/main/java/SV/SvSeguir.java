@@ -37,6 +37,7 @@ public class SvSeguir extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        /*
         HttpSession session = request.getSession(false);
         String nickname = (String) session.getAttribute("NickSesion");
         List<String> listaClientes = ctrl.obtenerNombresDeCliente();
@@ -56,6 +57,7 @@ public class SvSeguir extends HttpServlet {
 
         // Redirigir a la JSP
         request.getRequestDispatcher("JSP/Seguir.jsp").forward(request, response);
+        */
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -79,6 +81,7 @@ public class SvSeguir extends HttpServlet {
         for(String nick : ctrl.listaSeguidoresClienteSW(nickname)){
             listaClientes.remove(nick);
         }
+        listaClientes.remove(nickname);
         
         for(String nick : ctrl.listaSeguidoresClienteSW(nickname)){
             listaArtistas.remove(nick);
