@@ -5,6 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page import="jakarta.servlet.http.HttpSession" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -12,6 +13,8 @@
         <title>Espotify</title>
         <script>
         function toggleFields() {
+
+
             const checkbox = document.getElementById('artista'); // Usamos el ID correcto del checkbox
             const extraFields = document.getElementById('extraFields');
 
@@ -26,7 +29,7 @@
     </head>
     <body>
         <h1>Crear Cuenta</h1>
-        <form action="${pageContext.request.contextPath}/SvRegistro" method="POST">
+        <form action="${pageContext.request.contextPath}/SvRegistro" method="post">
             <p><label>Nickname<br></label><input type="text" name="nick"></p>
             <p><label>Nombre<br></label><input type="text" name="nom"></p>
             <p><label>Apellido<br></label><input type="text" name="ape"></p>

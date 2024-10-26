@@ -5,6 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page import="jakarta.servlet.http.HttpSession" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -12,13 +13,13 @@
         <title>Iniciar Sesion</title>
     </head>
     <body>
-        <h1>Inicie Sesion</h1>
-    <form action="${pageContext.request.contextPath}/SvIngreso" method="POST">
-        <p><lable>Nick o Email:</lable><input type="text" name="NOE"</p>
-        <p><lable>Contraseña:</lable><input type="password" name="pass"</p>
-        <br>
-        <button type="submit">Consultar</button>
-    </form>
+            <h1>Inicie Sesión</h1>
+     <form action="${pageContext.request.contextPath}/SvIngreso" method="POST">
+         <p><label>Nick o Email:</label><input type="text" name="NOE"></p>
+         <p><label>Contraseña:</label><input type="password" name="pass"></p>
+         <br>
+         <button type="submit">Consultar</button>
+     </form>
         <button onclick="window.location.href = '<%= request.getContextPath() %>/JSP/Registro.jsp'">Registrar</button>
         <%-- Mostrar mensaje de error si existe --%>
         <%
