@@ -18,8 +18,8 @@
     <dependency>
         <groupId>jakarta.servlet</groupId>
         <artifactId>jakarta.servlet-api</artifactId>
-        <version>6.0.0</version> <!-- O la versión que estés utilizando -->
-        <scope>provided</scope>
+        <version>6.1.0</version> <!-- O la versión que estés utilizando -->
+      <type>jar</type>
     </dependency>
 
     <dependency>

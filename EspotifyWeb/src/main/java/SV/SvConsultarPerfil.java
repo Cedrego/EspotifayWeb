@@ -38,23 +38,6 @@ public class SvConsultarPerfil extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            String nU = (String) request.getAttribute("NickUsuario");
-            if(ctrl.obtenerNombresDeCliente().contains(nU)){//Es Cliente
-                request.setAttribute("DataCliente",ctrl.getDataClienteAlt(nU));
-            }else if(ctrl.obtenerNombresDeArtista().contains(nU)){//Es Artista
-                request.setAttribute("DataArtista",ctrl.getDataArtistaAlt(nU));
-            }else{//Es Invitado
-                List<DataArtistaAlt>DataArtistas = new ArrayList();
-                for(String nA : ctrl.obtenerNombresDeArtista()){
-                    DataArtistas.add(ctrl.getDataArtistaAlt(nA));
-                }
-                request.setAttribute("DataArtistas",DataArtistas);
-                request.setAttribute("DataClientes",ctrl.getDataClienteMin());
-            }
-        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -69,13 +52,32 @@ public class SvConsultarPerfil extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        /*HttpSession misesion = request.getSession();
-        List<String>sesion = ctrl.ContraXCliente(NOE,Contra);
-        misesion.setAttribute("NickSesion",sesion.getFirst());*/
-//        String nick = ctrl.
-//        nickname, correo electrónico, nombre, apellido, fecha de nacimiento;
-        
-        processRequest(request, response);
+        @WebServlet("/SvConsultarPerfil")
+        public class SvConsultarPerfil extends HttpServlet {
+
+            protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+                String nU = (String) request.getAttribute("NickSesion");
+
+                if (ctrl.obtenerNombresDeCliente().contains(nU)) { // Es Cliente
+                    DataClienteAlt cliente = ctrl.getDataClienteAlt(nU);
+                    request.setAttribute("usuario", cliente);
+                    request.setAttribute("tipo", "cliente");
+                } else if (ctrl.obtenerNombresDeArtista().contains(nU)) { // Es Artista
+                    DataArtistaAlt artista = ctrl.getDataArtistaAlt(nU);
+                    request.setAttribute("usuario", artista);
+                    request.setAttribute("tipo", "artista");
+                } else { // Es Invitado
+                    List<DataArtistaAlt> dataArtistas = new ArrayList<>();
+                    for (String nA : ctrl.obtenerNombresDeArtista()) {
+                        dataArtistas.add(ctrl.getDataArtistaAlt(nA));
+                    }
+                    request.setAttribute("dataArtistas", dataArtistas);
+                    request.setAttribute("DataClientes", ctrl.getDataClienteMin());
+                }
+
+                request.getRequestDispatcher("ConsultaPerfil.jsp").forward(request, response);
+            }
+        }
     }
 
     /**
