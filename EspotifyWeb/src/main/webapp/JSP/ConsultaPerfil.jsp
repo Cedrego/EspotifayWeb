@@ -60,11 +60,9 @@
         <div class="container">
             <%
                 String tipo = (String) request.getAttribute("tipo");
-            if (null == request.getAttribute("usuario")) { %>
-                            <h3>El Usuario No Cargó Correctamente</h3>
-            <%}
-                Object usuario = request.getAttribute("usuario");
 
+                Object usuario = request.getAttribute("usuario");
+                
                 if ("cliente".equals(tipo)) {
                     DataClienteAlt cliente = (DataClienteAlt) usuario;
             %>
@@ -121,6 +119,8 @@
             </div>
 
             <%
+            
+                
             } else if ("artista".equals(tipo)) {
                 DataArtistaAlt artista = (DataArtistaAlt) usuario;
             %>
@@ -184,22 +184,22 @@
                     <img src="<%= artista.getNickname()%>">
                     <p><strong>Biografía:</strong> <%= artista.getBiografia()%></p>
                 </div>
-                <%
-                    }
-                } else {
-                %>
-                <p>No hay artistas disponibles.</p>
-                <%
-                    }
-                %>
+                
                     <h4>Álbumes</h4>
                     <ul>
                         <%
                             for (DataAlbum album : artista.getDataalbumes()) {
                                 String albumId = album.getNombre().replace(" ", "_");
-                        %>
-                        <% } %>
+                        }%>
                     </ul>
+                        <%
+                            }
+                        } else {
+                        %>
+                        <p><label>No hay artistas disponibles.</label></p>
+                        <%
+                            }
+                        %>
                 </div>
             </div>
 

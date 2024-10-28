@@ -51,6 +51,32 @@
             xhr.send();
             
         }
+        function actualizarListTemas() {
+            const tipoSeleccionado = document.getElementById("tipoDelObjeto").value;
+            const filtroSecundarioSeleccionado = document.getElementById("opcionesSeleccion").value;
+            const TemasPos = document.getElementById("TemasPos")
+            // Limpiar la tercera ComboBox
+            TemasPos.innerHTML = "";
+            // Realiza una solicitud AJAX al servlet para obtener lo pedido
+            const xhr = new XMLHttpRequest();
+            const contextPath = "${pageContext.request.contextPath}";
+            xhr.open('GET', contextPath + '/SvActualizarSelectAddTema?tipoDelObjeto=' + tipoSeleccionado+ '&filtroPrincipal='+  filtroSecundarioSeleccionado + '&_=' + new Date().getTime(), true);
+
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    // Verifica si la respuesta tiene opciones válidas
+                    if (xhr.responseText.trim() !== "") {
+                        TemasPos.innerHTML = xhr.responseText;
+                    } else {
+                        TemasPos.innerHTML = '<option value="">No se encontraron resultados</option>';
+                    }
+                } else {
+                    TemasPos.innerHTML = '<option value="">Error al cargar los datos</option>';
+                }
+            };
+            xhr.send();
+            
+        }
         </script>
     </head>
     <body>
@@ -72,7 +98,7 @@
                     }
                 %></select>
       <label for="tipoSeleccion">Filtro:</label>
-        <select id="tipoDelObjeto" name="tipoDelObjeto" onclick="actualizarFiltrosSecundarios();">
+        <select id="tipoDelObjeto" name="tipoDelObjeto" onchange="actualizarFiltrosSecundarios(); actualizarListTemas();">
             <option value="">Seleccione un filtro</option>
             <option value="Album">Album</option>
             <option value="ListaPorDef">Lista Por Defecto</option>
@@ -80,8 +106,12 @@
         </select>
 
         <label for="opcionesSeleccion">Filtro 2:</label>
-        <select id="opcionesSeleccion" name="filtroPrincipal" required>
+        <select id="opcionesSeleccion" name="filtroPrincipal" onclick="actualizarListTemas();">
             <option value="">Seleccione un filtro</option>
         </select>      
+        <label for="TemasPos">Temas:</label>
+        <select id="TemasPos" name="Temas" >
+            <option value="">Seleccione un Tema</option>
+        </select>
     </body>
 </html>

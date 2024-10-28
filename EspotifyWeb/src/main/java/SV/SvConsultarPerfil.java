@@ -39,6 +39,7 @@ public class SvConsultarPerfil extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -53,7 +54,8 @@ public class SvConsultarPerfil extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String nU = (String) request.getAttribute("NickSesion");
+        HttpSession misesion = request.getSession(false); // No crear una nueva si no existe
+        String nU = (String) misesion.getAttribute("NickSesion");
 
         if (ctrl.obtenerNombresDeCliente().contains(nU)) { // Es Cliente
             DataClienteAlt cliente = ctrl.getDataClienteAlt(nU);
@@ -72,7 +74,7 @@ public class SvConsultarPerfil extends HttpServlet {
             request.setAttribute("DataClientes", ctrl.getDataClienteMin());
         }
 
-        request.getRequestDispatcher("ConsultaPerfil.jsp").forward(request, response);
+        request.getRequestDispatcher("JSP/ConsultaPerfil.jsp").forward(request, response);
     }
 
 
