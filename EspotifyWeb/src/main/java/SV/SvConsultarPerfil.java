@@ -54,26 +54,27 @@ public class SvConsultarPerfil extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String nU = (String) request.getAttribute("NickSesion");
-           if (ctrl.obtenerNombresDeCliente().contains(nU)) { // Es Cliente
-               DataClienteAlt cliente = ctrl.getDataClienteAlt(nU);
-               request.setAttribute("usuario", cliente);
-               request.setAttribute("tipo", "cliente");
-           } else if (ctrl.obtenerNombresDeArtista().contains(nU)) { // Es Artista
-               DataArtistaAlt artista = ctrl.getDataArtistaAlt(nU);
-               request.setAttribute("usuario", artista);
-               request.setAttribute("tipo", "artista");
-           } else { // Es Invitado
-               List<DataArtistaAlt> dataArtistas = new ArrayList<>();
-               for (String nA : ctrl.obtenerNombresDeArtista()) {
-                   dataArtistas.add(ctrl.getDataArtistaAlt(nA));
-               }
-               request.setAttribute("dataArtistas", dataArtistas);
-               request.setAttribute("DataClientes", ctrl.getDataClienteMin());
-           }
 
-       request.getRequestDispatcher("ConsultaPerfil.jsp").forward(request, response);
-   }
-        
+        if (ctrl.obtenerNombresDeCliente().contains(nU)) { // Es Cliente
+            DataClienteAlt cliente = ctrl.getDataClienteAlt(nU);
+            request.setAttribute("usuario", cliente);
+            request.setAttribute("tipo", "cliente");
+        } else if (ctrl.obtenerNombresDeArtista().contains(nU)) { // Es Artista
+            DataArtistaAlt artista = ctrl.getDataArtistaAlt(nU);
+            request.setAttribute("usuario", artista);
+            request.setAttribute("tipo", "artista");
+        } else { // Es Invitado
+            List<DataArtistaAlt> dataArtistas = new ArrayList();
+            for (String nA : ctrl.obtenerNombresDeArtista()) {
+                dataArtistas.add(ctrl.getDataArtistaAlt(nA));
+            }
+            request.setAttribute("dataArtistas", dataArtistas);
+            request.setAttribute("DataClientes", ctrl.getDataClienteMin());
+        }
+
+        request.getRequestDispatcher("ConsultaPerfil.jsp").forward(request, response);
+    }
+
 
     /**
      * Handles the HTTP <code>POST</code> method.
