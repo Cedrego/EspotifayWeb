@@ -9,24 +9,31 @@
         <title>Espotify</title>
         <script>
             function updateUsers() {
-                const checkbox = document.getElementById('tipo');
-                const clienteComboBox = document.getElementById('cliente');
-                const artistaComboBox = document.getElementById('artista');
-                const clienteLabel = document.getElementById('label1');
-                const artistaLabel = document.getElementById('label2');
+                const tipoUser = document.getElementById("tipoUsuario").value;
+                const usuarioSelec = document.getElementById("usuario");
 
-                // Mostrar/ocultar combobox y etiquetas según el estado de la checkbox
-                if (checkbox.checked) {
-                    clienteComboBox.style.display = 'none';
-                    clienteLabel.style.display = 'none';
-                    artistaComboBox.style.display = 'inline';
-                    artistaLabel.style.display = 'inline';
-                } else {
-                    clienteComboBox.style.display = 'inline';
-                    clienteLabel.style.display = 'inline';
-                    artistaComboBox.style.display = 'none';
-                    artistaLabel.style.display = 'none';
-                }
+                // Limpiar la tercera ComboBox
+                usuarioSelec.innerHTML = "";
+                // Realiza una solicitud AJAX al servlet para obtener lo pedido
+                const xhr = new XMLHttpRequest();
+                const contextPath = "${pageContext.request.contextPath}";
+                xhr.open('GET', contextPath + '/SvSeguir?tipoUsuario=' + tipoUser + '&_=' + new Date().getTime(), true);
+
+
+
+                xhr.onload = function() {
+                    if (xhr.status === 200) {
+                        // Verifica si la respuesta tiene opciones válidas
+                        if (xhr.responseText.trim() !== "") {
+                            usuarioSelec.innerHTML = xhr.responseText;
+                        } else {
+                            usuarioSelec.innerHTML = '<option value="">No se encontraron resultados</option>';
+                        }
+                    } else {
+                        usuarioSelec.innerHTML = '<option value="">Error al cargar los datos</option>';
+                    }
+                };
+                xhr.send();
             }
 
             function redirectToCliente() {
@@ -35,49 +42,26 @@
             }
         </script>
     </head>
-    <body onload="updateUsers()"> <!-- Ejecutar updateUsers al cargar la página -->
+    <body> <!-- Ejecutar updateUsers al cargar la página -->
         <h1>Seguir usuario</h1>
 
         <form id="seguimientoForm" action="${pageContext.request.contextPath}/SvSeguir" method="POST">
             <button type="button" onclick="redirectToCliente()">Volver</button>
             <br>
-            <input type="checkbox" id="tipo" name="tipo" onchange="updateUsers()"
-                <%= request.getParameter("tipo") != null ? "checked" : "" %>>
-            <label for="tipo">Cambiar tipo de usuario</label>
-            <br><br>
+            <p><label for="tipoUsuario">Que tipo de usuario desea seguir?:</label>
+            <select id="tipoUsuario" name="tipoUsuario" onchange="updateUsers()"  required>
+                <option value="">Seleccione un tipo</option>
+                <option value="Artista">Aritsta</option>
+                <option value="Cliente">Cliente</option>  
+            </select><br>   
             
-            <!-- ComboBox para clientes -->
-            <label id="label1" for="cliente">Selecciona un cliente:</label>
-            <select id="cliente" name="cliente"> <!-- Cambié name="comboCliente" a name="cliente" -->
-                <!-- Insertar los clientes dinámicamente desde el servidor -->
-                <%
-                    List<String> listClientes = (List<String>) request.getAttribute("listClientes");
-                    if (listClientes != null && !listClientes.isEmpty()) {
-                        for (String cliente : listClientes) {
-                        %>
-                        <option value="<%= cliente%>"><%= cliente%></option>
-                        <%
-                        }
-                    }
-                %>
-            </select>
+            <p><label for="usuario">Seleccione un usuario</label>
+                <select id="usuario" name="usuario" required>
+                    <option value="">Seleccione un usuario</option>
+                </select><br>
 
-            <!-- ComboBox para artistas, inicialmente oculto -->
-            <label id="label2" for="artista" style="display: none;">Selecciona un artista:</label>
-            <select id="artista" name="artista" style="display: none;">
-                <%
-                    List<String> listArtistas = (List<String>) request.getAttribute("listArtistas");
-                    if (listArtistas != null && !listArtistas.isEmpty()) {
-                        for (String artista : listArtistas) {
-                        %>
-                        <option value="<%= artista%>"><%= artista%></option>
-                        <%
-                        }
-                    }
-                %>
-            </select>
-            <br><br>
-            <button type="submit" name="accion" value="seguir">Seguir</button>
+            <button type="submit" name="accion" value="seguir" >Seguir Usuario</button>
         </form>
+            
     </body>
 </html>

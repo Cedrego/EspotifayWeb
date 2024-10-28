@@ -75,24 +75,40 @@ public class SvSeguir extends HttpServlet {
         // Obtener las listas desde tu controlador o servicio
         HttpSession session = request.getSession(false);
         String nickname = (String) session.getAttribute("NickSesion");
+        String tipoUsuario = request.getParameter("tipoUsuario");
+        
+        
         List<String> listaClientes = ctrl.obtenerNombresDeCliente();
         List<String> listaArtistas = ctrl.obtenerNombresDeArtista();
-        
-        for(String nick : ctrl.listaSeguidoresClienteSW(nickname)){
-            listaClientes.remove(nick);
+        response.setContentType("text/html");
+        PrintWriter out = response.getWriter();
+        if(tipoUsuario!=null){
+            if(tipoUsuario.equalsIgnoreCase("Artista")){
+                for(String art : ctrl.listaSeguidoresClienteSW(nickname)){
+                    if(listaArtistas.contains(art)){
+                        listaArtistas.remove(art);
+                    }
+                }
+                for(String artFiltrado : listaArtistas){
+                    out.write("<option value='" + artFiltrado + "'>" + artFiltrado + "</option>");
+                }
+            }
+
+            if(tipoUsuario.equalsIgnoreCase("Cliente")){
+                for(String cli : ctrl.listaSeguidoresClienteSW(nickname)){
+                    if(listaClientes.contains(cli)){
+                        listaClientes.remove(cli);
+                    }
+                }
+                listaClientes.remove(nickname);
+                for(String cliFiltrado : listaClientes){
+                    out.write("<option value='" + cliFiltrado + "'>" + cliFiltrado + "</option>");
+                }
+            }
         }
-        listaClientes.remove(nickname);
-        
-        for(String nick : ctrl.listaSeguidoresClienteSW(nickname)){
-            listaArtistas.remove(nick);
-        }
-        
-        // Configurar las listas como atributos en la solicitud
-        request.setAttribute("listClientes", listaClientes);
-        request.setAttribute("listArtistas", listaArtistas);
         
         // Redirigir a la JSP
-        request.getRequestDispatcher("JSP/Seguir.jsp").forward(request, response);
+        //request.getRequestDispatcher("JSP/Seguir.jsp").forward(request, response);
     }
 
 
@@ -112,29 +128,19 @@ public class SvSeguir extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession(false);
         String nickname = (String) session.getAttribute("NickSesion");
-        String cliente = request.getParameter("cliente");
-        String artista = request.getParameter("artista");
-        String lista = request.getParameter("tipo");
-        List<String> listClientes = ctrl.obtenerNombresDeCliente(); // Asegúrate que esta línea funciona correctamente
-        List<String> listArtistas = ctrl.obtenerNombresDeArtista(); // Verifica también esta línea
+        String tipoUsuario = request.getParameter("tipoUsuario");
+        String usuario = request.getParameter("usuario");
         
-        System.out.println("=============================");
-        System.out.println("CUENTA: " + nickname);
-        System.out.println("CLIENTE: "+ cliente);
-        System.out.println("ARTISTA: "+ artista);
-        System.out.println("TIPO SEGUIR: "+ lista);
-        
-        if(cliente == null && artista == null){
-            System.out.println("NO SELECCIONO USUARIO");
-        }else{
-            if (lista != null) {
-                ctrl.seguirPerfil(nickname, "Artista", artista);
-            } else {
-                ctrl.seguirPerfil(nickname, "Cliente", cliente);
-            }
+        System.out.println("Estoy en el servlet");
+        if (tipoUsuario.equalsIgnoreCase("Artista")) {
+            System.out.println("Entro en seguir artista");
+            ctrl.seguirPerfil(nickname, "Artista", usuario);
+        } else {
+            System.out.println("Entro en seguir cliente");
+            ctrl.seguirPerfil(nickname, "Cliente", usuario);
         }
-        doGet(request, response);
-        response.sendRedirect("JSP/Seguir.jsp");
+        
+        request.getRequestDispatcher("JSP/Seguir.jsp").forward(request, response);
     }
 
     /**
