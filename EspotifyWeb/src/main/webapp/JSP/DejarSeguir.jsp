@@ -4,39 +4,58 @@
 <!DOCTYPE html>
 
 <html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Espotify</title>
-        <script>
-            function redirectToCliente() {
-                // Redirigir a la página JSP/Cliente
-                window.location.href = 'JSP/Cliente.jsp';
-            }
-        </script>
-    </head>
-    <body onload="updateUsers()"> <!-- Ejecutar updateUsers al cargar la página -->
-        <h1>Dejar de Seguir usuario</h1>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Espotify</title>
+    <script>
+        function redirectToCliente() {
+            window.location.href = '${pageContext.request.contextPath}/JSP/Cliente.jsp';
+        }
 
-        <form id="seguimientoForm" action="${pageContext.request.contextPath}/SvDejarSeguir" method="POST">
-            <button type="button" onclick="redirectToCliente()">Volver</button>
-            <br>
+        function actualizarLista() {
+            const clienteeleccionado = document.getElementById("cliente");
             
-            <label id="label1" for="perfil">Selecciona un perfil:</label>
-            <select id="perfil" name="perfil"> <!-- Cambié name="comboCliente" a name="cliente" -->
-                <!-- Insertar los clientes dinámicamente desde el servidor -->
-                <%
-                    List<String> listClientes = (List<String>) request.getAttribute("listClientes");
-                    if (listClientes != null && !listClientes.isEmpty()) {
-                        for (String cliente : listClientes) {
-                        %>
-                        <option value="<%= cliente%>"><%= cliente%></option>
-                        <%
-                        }
+            clienteeleccionado.innerHTML = "";
+
+            const xhr = new XMLHttpRequest();
+            const contextPath = "${pageContext.request.contextPath}";
+            xhr.open('GET', contextPath + '/SvDejarSeguir?_=' + new Date().getTime(), true);
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    if (xhr.responseText.trim() !== "") {
+                        clienteeleccionado.innerHTML = xhr.responseText;
+                    } else {
+                        clienteeleccionado.innerHTML = '<option value="">No se encontraron resultados</option>';
                     }
-                %>
-            </select>
-            <br><br>
-            <button type="submit" name="accion" value="seguir">Dejar de seguir</button>
-        </form>
-    </body>
+                } else {
+                    clienteeleccionado.innerHTML = '<option value="">Error al cargar los datos</option>';
+                }
+            };
+            xhr.onerror = function () {
+                clienteeleccionado.innerHTML = '<option value="">Error de red</option>';
+            };
+
+            xhr.send();
+        }
+
+        window.onload = actualizarLista;
+    </script>
+</head>
+<body onload="actualizarLista()">
+    <h1>Dejar de Seguir usuario</h1>
+
+    <form id="seguimientoForm" action="${pageContext.request.contextPath}/SvDejarSeguir" method="POST">
+        <button type="button" onclick="redirectToCliente()">Volver</button>
+        <br>
+        <p><button type="button" onclick="actualizarLista()">Recargar seguidos</button></p>
+        
+        <label for="cliente">Perfiles que sigues:</label>
+        <select id="cliente" name="cliente"required>
+            <option value="">Cargando cliente...</option>
+        </select>
+        <br><br>
+
+        <button type="submit" name="accion" value="dejarSeguir">Dejar de seguir</button>
+    </form>
+</body>
 </html>
