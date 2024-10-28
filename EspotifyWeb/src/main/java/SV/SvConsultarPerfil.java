@@ -4,10 +4,13 @@
  */
 package SV;
 
+import Capa_Presentacion.DataArtistaAlt;
+import Capa_Presentacion.DataClienteAlt;
 import Logica.Factory;
 import Logica.ICtrl;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -36,22 +39,6 @@ public class SvConsultarPerfil extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet SvConsultarPerfil</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet SvConsultarPerfil at " + request.getContextPath() + "</h1>");
-            out.println("<label>");
-            out.println("label");
-            out.println("</label>");
-            out.println("</body>");
-            out.println("</html>");
-        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -66,14 +53,28 @@ public class SvConsultarPerfil extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        /*HttpSession misesion = request.getSession();
-        List<String>sesion = ctrl.ContraXCliente(NOE,Contra);
-        misesion.setAttribute("NickSesion",sesion.getFirst());*/
-//        String nick = ctrl.
-//        nickname, correo electrónico, nombre, apellido, fecha de nacimiento;
-        
-        processRequest(request, response);
+        String nU = (String) request.getAttribute("NickSesion");
+
+        if (ctrl.obtenerNombresDeCliente().contains(nU)) { // Es Cliente
+            DataClienteAlt cliente = ctrl.getDataClienteAlt(nU);
+            request.setAttribute("usuario", cliente);
+            request.setAttribute("tipo", "cliente");
+        } else if (ctrl.obtenerNombresDeArtista().contains(nU)) { // Es Artista
+            DataArtistaAlt artista = ctrl.getDataArtistaAlt(nU);
+            request.setAttribute("usuario", artista);
+            request.setAttribute("tipo", "artista");
+        } else { // Es Invitado
+            List<DataArtistaAlt> dataArtistas = new ArrayList();
+            for (String nA : ctrl.obtenerNombresDeArtista()) {
+                dataArtistas.add(ctrl.getDataArtistaAlt(nA));
+            }
+            request.setAttribute("dataArtistas", dataArtistas);
+            request.setAttribute("DataClientes", ctrl.getDataClienteMin());
+        }
+
+        request.getRequestDispatcher("ConsultaPerfil.jsp").forward(request, response);
     }
+
 
     /**
      * Handles the HTTP <code>POST</code> method.

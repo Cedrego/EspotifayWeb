@@ -4,8 +4,10 @@
  */
 package SV;
 
+import Capa_Presentacion.DataSuscripcion;
 import Logica.Factory;
 import Logica.ICtrl;
+import Logica.Suscripcion;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
@@ -18,7 +20,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.servlet.http.Part;
 
 /**
  *
@@ -84,6 +85,11 @@ public class SvCrearLista extends HttpServlet {
         String NombreLista = request.getParameter("NomLista");
         HttpSession misesion = request.getSession(false); // No crear una nueva si no existe
         String nickSesion = (String) misesion.getAttribute("NickSesion");
+        if(!NombreLista.isEmpty()){
+            String error = "ERROR: Escriba un nombre para la lista";
+           misesion.setAttribute("error", error);
+           request.getRequestDispatcher("JSP/CrearLista.jsp").forward(request, response); // Redirige al JSP
+        }
         /* Obtengo el archivo de imagen
         Part filePart = request.getPart("imagen"); // Obtengo la parte del archivo
         InputStream inputStream = null;
@@ -97,27 +103,25 @@ public class SvCrearLista extends HttpServlet {
            misesion.setAttribute("error", error);
            request.getRequestDispatcher("JSP/CrearLista.jsp").forward(request, response); // Redirige al JSP
         }
-        
-        /*
-        El caso de uso comienza cuando el Cliente quiere crear una nueva lista de
-        reproducción particular, para lo cual indica el nombre de la lista y una
-        imagen (opcional). Si los datos son correctos, el sistema crea la lista de tipo
-        privada para el cliente, con fecha actual del sistema en fecha de creación.
-        Para crear listas de reproducción el cliente debe tener una suscripción
-        vigente.
-        */
-        /*if(!ctrl.ObtenerSubsCliente(nickSesion).equal("Vigente"){
+        boolean Exist =false;
+        for(DataSuscripcion sus: ctrl.ObtenerSubscClietne(nickSesion)){
+            if(sus.getEstado().toString().equals("Vigente")){
+                Exist=true;
+            }
+        }
+        if(Exist== false){
             String error = "ERROR: Suscripcion no vigente";
            misesion.setAttribute("error", error);
            request.getRequestDispatcher("JSP/CrearLista.jsp").forward(request, response); // Redirige al JSP
-        }
-        // Obtener solo la fecha actual sin la hora
-        LocalDate fechaActual = LocalDate.now();
-        // Formatear la fecha como String (ejemplo: "dd-MM-yyyy")
-        DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        String fechaFormateada = fechaActual.format(formato);
-        ctrl.CreateLista(NombreLista, "Particular", nickSesion,fechaFormateada);
-        */
+        }else{
+            // Obtener solo la fecha actual sin la hora
+            LocalDate fechaActual = LocalDate.now();
+            // Formatear la fecha como String (ejemplo: "dd-MM-yyyy")
+            DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+            String fechaFormateada = fechaActual.format(formato);
+            ctrl.CreateLista(NombreLista, "Particular", nickSesion,fechaFormateada);
+            request.getRequestDispatcher("JSP/Cliente.jsp").forward(request, response); // Redirige al JSP
+            }
     }
 
     /**

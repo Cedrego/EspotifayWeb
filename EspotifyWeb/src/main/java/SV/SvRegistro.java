@@ -20,11 +20,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+
 /**
  *
  * @author camin
  */
-@WebServlet(name = "SvRegistro", urlPatterns = {"/SvRegistro"})
+//@WebServlet(name = "SvRegistro", urlPatterns = {"/SvRegistro"})
+@WebServlet("/SvRegistro")
 public class SvRegistro extends HttpServlet {
     Factory fabric = Factory.getInstance();
     ICtrl ctrl = fabric.getICtrl();

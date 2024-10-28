@@ -3,7 +3,7 @@
     Created on : 22 oct. 2024, 8:53:45 p. m.
     Author     : User
 --%>
-
+<%@ page import="javax.servlet.http.HttpSession" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>

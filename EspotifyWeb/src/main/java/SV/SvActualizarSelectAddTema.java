@@ -14,6 +14,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -61,37 +62,25 @@ public class SvActualizarSelectAddTema extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-       String tipoSeleccion = request.getParameter("tipoSeleccion");
-        List<String> opciones = null;
-
-        if ("album".equals(tipoSeleccion)) {
-            opciones = ctrl.obtenerNombresDeAlbumes(); // Método para obtener álbumes
-        } else if ("listasPorDefecto".equals(tipoSeleccion)) {
-            opciones = ctrl.obtenerNombresListasPDTODO(); // Método para obtener listas por defecto
-        } else if ("listasPublicas".equals(tipoSeleccion)) {
-            opciones = ctrl.obtenerNombresDeCliente(); // Método para obtener listas públicas
-        }
-        // Crear respuesta JSON manualmente
-        StringBuilder jsonBuilder = new StringBuilder();
-        jsonBuilder.append("[");
-        
-        if (opciones != null && !opciones.isEmpty()) {
-            for (int i = 0; i < opciones.size(); i++) {
-                jsonBuilder.append("\"").append(opciones.get(i)).append("\"");
-                if (i < opciones.size() - 1) {
-                    jsonBuilder.append(","); // Agregar coma entre elementos
-                }
-            }
-        }
-        
-        jsonBuilder.append("]");
-
-        // Enviar la respuesta
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
+        String tipoSeleccion = request.getParameter("tipoDelObjeto");
+        System.out.println("Tipo de objeto recibido2: " + tipoSeleccion);
         PrintWriter out = response.getWriter();
-        out.print(jsonBuilder.toString()); // Enviar la cadena JSON
-        out.flush();    
+        
+        if ("Album".equals(tipoSeleccion)) {
+            for (String album : ctrl.obtenerNombresDeAlbumes()) {
+                out.write("<option value='" + album + "'>" + album + "</option>");
+                System.out.println("Album "+album);
+            }    
+        } else if ("ListaPorDef".equals(tipoSeleccion)) {
+            for(String pd : ctrl.obtenerNombresListasPDTODO()){
+                out.write("<option value='" + pd + "'>" + pd + "</option>");
+            }
+        } else if ("ListaPart".equals(tipoSeleccion)) {
+                for(String p :  ctrl.obtenerNombresDeCliente()){
+                    out.write("<option value='" + p + "'>" + p + "</option>");
+                }
+        }
+        out.flush(); // Asegúrate de que los datos se envíen
     }
 
     /**

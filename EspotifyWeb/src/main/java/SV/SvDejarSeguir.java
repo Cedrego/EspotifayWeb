@@ -37,16 +37,16 @@ public class SvDejarSeguir extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        HttpSession session = request.getSession(false);
-        String nickname = (String) session.getAttribute("NickSesion");
-        
-        List<String> listClientes = ctrl.listaSeguidoresClienteSW(nickname);
-
-        request.setAttribute("listClientes", listClientes);
-
-        // Redirigir a la JSP
-        request.getRequestDispatcher("JSP/DejarSeguir.jsp").forward(request, response);
+//        response.setContentType("text/html;charset=UTF-8");
+//        HttpSession session = request.getSession(false);
+//        String nickname = (String) session.getAttribute("NickSesion");
+//        
+//        List<String> listClientes = ctrl.listaSeguidoresClienteSW(nickname);
+//
+//        request.setAttribute("listClientes", listClientes);
+//
+//        // Redirigir a la JSP
+//        request.getRequestDispatcher("JSP/DejarSeguir.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -61,7 +61,7 @@ public class SvDejarSeguir extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        /*
+        
         processRequest(request, response);
         response.setContentType("text/html;charset=UTF-8");
         HttpSession session = request.getSession(false);
@@ -71,9 +71,9 @@ public class SvDejarSeguir extends HttpServlet {
 
         request.setAttribute("listClientes", listClientes);
 
-        // Redirigir a la JSP
+        //Redirigir a la JSP
         request.getRequestDispatcher("JSP/DejarSeguir.jsp").forward(request, response);
-        */
+        
     }
 
     /**
