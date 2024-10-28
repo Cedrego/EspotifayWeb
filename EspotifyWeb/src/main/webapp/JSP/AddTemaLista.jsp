@@ -34,7 +34,7 @@
             // Realiza una solicitud AJAX al servlet para obtener lo pedido
             const xhr = new XMLHttpRequest();
             const contextPath = "${pageContext.request.contextPath}";
-            xhr.open('GET', contextPath + '/SvActualizarSelectAddTema?tipoDelObjeto=' + tipoSeleccionado);
+            xhr.open('GET', contextPath + '/SvActualizarSelectAddTema?tipoDelObjeto=' + tipoSeleccionado  + '&_=' + new Date().getTime(), true);
 
             xhr.onload = function() {
                 if (xhr.status === 200) {
@@ -72,7 +72,7 @@
                     }
                 %></select>
       <label for="tipoSeleccion">Filtro:</label>
-        <select id="tipoDelObjeto" name="tipoDelObjeto" onchange="actualizarFiltrosSecundarios();">
+        <select id="tipoDelObjeto" name="tipoDelObjeto" onclick="actualizarFiltrosSecundarios();">
             <option value="">Seleccione un filtro</option>
             <option value="Album">Album</option>
             <option value="ListaPorDef">Lista Por Defecto</option>
