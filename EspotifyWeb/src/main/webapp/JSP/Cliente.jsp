@@ -5,7 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@ page import="jakarta.servlet.http.HttpSession" %>
+<%@ page import="javax.servlet.http.HttpSession" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -71,7 +71,8 @@
             <button onclick="window.location.href = '<%= request.getContextPath() %>/SvSeguir'">Seguir Usuario (Cliente/Artista)</button>
             <button onclick="window.location.href = '<%= request.getContextPath() %>/SvDejarSeguir'">Dejar de Seguir a Usuario (Cliente/Artista)</button>
             <button onclick="window.location.href = '<%= request.getContextPath() %>/JSP/ConsultarAlbum.jsp'">Consulta de Álbum</button>
-            <button onclick="window.location.href = '<%= request.getContextPath() %>/JSP/Registro.jsp'">Consulta de Lista de Reproducción</button>
+            <button onclick="window.location.href = '<%= request.getContextPath() %>/JSP/ConsultarLista.jsp'">Consulta de Lista de Reproducción</button>
+            
             <button onclick="window.location.href='<%= request.getContextPath() %>/SvCerrarSesion'">Cerrar Sesión</button>
         </div>
     </body>

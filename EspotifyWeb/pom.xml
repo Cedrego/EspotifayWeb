@@ -16,8 +16,8 @@
     <dependencies>
          <!-- Dependencia para Servlets -->
     <dependency>
-        <groupId>jakarta.servlet</groupId>
-        <artifactId>jakarta.servlet-api</artifactId>
+        <groupId>javax.servlet</groupId>
+        <artifactId>javax.servlet-api</artifactId>
         <version>6.1.0</version> <!-- O la versión que estés utilizando -->
       <type>jar</type>
     </dependency>
@@ -72,6 +72,12 @@
             <groupId>pantalla-lib</groupId>
             <artifactId>pantalla-lib</artifactId>
             <version>1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.11.0</version>
+            <type>jar</type>
         </dependency>
         <dependency>
             <groupId>javax</groupId>

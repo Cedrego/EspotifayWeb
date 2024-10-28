@@ -6,7 +6,7 @@
 
 <%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@ page import="jakarta.servlet.http.HttpSession" %>
+<%@ page import="javax.servlet.http.HttpSession" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -112,7 +112,7 @@
         }
         
         function redirigirACliente() {
-            window.location.href = 'JSP/Cliente.jsp';
+            window.location.href = "${pageContext.request.contextPath}/Cliente.jsp";
         }
         
         function alertaExito() {
