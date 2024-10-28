@@ -13,61 +13,88 @@
         
         <script>
             function cargarArtGen() {
-            const filtroSeleccionado = document.getElementById("filtroBusqueda").value;
-            const artGen = document.getElementById("ArtGen");
-            
-            // Limpiar la tercera ComboBox
-            artGen.innerHTML = "";
-            // Realiza una solicitud AJAX al servlet para obtener lo pedido
-            const xhr = new XMLHttpRequest();
-            const contextPath = "${pageContext.request.contextPath}";
-            xhr.open('GET', contextPath + '/SvConsultarAlbum?filtroBusqueda=' + filtroSeleccionado + '&_=' + new Date().getTime(), true);
+                const filtroSeleccionado = document.getElementById("filtroBusqueda").value;
+                const artGen = document.getElementById("ArtGen");
+
+                // Limpiar la tercera ComboBox
+                artGen.innerHTML = "";
+                // Realiza una solicitud AJAX al servlet para obtener lo pedido
+                const xhr = new XMLHttpRequest();
+                const contextPath = "${pageContext.request.contextPath}";
+                xhr.open('GET', contextPath + '/SvConsultarAlbum?filtroBusqueda=' + filtroSeleccionado + '&_=' + new Date().getTime(), true);
 
 
 
-            xhr.onload = function() {
-                if (xhr.status === 200) {
-                    // Verifica si la respuesta tiene opciones válidas
-                    if (xhr.responseText.trim() !== "") {
-                        artGen.innerHTML = xhr.responseText;
+                xhr.onload = function() {
+                    if (xhr.status === 200) {
+                        // Verifica si la respuesta tiene opciones válidas
+                        if (xhr.responseText.trim() !== "") {
+                            artGen.innerHTML = xhr.responseText;
+                        } else {
+                            artGen.innerHTML = '<option value="">No se encontraron resultados</option>';
+                        }
                     } else {
-                        artGen.innerHTML = '<option value="">No se encontraron resultados</option>';
+                        artGen.innerHTML = '<option value="">Error al cargar los datos</option>';
                     }
-                } else {
-                    artGen.innerHTML = '<option value="">Error al cargar los datos</option>';
-                }
-            };
-            xhr.send();        
-        }
+                };
+                xhr.send();        
+            }
         
-        function cargarAlbum() {
-            const filtroSeleccionado = document.getElementById("filtroBusqueda").value;
-            const artGen = document.getElementById("ArtGen").value;
-            const nomAlbum = document.getElementById("NombreAlbum");
-            
-            // Limpiar la tercera ComboBox
-            nomAlbum.innerHTML = "";
-            // Realiza una solicitud AJAX al servlet para obtener lo pedido
-            const xhr = new XMLHttpRequest();
-            const contextPath = "${pageContext.request.contextPath}";
-            xhr.open('GET', contextPath + '/SvConsultarAlbum?filtroBusqueda=' + filtroSeleccionado + '&ArtGen=' + artGen + '&_=' + new Date().getTime(), true);
+            function cargarAlbum() {
+                const filtroSeleccionado = document.getElementById("filtroBusqueda").value;
+                const artGen = document.getElementById("ArtGen").value;
+                const nomAlbum = document.getElementById("NombreAlbum");
+
+                // Limpiar la tercera ComboBox
+                nomAlbum.innerHTML = "";
+                // Realiza una solicitud AJAX al servlet para obtener lo pedido
+                const xhr = new XMLHttpRequest();
+                const contextPath = "${pageContext.request.contextPath}";
+                xhr.open('GET', contextPath + '/SvConsultarAlbum?filtroBusqueda=' + filtroSeleccionado + '&ArtGen=' + artGen + '&_=' + new Date().getTime(), true);
 
 
 
-            xhr.onload = function() {
-                if (xhr.status === 200) {
-                    // Verifica si la respuesta tiene opciones válidas
-                    if (xhr.responseText.trim() !== "") {
-                        nomAlbum.innerHTML = xhr.responseText;
+                xhr.onload = function() {
+                    if (xhr.status === 200) {
+                        // Verifica si la respuesta tiene opciones válidas
+                        if (xhr.responseText.trim() !== "") {
+                            nomAlbum.innerHTML = xhr.responseText;
+                        } else {
+                            nomAlbum.innerHTML = '<option value="">No se encontraron resultados</option>';
+                        }
                     } else {
-                        nomAlbum.innerHTML = '<option value="">No se encontraron resultados</option>';
+                        nomAlbum.innerHTML = '<option value="">Error al cargar los datos</option>';
                     }
-                } else {
-                    nomAlbum.innerHTML = '<option value="">Error al cargar los datos</option>';
-                }
-            };
-            xhr.send();        
-        }
+                };
+                xhr.send();        
+            }
+
+            function consultarAlbum() {
+                const nomAlbum = document.getElementById("NombreAlbum").value;
+                const albumInfo = document.getElementById("albumInfo");
+
+                albumInfo.innerHTML = "";
+
+                const xhr = new XMLHttpRequest();
+                const contextPath = "${pageContext.request.contextPath}";
+                xhr.open('GET', contextPath + '/SvConsultarAlbum?NombreAlbum=' + nomAlbum + '&_=' + new Date().getTime(), true);
+
+
+
+                xhr.onload = function() {
+                    if (xhr.status === 200) {
+
+                        if (xhr.responseText.trim() !== "") {
+                            albumInfo.innerHTML = xhr.responseText;
+                        } else {
+                            albumInfo.innerHTML = '<option value="">No se encontraron resultados</option>';
+                        }
+                    } else {
+                        albumInfo.innerHTML = '<option value="">Error al cargar los datos</option>';
+                    }
+                };
+                xhr.send();        
+            }
         </script>
     </head>
     <body>
@@ -90,7 +117,8 @@
                 <option value="">Seleccione un objeto</option>
             </select><br>
             
-            <button type="submit">Consultar Datos</button>
+            <button type="button" onclick="consultarAlbum()">Consultar Datos</button>
         </form>
+            <div id="albumInfo"></div><!-- contenedor para los datos del album -->
     </body>
 </html>

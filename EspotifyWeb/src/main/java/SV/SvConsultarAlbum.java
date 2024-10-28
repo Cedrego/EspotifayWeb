@@ -5,6 +5,7 @@
 package SV;
 
 import Capa_Presentacion.DataAlbum;
+import Capa_Presentacion.DataTema;
 import Logica.Factory;
 import Logica.ICtrl;
 import java.io.IOException;
@@ -87,10 +88,29 @@ public class SvConsultarAlbum extends HttpServlet {
                 }
             }
         }
-        
-        if(nombreAlbum!=null){
+        System.out.println("Nombre del album:"+nombreAlbum);
+        if (nombreAlbum != null) {
+            System.out.println("Nombre del album:"+nombreAlbum);
             DataAlbum da = ctrl.obtenerDataAlbum(nombreAlbum);
-            request.setAttribute("datosAlbum", da);
+
+            // crear una respuesta HTML
+            StringBuilder albumData = new StringBuilder();
+            albumData.append("<h3>Información del Álbum</h3>")
+                     .append("<p>Nombre: ").append(da.getNombre()).append("</p>")
+                     .append("<p>Año de creación: ").append(da.getCreacion()).append("</p>")
+                     .append("<p>Géneros: ").append(String.join(" || ", da.getGeneros())).append("</p>")
+                     .append("<h4>Temas:</h4>");
+
+            for (DataTema tema : da.getDataTemas()) {
+                albumData.append("<p>")
+                         .append("Posición: ").append(tema.getOrdenAlbum()).append(" - ")
+                         .append("Nombre: ").append(tema.getNombre()).append(" - ")
+                         .append("Duración: ").append(tema.getDuracion()).append(" mins")
+                         .append("</p>");
+            }
+
+            response.setContentType("text/html;charset=UTF-8");
+            out.write(albumData.toString());
         }
     }
 

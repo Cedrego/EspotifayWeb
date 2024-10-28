@@ -111,7 +111,7 @@
         }
         
         function redirigirACliente() {
-            window.location.href = 'JSP/Cliente.jsp';
+            window.location.href = "${pageContext.request.contextPath}/Cliente.jsp";
         }
         
         function alertaExito() {
