@@ -7,12 +7,12 @@ package SV;
 import Logica.Factory;
 import Logica.ICtrl;
 import Capa_Presentacion.DataTema;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -67,13 +67,10 @@ public class SvAltaAlbum extends HttpServlet {
 
         // Crear lista de temas
         List<DataTema> temas = new ArrayList<>();
-        for (int i = -1; i < nombresTemas.length; i++) {
-            if(i==-1){
-                
-            }else{
+        for (int i = 0; i < nombresTemas.length; i++) {
                 DataTema tema = new DataTema(nombresTemas[i], nombreAlbum, duraciones[i], Integer.parseInt(posiciones[i]), direcciones[i], List.of(generosArray));
                 temas.add(tema);
-            }
+            
         }
 
         // Crear el álbum

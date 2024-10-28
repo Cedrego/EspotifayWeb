@@ -5,7 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@ page import="javax.servlet.http.HttpSession" %>
+<%@ page import="jakarta.servlet.http.HttpSession" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -62,7 +62,8 @@
         <h1>Bienvenido <%= nick %></h1> <!-- Muestra el nick de la sesión -->
         <div class="button-container">
             <button onclick="window.location.href = '<%= request.getContextPath() %>/SvAltaAlbum'"> Alta de Album</button>
-            
+            <button onclick="window.location.href = '<%= request.getContextPath() %>/SvConsultarPerfil'"> Consulta de Perfil de Usuario</button>
+
             
             <button onclick="window.location.href='<%= request.getContextPath() %>/SvCerrarSesion'">Cerrar Sesión</button>
         </div>

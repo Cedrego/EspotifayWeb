@@ -13,13 +13,13 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.MultipartConfig;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 /**
  *
@@ -85,7 +85,7 @@ public class SvCrearLista extends HttpServlet {
         String NombreLista = request.getParameter("NomLista");
         HttpSession misesion = request.getSession(false); // No crear una nueva si no existe
         String nickSesion = (String) misesion.getAttribute("NickSesion");
-        if(!NombreLista.isEmpty()){
+        if(NombreLista.isEmpty()){
             String error = "ERROR: Escriba un nombre para la lista";
            misesion.setAttribute("error", error);
            request.getRequestDispatcher("JSP/CrearLista.jsp").forward(request, response); // Redirige al JSP
@@ -94,7 +94,7 @@ public class SvCrearLista extends HttpServlet {
         Part filePart = request.getPart("imagen"); // Obtengo la parte del archivo
         InputStream inputStream = null;
         if (filePart != null) {
-            // Obtengo el InputStream de la imagen subida
+             Obtengo el InputStream de la imagen subida
             inputStream = filePart.getInputStream();
         }
         */

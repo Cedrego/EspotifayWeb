@@ -9,12 +9,12 @@ import Logica.ICtrl;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 /**
  *
@@ -63,22 +63,46 @@ public class SvActualizarSelectAddTema extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String tipoSeleccion = request.getParameter("tipoDelObjeto");
-        System.out.println("Tipo de objeto recibido2: " + tipoSeleccion);
+        System.out.println("Tipo de objeto recibido1: " + tipoSeleccion);
         PrintWriter out = response.getWriter();
-        
+        String filtroSecundarioSeleccionado = request.getParameter("filtroPrincipal");
+        System.out.println("Tipo de objeto recibido2: " + filtroSecundarioSeleccionado);
         if ("Album".equals(tipoSeleccion)) {
-            for (String album : ctrl.obtenerNombresDeAlbumes()) {
-                out.write("<option value='" + album + "'>" + album + "</option>");
-                System.out.println("Album "+album);
-            }    
+            if(filtroSecundarioSeleccionado == null){
+                for (String album : ctrl.obtenerNombresDeAlbumes()) {
+                    out.write("<option value='" + album + "'>" + album + "</option>");
+                    System.out.println("Album "+album);
+                }  
+            } else{
+                for (String Tema : ctrl.obtenerTemasDeAlbum(filtroSecundarioSeleccionado)) {
+                    out.write("<option value='" + Tema + "'>" + Tema + "</option>");
+                    System.out.println("Temas "+Tema);
+                } 
+            } 
+            
+            
         } else if ("ListaPorDef".equals(tipoSeleccion)) {
-            for(String pd : ctrl.obtenerNombresListasPDTODO()){
-                out.write("<option value='" + pd + "'>" + pd + "</option>");
+            if(filtroSecundarioSeleccionado == null){
+                for(String pd : ctrl.obtenerNombresListasPDTODO()){
+                    out.write("<option value='" + pd + "'>" + pd + "</option>");
+                }
+            }else{
+                 for (String Tema : ctrl.obtenerTemasDePD(filtroSecundarioSeleccionado)) {
+                    out.write("<option value='" + Tema + "'>" + Tema + "</option>");
+                    System.out.println("Temas "+Tema);
+                }                 
             }
         } else if ("ListaPart".equals(tipoSeleccion)) {
-                for(String p :  ctrl.obtenerNombresDeCliente()){
+            if(filtroSecundarioSeleccionado == null){
+                for(String p :  ctrl.obtenerNombresDeCliente()){//Cambiar a funcion que te de clientes con playlist part publicas
                     out.write("<option value='" + p + "'>" + p + "</option>");
                 }
+            }else{
+                 for (String Tema : ctrl.obtenerTemasDeParticular(filtroSecundarioSeleccionado)) {
+                    out.write("<option value='" + Tema + "'>" + Tema + "</option>");
+                    System.out.println("Temas "+Tema);
+                }  
+            }
         }
         out.flush(); // Asegúrate de que los datos se envíen
     }

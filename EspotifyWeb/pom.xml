@@ -15,18 +15,12 @@
     
     <dependencies>
          <!-- Dependencia para Servlets -->
-    <dependency>
-        <groupId>javax.servlet</groupId>
-        <artifactId>javax.servlet-api</artifactId>
-        <version>6.1.0</version> <!-- O la versión que estés utilizando -->
-      <type>jar</type>
-    </dependency>
 
     <dependency>
-        <groupId>javax.servlet</groupId>
-        <artifactId>javax.servlet-api</artifactId>
-        <version>4.0.1</version> <!-- Cambia a la versión que necesites -->
-        <scope>provided</scope>
+        <groupId>jakarta.servlet</groupId>
+        <artifactId>jakarta.servlet-api</artifactId>
+        <version>6.1.0</version> <!-- Cambia a la versión que necesites -->
+      <type>jar</type>
     </dependency>
     <!-- Dependencia para JSP -->
     <dependency>
@@ -39,13 +33,6 @@
         <groupId>mysql</groupId>
         <artifactId>mysql-connector-java</artifactId>
         <version>8.0.30</version> <!-- Cambia la versión según sea necesario -->
-    </dependency>
-
-    <dependency>
-        <groupId>javax.servlet.jsp</groupId>
-        <artifactId>javax.servlet.jsp-api</artifactId>
-        <version>2.3.3</version> <!-- Cambia a la versión que necesites -->
-        <scope>provided</scope>
     </dependency>
     <dependency>
         <groupId>org.eclipse.persistence</groupId>
@@ -81,15 +68,13 @@
         </dependency>
         <dependency>
             <groupId>javax</groupId>
-            <artifactId>javaee-web-api</artifactId>
+            <artifactId>javaee-endorsed-api</artifactId>
             <version>7.0</version>
-            <scope>provided</scope>
         </dependency>
-        
         <dependency>
-            <groupId>javax.persistence</groupId>
-            <artifactId>javax.persistence-api</artifactId>
-            <version>2.2</version>
+            <groupId>org.eclipse.persistence</groupId>
+            <artifactId>jakarta.persistence</artifactId>
+            <version>2.2.3</version>
         </dependency>
     </dependencies>
     
@@ -131,7 +116,7 @@
                             <silent>true</silent>
                             <artifactItems>
                                 <artifactItem>
-                                    <groupId>javax</groupId>
+                                    <groupId>jakarta</groupId>
                                     <artifactId>javaee-endorsed-api</artifactId>
                                     <version>7.0</version>
                                     <type>jar</type>
