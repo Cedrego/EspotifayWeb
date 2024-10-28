@@ -5,18 +5,19 @@
 package SV;
 
 import Capa_Presentacion.DataArtistaAlt;
+import Capa_Presentacion.DataClienteAlt;
 import Logica.Factory;
 import Logica.ICtrl;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -52,33 +53,27 @@ public class SvConsultarPerfil extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        @WebServlet("/SvConsultarPerfil")
-        public class SvConsultarPerfil extends HttpServlet {
+        String nU = (String) request.getAttribute("NickSesion");
+           if (ctrl.obtenerNombresDeCliente().contains(nU)) { // Es Cliente
+               DataClienteAlt cliente = ctrl.getDataClienteAlt(nU);
+               request.setAttribute("usuario", cliente);
+               request.setAttribute("tipo", "cliente");
+           } else if (ctrl.obtenerNombresDeArtista().contains(nU)) { // Es Artista
+               DataArtistaAlt artista = ctrl.getDataArtistaAlt(nU);
+               request.setAttribute("usuario", artista);
+               request.setAttribute("tipo", "artista");
+           } else { // Es Invitado
+               List<DataArtistaAlt> dataArtistas = new ArrayList<>();
+               for (String nA : ctrl.obtenerNombresDeArtista()) {
+                   dataArtistas.add(ctrl.getDataArtistaAlt(nA));
+               }
+               request.setAttribute("dataArtistas", dataArtistas);
+               request.setAttribute("DataClientes", ctrl.getDataClienteMin());
+           }
 
-            protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-                String nU = (String) request.getAttribute("NickSesion");
-
-                if (ctrl.obtenerNombresDeCliente().contains(nU)) { // Es Cliente
-                    DataClienteAlt cliente = ctrl.getDataClienteAlt(nU);
-                    request.setAttribute("usuario", cliente);
-                    request.setAttribute("tipo", "cliente");
-                } else if (ctrl.obtenerNombresDeArtista().contains(nU)) { // Es Artista
-                    DataArtistaAlt artista = ctrl.getDataArtistaAlt(nU);
-                    request.setAttribute("usuario", artista);
-                    request.setAttribute("tipo", "artista");
-                } else { // Es Invitado
-                    List<DataArtistaAlt> dataArtistas = new ArrayList<>();
-                    for (String nA : ctrl.obtenerNombresDeArtista()) {
-                        dataArtistas.add(ctrl.getDataArtistaAlt(nA));
-                    }
-                    request.setAttribute("dataArtistas", dataArtistas);
-                    request.setAttribute("DataClientes", ctrl.getDataClienteMin());
-                }
-
-                request.getRequestDispatcher("ConsultaPerfil.jsp").forward(request, response);
-            }
-        }
-    }
+       request.getRequestDispatcher("ConsultaPerfil.jsp").forward(request, response);
+   }
+        
 
     /**
      * Handles the HTTP <code>POST</code> method.
