@@ -1,3 +1,4 @@
+<%@page import="java.util.ArrayList"%>
 <%@page import="Capa_Presentacion.DataTema"%>
 <%@page import="Capa_Presentacion.DataSuscripcion"%>
 <%@page import="Capa_Presentacion.DataAlbum"%>
@@ -168,20 +169,29 @@
             </div>
 
             <%
-            } else { // Es Invitado
-                List<DataArtistaAlt> dataArtistas = (List<DataArtistaAlt>) request.getAttribute("dataArtistas");
-                List<DataClienteAlt> dataClientes = (List<DataClienteAlt>) request.getAttribute("DataClientes");
+            } else { // Es Invitado  
             %>
             <h2>Artistas Disponibles</h2>
             <div class="container">
+                
                 <%
-                    for (DataArtistaAlt artista : dataArtistas) {
+                    List<DataArtistaAlt> dataArtistas = (List<DataArtistaAlt>) request.getAttribute("dataArtistas");
+                    if (dataArtistas != null && !dataArtistas.isEmpty()) {
+                        for (DataArtistaAlt artista : dataArtistas) {
                 %>
                 <div class="perfil">
                     <h3><%= artista.getNickname()%></h3>
                     <img src="<%= artista.getNickname()%>">
                     <p><strong>Biografía:</strong> <%= artista.getBiografia()%></p>
-
+                </div>
+                <%
+                    }
+                } else {
+                %>
+                <p>No hay artistas disponibles.</p>
+                <%
+                    }
+                %>
                     <h4>Álbumes</h4>
                     <ul>
                         <%
@@ -191,15 +201,14 @@
                         <% } %>
                     </ul>
                 </div>
-                <%
-                    }
-                %>
             </div>
 
             <h2>Clientes Disponibles</h2>
             <div class="container">
                 <%
-                    for (DataClienteAlt cliente : dataClientes) {
+                    List<DataClienteAlt> dataClientes = (List<DataClienteAlt>) request.getAttribute("DataClientes");
+                    if (dataClientes != null && !dataClientes.isEmpty()) {
+                        for (DataClienteAlt cliente : dataClientes) {
                 %>
                 <div class="perfil">
                     <h3><%= cliente.getNickname()%></h3>
@@ -219,6 +228,7 @@
             </div>
             <%
                 }
+}
             %>
         </div>
 
