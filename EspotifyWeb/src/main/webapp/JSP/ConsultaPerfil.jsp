@@ -59,6 +59,9 @@
         <div class="container">
             <%
                 String tipo = (String) request.getAttribute("tipo");
+            if (null == request.getAttribute("usuario")) { %>
+                            <h3>El Usuario No Cargó Correctamente</h3>
+            <%}
                 Object usuario = request.getAttribute("usuario");
 
                 if ("cliente".equals(tipo)) {
