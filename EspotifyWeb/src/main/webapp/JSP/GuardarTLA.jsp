@@ -143,6 +143,7 @@
         </div>
         
         <form action="${pageContext.request.contextPath}/SvGuardarTLA" method="POST">
+            <p><button type="button" onclick="redirigirACliente()">Volver a Pagina Principal</button></p>
             <p><label for="tipoDelObjeto">Que desea agregar a favoritos?:</label>
             <select id="tipoDelObjeto" name="tipoDelObjeto" onchange="actualizarFiltros(); actualizarFiltrosSecundarios()" required>
                 <option value="">Seleccione un filtro</option>
@@ -167,7 +168,7 @@
                 </select><br>
                 
             <p><button type="submit">Agregar objeto a Favoritos</button></p>
-            <p><button type="button" onclick="redirigirACliente()">Volver a Pagina Principal</button></p>
+            
         </form>
     </body>
 </html>

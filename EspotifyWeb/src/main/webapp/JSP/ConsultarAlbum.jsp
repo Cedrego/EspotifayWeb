@@ -71,6 +71,8 @@
             }
 
             function consultarAlbum() {
+                const filtroSeleccionado = document.getElementById("filtroBusqueda").value;
+                const artGen = document.getElementById("ArtGen").value;
                 const nomAlbum = document.getElementById("NombreAlbum").value;
                 const albumInfo = document.getElementById("albumInfo");
 
@@ -78,7 +80,7 @@
 
                 const xhr = new XMLHttpRequest();
                 const contextPath = "${pageContext.request.contextPath}";
-                xhr.open('GET', contextPath + '/SvConsultarAlbum?NombreAlbum=' + nomAlbum + '&_=' + new Date().getTime(), true);
+                xhr.open('GET', contextPath + '/SvConsultarAlbum?filtroBusqueda=' + filtroSeleccionado + '&ArtGen=' + artGen + '&NombreAlbum=' + nomAlbum + '&_=' + new Date().getTime(), true);
 
 
 
@@ -98,6 +100,22 @@
             }
         </script>
     </head>
+    <div>
+            <%-- mensaje de error --%>
+            <%
+            String error = (String) session.getAttribute("error");
+            if (error != null) {
+            %>
+                <div style="color: red;">
+                    <strong>Error:</strong> <%= error %>
+                </div>
+            <%
+                // limpio el mensaje de error después de mostrarlo
+                session.removeAttribute("error");
+            }
+            %>
+        </div>
+
     <body>
         <h1>Bienvendido a Consulta de Album!</h1>
         <form action="${pageContext.request.contextPath}/SvConsultarAlbum" method="GET">
@@ -119,7 +137,8 @@
             </select><br>
             
             <button type="button" onclick="consultarAlbum()">Consultar Datos</button>
-        </form>
             <div id="albumInfo"></div><!-- contenedor para los datos del album -->
+        </form>
+            
     </body>
 </html>
