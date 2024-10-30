@@ -92,7 +92,7 @@ public class SvAltaAlbum extends HttpServlet {
             }
         }
         // si pasa las validaciones anteriores, crea la lista de temas
-        List<DataTema> temas = new ArrayList<>();
+        List<DataTema> temas = new ArrayList();
         for (int i = 0; i < nombresTemas.length; i++) {
             DataTema tema =  new DataTema(nombresTemas[i], nombreAlbum, duraciones[i], Integer.parseInt(posiciones[i]), direcciones[i], List.of(generosArray));
             temas.add(tema);
