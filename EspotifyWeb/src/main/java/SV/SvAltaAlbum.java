@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -31,21 +32,30 @@ public class SvAltaAlbum extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        List<String> listaGeneros = new ArrayList<>();
-        System.out.println("Cargando generos");
-        
-        for(String gen : ctrl.obtenerNombresDeGeneros()){
-            listaGeneros.add(gen);
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet SvGuardarTLA</title>");
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet SvGuardarTLA at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
         }
-        
-        request.setAttribute("generos", listaGeneros);
-        request.getRequestDispatcher("/JSP/AltaAlbum.jsp").forward(request, response);
     }
     
     
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        processRequest(request, response);  
+        response.setContentType("text/html");
+        PrintWriter out = response.getWriter();
+        out.write("<option value=\"\">Seleccione un género</option>");
+        for(String nomGen : ctrl.obtenerNombresDeGeneros()){
+            out.write("<option value='" + nomGen + "'>" + nomGen + "</option>");
+        }  
     }
     
     @Override
@@ -68,17 +78,16 @@ public class SvAltaAlbum extends HttpServlet {
         
         // logica de validación de nombres de temas duplicados
         Set<String> nombresSet = new HashSet<>();
-        Boolean duplicado = false;
-        for (String nombre : nombresTemas) {
-            if (!nombresSet.add(nombre)) { // si no se puede añadir, es un duplicado
-                error = ("El tema '" + nombre + "' ya existe en el album.");
-                misesion.setAttribute("error", error);
-                duplicado=true;
-                break;
+        for (String nombreTema : nombresTemas) {
+            if (nombresSet.add(nombreTema)) {       
+                
+            } else {
+                // si no se puede añadir, es un duplicado
+                error = ("El tema '" + nombreTema + "' ya existe en el album.");
+                sesion.setAttribute("error", error);
+                request.getRequestDispatcher("JSP/AltaAlbum.jsp").forward(request, response); 
+                return;
             }
-        }
-        if(duplicado){
-            request.getRequestDispatcher("JSP/AltaAlbum.jsp").forward(request, response); 
         }
         //logica para ajustar las posiciones
         for (int i = 0; i < posiciones.length; i++) {

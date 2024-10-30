@@ -16,7 +16,33 @@
         <script>
             // array para almacenar los géneros seleccionados
             let generosSeleccionados = [];
+            
+            function cargarGeneros() {
+                const comboGeneros = document.getElementById("generos");
+                
 
+                // Limpiar la tercera ComboBox
+                comboGeneros.innerHTML = "";
+                // Realiza una solicitud AJAX al servlet para obtener lo pedido
+                const xhr = new XMLHttpRequest();
+                const contextPath = "${pageContext.request.contextPath}";
+                xhr.open('GET', contextPath + '/SvAltaAlbum?_=' + new Date().getTime(), true);
+
+                xhr.onload = function() {
+                    if (xhr.status === 200) {
+                        // Verifica si la respuesta tiene opciones válidas
+                        if (xhr.responseText.trim() !== "") {
+                            comboGeneros.innerHTML = xhr.responseText;
+                        } else {
+                            comboGeneros.innerHTML = '<option value="">No se encontraron resultados</option>';
+                        }
+                    } else {
+                        comboGeneros.innerHTML = '<option value="">Error al cargar los datos</option>';
+                    }
+                };
+                xhr.send();
+
+            }
             // función para agregar género seleccionado al array y mostrarlo
             function agregarGenero() {
                 const selectGeneros = document.getElementById("generos");
@@ -86,11 +112,31 @@
                     alert("Selección inválida. Elija 'URL' o 'Archivo'.");
                 }
             }
+            
+            window.onload = function() {
+                cargarGeneros();
+            };
         </script>
     </head>
         
     <body>
         <h1>Bienvenido a Alta de Album</h1>
+        <div>
+            <%-- mensaje de error --%>
+            <%
+            String error = (String) session.getAttribute("error");
+            if (error != null) {
+            %>
+                <div style="color: red;">
+                    <strong>Error:</strong> <%= error %>
+                </div>
+            <%
+                // limpio el mensaje de error después de mostrarlo
+                session.removeAttribute("error");
+            }
+            %>
+        </div>
+        
         <form action="${pageContext.request.contextPath}/SvAltaAlbum" method="POST">
             
             <p><label>Nombre del Album<br></lable><input type="text" name="nombreAlbum" required></p>
@@ -104,18 +150,10 @@
             
             
             <div class="input-container">
+                
                 <label for="generos">Géneros:</label>
                 <select id="generos" name="generos">
-                <option value="">Seleccione un género</option>
-                    <%List<String> generos = (List<String>) request.getAttribute("generos");%>
-                        <%if (generos != null && !generos.isEmpty()) {%>
-                            <%for (String genero : generos) {%>
-                    
-                                <option value="<%= genero %>"><%= genero %></option>
-                    <%}%>
-                        <%} else { %>
-                            <option value="">No hay géneros disponibles</option>
-                    <%}%>
+                    <option value="">Seleccione un género</option> 
                 </select>
 
                 <button type="button" onclick="agregarGenero()">Agregar Género</button>
