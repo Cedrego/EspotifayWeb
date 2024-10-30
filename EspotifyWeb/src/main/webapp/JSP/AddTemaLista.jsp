@@ -52,15 +52,16 @@
             
         }
         function actualizarListTemas() {
+            const listaAgregar = document.getElementById("listaAgregar").value;
             const tipoSeleccionado = document.getElementById("tipoDelObjeto").value;
             const filtroSecundarioSeleccionado = document.getElementById("opcionesSeleccion").value;
-            const TemasPos = document.getElementById("TemasPos")
+            const TemasPos = document.getElementById("TemasPos");
             // Limpiar la tercera ComboBox
             TemasPos.innerHTML = "";
             // Realiza una solicitud AJAX al servlet para obtener lo pedido
             const xhr = new XMLHttpRequest();
             const contextPath = "${pageContext.request.contextPath}";
-            xhr.open('GET', contextPath + '/SvActualizarSelectAddTema?tipoDelObjeto=' + tipoSeleccionado+ '&filtroPrincipal='+  filtroSecundarioSeleccionado + '&_=' + new Date().getTime(), true);
+            xhr.open('GET', contextPath + '/SvActualizarSelectAddTema?tipoDelObjeto=' + tipoSeleccionado+ '&filtroPrincipal='+  filtroSecundarioSeleccionado +'&listaAgregar='+ listaAgregar +'&_=' + new Date().getTime(), true);
 
             xhr.onload = function() {
                 if (xhr.status === 200) {
@@ -77,28 +78,77 @@
             xhr.send();
             
         }
+        function CargarListSesion() {
+            const Valor = document.getElementById("listaAgregar").value;
+            const listaAgregar = document.getElementById("listaAgregar");
+            const xhr = new XMLHttpRequest();
+            const contextPath = "${pageContext.request.contextPath}";
+            xhr.open('GET', contextPath + '/SvActualizarSelectAddTema?listaAgregar='+ Valor +'&_=' + new Date().getTime(), true);
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    // Verifica si la respuesta tiene opciones válidas
+                    if (xhr.responseText.trim() !== "") {
+                        listaAgregar.innerHTML = xhr.responseText;
+                    } else {
+                        listaAgregar.innerHTML = '<option value="">No se encontraron resultados</option>';
+                    }
+                } else {
+                    listaAgregar.innerHTML = '<option value="">Error al cargar los datos</option>';
+                }
+            };
+            xhr.send();
+        } 
+    }
+        function toggleListaPart() {
+            const listaAgregar = document.getElementById("listaAgregar").value;
+            const tipoSeleccionado = document.getElementById("tipoDelObjeto").value;
+            const filtroSecundarioSeleccionado = document.getElementById("opcionesSeleccion").value;
+            const listaParticularEspecifica = document.getElementById("TemasPos").value;
+            const listaPartSelect = document.getElementById("listaPartSelect");
+            const opcionesListaPart = document.getElementById("opcionesListaPart");
+            const temasPosLabel = document.getElementById("temasPosLabel");
+            if (tipoSeleccionado === "ListaPart") {
+                listaPartSelect.style.display = "block"; // Mostrar el select
+                temasPosLabel.textContent = "Listas públicas:"; // Cambiar el label
+                opcionesListaPart.innerHTML="";
+                const xhr = new XMLHttpRequest();
+                const contextPath = "${pageContext.request.contextPath}";
+                xhr.open('GET', contextPath + '/SvActualizarSelectAddTema?tipoDelObjeto=' + tipoSeleccionado+ '&filtroPrincipal='+  filtroSecundarioSeleccionado + '&listaCliente='+ listaParticularEspecifica +'&listaAgregar='+ listaAgregar + '&_=' + new Date().getTime(), true);
+
+                xhr.onload = function() {
+                    if (xhr.status === 200) {
+                        // Verifica si la respuesta tiene opciones válidas
+                        if (xhr.responseText.trim() !== "") {
+                            opcionesListaPart.innerHTML = xhr.responseText;
+                        } else {
+                            opcionesListaPart.innerHTML = '<option value="">No se encontraron resultados</option>';
+                        }
+                    } else {
+                        opcionesListaPart.innerHTML = '<option value="">Error al cargar los datos</option>';
+                    }
+                };
+                xhr.send();
+            } else {
+                listaPartSelect.style.display = "none"; // Ocultar el select
+                opcionesListaPart.innerHTML = ""; // Limpiar opciones
+                temasPosLabel.textContent = "Temas:"; // Cambiar el label
+            }
+        }
+        
+        window.onload = function(){
+            CargarListSesion();
+        };
         </script>
     </head>
     <body>
+        <form action="${pageContext.request.contextPath}/SvActualizarSelectAddTema" method="POST">
             <h1>Agregar Tema a Lista</h1>
             <label for="lista">Selecciona una lista:</label>
-            <select name="lista">
-                <%
-                    List<String> nombresListas = (List<String>) request.getAttribute("nombresListas");
-                    if (nombresListas != null && !nombresListas.isEmpty()) {
-                        for (String nombre : nombresListas) {
-                %>
-                            <option value="<%= nombre %>"><%= nombre %></option>
-                <%
-                        }
-                    } else {
-                %>
-                        <option value="">No hay listas disponibles1</option>
-                <%
-                    }
-                %></select>
+            <select id="listaAgregar" name="lista">
+              <option value="">Seleciona su Lista</option>
+          </select>
       <label for="tipoSeleccion">Filtro:</label>
-        <select id="tipoDelObjeto" name="tipoDelObjeto" onchange="actualizarFiltrosSecundarios(); actualizarListTemas();">
+        <select id="tipoDelObjeto" name="tipoDelObjeto" onchange="toggleListaPart(); actualizarFiltrosSecundarios(); actualizarListTemas();">
             <option value="">Seleccione un filtro</option>
             <option value="Album">Album</option>
             <option value="ListaPorDef">Lista Por Defecto</option>
@@ -109,9 +159,31 @@
         <select id="opcionesSeleccion" name="filtroPrincipal" onclick="actualizarListTemas();">
             <option value="">Seleccione un filtro</option>
         </select>      
-        <label for="TemasPos">Temas:</label>
-        <select id="TemasPos" name="Temas" >
+        
+         <label for="TemasPos" id="temasPosLabel">Temas:</label>
+        <select id="TemasPos" name="Temas" onchange="toggleListaPart();">
             <option value="">Seleccione un Tema</option>
         </select>
+        
+        <div id="listaPartSelect" style="display: none;">
+          
+            <label for="opcionesListaPart">Seleccione un tema</label>
+          <select id="opcionesListaPart" name="opcionesListaPart" >
+              <option value="">Seleccione un tema</option>
+          </select>
+        
+        </div>
+        <button type="submit">Agregar Tema</button>
+        <%-- Mostrar mensaje de error si existe --%>
+        <%
+            String errorMessage = (String) request.getSession().getAttribute("error");
+            if (errorMessage != null) {
+        %>
+        <p><label style="color: red;"> <%= errorMessage%> </label></p>
+        <%
+                request.getSession().removeAttribute("error"); // Limpiar el mensaje para que no persista
+            }
+        %>
+        </form>
     </body>
 </html>

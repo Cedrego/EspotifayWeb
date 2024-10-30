@@ -42,27 +42,17 @@ public class SvAddTemaLista extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        
-        response.setContentType("text/html;charset=UTF-8");
             // Obtener la sesión y el nick del usuario logueado
             HttpSession session = request.getSession(false);
             String nickSesion = (String) session.getAttribute("NickSesion");
-
+            PrintWriter out = response.getWriter();
             if (nickSesion != null) {                
                 // Obtener las listas del cliente desde la lógica
-                List<String> NomListUs = ctrl.obtenerNombresDeListPart(nickSesion);
-                //obtenerPartPublicaDeDuenio  Obtener lista de clientes y pasarle ese para que valla cambiando
-                //obtenerTemasDeAlbum Selecciona un album y consigo sus temas
-                
-                //obtenerNombresListasPDTODO Obtengo todas las listas por defecto
-                //obtenerTemasDePD Obtengo temas de lista por defecto que selecione
-               
-                // Guardar la lista de nombres en el request para usar en el JSP
-                request.setAttribute("nombresListas", NomListUs);
+                out.write("<option value=''>Seleccionar Lista</option>");
+               for(String list : ctrl.obtenerNombresDeListPart(nickSesion)){
+                   out.write("<option value='" + list + "'>" + list + "</option>");
+               }
 
-                // Redirigir al JSP usando RequestDispatcher
-                request.getRequestDispatcher("JSP/AddTemaLista.jsp").forward(request, response);
             } else {
                 // Si no hay sesión, redirigir al login o página de error
                 response.sendRedirect(request.getContextPath() + "/index.jsp");
