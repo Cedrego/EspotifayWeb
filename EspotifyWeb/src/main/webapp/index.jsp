@@ -100,12 +100,16 @@
 
             .top-bar button {
                 background-color: #1db954;
-                color: #FFF;
+                color: #000;
                 border: none;
                 border-radius: 5px;
                 padding: 5px 10px;
                 cursor: pointer;
                 font-weight: bold;
+            }
+            
+            .top-bar button:hover {
+                box-shadow: 0 0 10px #1db954, 0 0 20px #1db954, 0 0 30px #1db954;
             }
 
             /* Content container */
@@ -121,9 +125,14 @@
                 border-radius: 20px;
                 width: 40px;
                 height: 40px;
-                color: #FFF;
+                color: #000;
                 cursor: pointer;
                 font-weight: bold;
+                transition: background-color 0.3s ease;
+            }
+
+            .sidebar button:hover {
+                box-shadow: 0 0 10px #1db954, 0 0 20px #1db954, 0 0 30px #1db954;
             }
 
             /* Main display area */

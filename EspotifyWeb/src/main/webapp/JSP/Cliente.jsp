@@ -98,7 +98,7 @@
             }
 
             .sidebar button:hover {
-                background-color: #45a049; /* Color al pasar el mouse */
+                box-shadow: 0 0 10px #1db954, 0 0 20px #1db954, 0 0 30px #1db954;
             }
 
             .sidebar button:active {
@@ -124,14 +124,21 @@
                 margin-top: 20px;
             }
 
+            /* Botones en el panel derecho */
             .controls button {
                 background-color: #FFF;
+                color: #000; /* Texto en negro */
                 border: none;
                 border-radius: 50%;
                 width: 40px;
                 height: 40px;
                 cursor: pointer;
                 font-size: 18px;
+                transition: box-shadow 0.3s ease; /* Transición para el brillo */
+            }
+
+            .controls button:hover {
+                box-shadow: 0 0 10px #1db954, 0 0 20px #1db954, 0 0 30px #1db954; /* Efecto de brillo verde */
             }
 
             .slider {

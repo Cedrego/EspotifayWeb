@@ -83,15 +83,25 @@
             }
 
             /* Iniciar Sesión button */
-            .login-container .login-button {
-                background-color: #1db954;
-                color: #FFF;
-            }
-
-            /* Crear Cuenta button */
+            /* Iniciar Sesión button */
+            .login-container .login-button,
             .login-container .register-button {
                 background-color: #1db954;
-                color: #FFF;
+                color: #000; /* Texto en negro */
+                border: none;
+                border-radius: 20px;
+                width: 100%;
+                padding: 10px;
+                font-size: 16px;
+                font-weight: bold;
+                cursor: pointer;
+                transition: box-shadow 0.3s ease; /* Suavizar la transición de brillo */
+            }
+
+            /* Hover effect for buttons */
+            .login-container .login-button:hover,
+            .login-container .register-button:hover {
+                box-shadow: 0 0 10px #1db954, 0 0 20px #1db954, 0 0 30px #1db954; /* Efecto de brillo verde */
             }
 
             /* Error message */

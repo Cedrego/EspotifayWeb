@@ -92,8 +92,14 @@
                 font-weight: bold;
                 cursor: pointer;
                 background-color: #1db954;
-                color: #FFF;
+                color: #000;
+                transition: box-shadow 0.3s ease; /* Añade una transición para suavizar el efecto */
             }
+
+            .register-container button:hover {
+                box-shadow: 0 0 10px #1db954, 0 0 20px #1db954, 0 0 30px #1db954; /* Efecto de brillo */
+            }
+
 
             /* Extra fields for artist */
             #extraFields {
