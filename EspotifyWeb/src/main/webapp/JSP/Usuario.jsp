@@ -24,7 +24,9 @@
                 justify-content: center;
                 align-items: center;
                 height: 100vh;
-                font-family: Arial, sans-serif;
+                font-family: 'Biski', sans-serif; /* Aplica la fuente Biski */
+                font-weight: bold; /* Asegúrate de que sea negrita */
+                font-size: 24px;
             }
 
             /* Main container */
@@ -37,15 +39,14 @@
                 color: white;
             }
 
-            /* Logo placeholder */
+            /* Logo image */
             .logo {
-                width: 50px;
-                height: 50px;
-                margin: 0 auto 20px;
-                background-image: url('images/cat.gif');
-                background-size: cover;
-                background-position: center;
-                border-radius: 5px;
+                display: flex; /* Activar Flexbox */
+                justify-content: center; /* Centrar horizontalmente */
+                align-items: center; /* Centrar verticalmente */
+                width: 100%; /* Asegura que ocupe todo el ancho del contenedor */
+                margin: 0 auto 20px; /* Mantener márgenes */
+                padding: 10px; /* Agregar espacio interno */
             }
 
             /* Title */
@@ -103,7 +104,9 @@
     <body>
         <div class="login-container">
             <!-- Logo Placeholder -->
-            <div class="logo"></div>
+            <div class="logo">
+                <img src="${pageContext.request.contextPath}/images/logo.png" alt="Espotify Logo" style="width: 100px; height: auto; border-radius: 5px;">
+            </div>
 
             <!-- Title -->
             <h2>Espotify</h2>

@@ -8,7 +8,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-            <title>JSP Page</title>
+            <title>Espotify</title>
         <title>Espotify</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <style>
@@ -19,26 +19,52 @@
                 box-sizing: border-box;
             }
             body {
-                background-color: #333;
+                background-color: #000; /* Cambiar a negro para eliminar el borde gris */
                 color: #FFF;
-                font-family: Arial, sans-serif;
+                font-family: 'Biski', sans-serif; /* fuente Biski */
+                font-weight: bold; /* negrita */
+                font-size: 24px;
                 display: flex;
                 justify-content: center;
                 align-items: center;
                 height: 100vh;
             }
-            
-            /* Main container styling */
+
             .container {
                 display: flex;
                 flex-direction: column;
-                width: 90%;
-                height: 90vh;
-                background-color: #222;
-                border-radius: 10px;
+                width: 100%; /* Cambiar a 100% para ocupar todo el ancho */
+                height: 100vh; /* Mantener el alto completo de la pantalla */
+                background-color: #222; /* Mantener el fondo del contenedor */
+                border-radius: 0; /* Eliminar el borde redondeado */
                 overflow: hidden;
             }
 
+            .content {
+                display: flex;
+                flex: 1;
+                margin: 0; /* Eliminar cualquier margen */
+                padding: 0; /* Eliminar cualquier padding */
+            }
+
+            .sidebar {
+                width: 15%;
+                background-color: #1a1a1a;
+                padding: 20px; /* Puedes ajustar este padding según sea necesario */
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 15px;
+            }
+
+            .right-panel {
+                width: 25%;
+                background-color: #1a1a1a;
+                padding: 20px; /* Puedes ajustar este padding según sea necesario */
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
             /* Top bar */
             .top-bar {
                 display: flex;
@@ -61,7 +87,7 @@
                 width: 50px;
                 height: 50px;
                 margin: 0 auto 20px;
-                background-image: url('images/cat.gif');
+                background-image: url('images/logo.png');
                 background-size: cover;
                 background-position: center;
                 border-radius: 5px;
@@ -88,17 +114,6 @@
                 flex: 1;
             }
 
-            /* Left sidebar */
-            .sidebar {
-                width: 15%;
-                background-color: #1a1a1a;
-                padding: 20px;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                gap: 15px;
-            }
-
             /* Oval buttons on the sidebar */
             .sidebar button {
                 background-color: #1db954;
@@ -115,16 +130,6 @@
             .main-content {
                 flex: 1;
                 background-color: #000;
-            }
-
-            /* Right panel with controls and image */
-            .right-panel {
-                width: 25%;
-                background-color: #1a1a1a;
-                padding: 20px;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
             }
 
             /* Top right static image */
@@ -170,11 +175,30 @@
                 -webkit-appearance: none;
                 width: 100%;
                 height: 5px;
-                background: #333;
+                background: #333; /* Color de fondo del slider */
                 outline: none;
-                opacity: 0.7;
+                opacity: 1;
                 transition: opacity .2s;
+                margin-top: 20px; /* Añadir un margen superior para separar el slider de los botones */
             }
+
+            /* Para estilizar la parte izquierda del slider */
+            .slider::-webkit-slider-thumb {
+                -webkit-appearance: none;
+                appearance: none;
+                width: 20px; /* Ancho del "thumb" */
+                height: 20px; /* Alto del "thumb" */
+                background: #FFF; /* Color del "thumb" */
+                border-radius: 50%; /* Hacer el "thumb" redondeado */
+                cursor: pointer;
+            }
+
+            /* Estilo para la parte izquierda verde */
+            .slider::-webkit-slider-runnable-track {
+                background: linear-gradient(to right, #1db954 0%, #1db954 var(--value), #333 var(--value), #333 100%);
+                height: 5px; /* Altura del track */
+            }
+
         </style>
             <script>
             function redirect(option) {
@@ -191,7 +215,7 @@
             <!-- Top Bar -->
             <div class="top-bar">
                 <div class="logo-container">
-                    <div class="logo-image"></div> <!-- Cuadrado blanco para imagen futura -->
+                    <div class="logo"></div> <!-- Logo aquí -->
                     <div>Espotify</div>
                 </div>
                 <div class="top-bar-buttons">
@@ -227,7 +251,7 @@
                         <button>&#9654;</button> <!-- Play button -->
                         <button>&#9654;&#9654;</button> <!-- Next button -->
                     </div>
-                    <input type="range" min="0" max="100" value="50" class="slider">
+                    <input type="range" min="0" max="100" value="50" class="slider" oninput="this.style.setProperty('--value', this.value + '%');">
                 </div>
             </div>
         </div>
