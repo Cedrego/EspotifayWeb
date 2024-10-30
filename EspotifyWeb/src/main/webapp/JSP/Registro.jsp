@@ -10,7 +10,98 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Espotify</title>
+        <title>Espotify - Crear Cuenta</title>
+        <style>
+            /* Reset and basic styling */
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+            body {
+                background-color: #000;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                font-family: Arial, sans-serif;
+            }
+
+            /* Main container */
+            .register-container {
+                width: 300px;
+                padding: 40px 20px;
+                background-color: #333;
+                border-radius: 10px;
+                text-align: center;
+                color: white;
+            }
+
+            /* Logo image */
+            .logo {
+                width: 50px;
+                height: 50px;
+                margin: 0 auto 20px;
+                background-image: url('images/logo.png'); /* Cambié a logo.png */
+                background-size: cover;
+                background-position: center;
+                border-radius: 5px;
+            }
+
+            /* Title */
+            .register-container h2 {
+                font-size: 24px;
+                font-weight: bold;
+                margin-bottom: 20px;
+            }
+
+            /* Input fields */
+            .register-container input[type="text"],
+            .register-container input[type="password"],
+            .register-container input[type="date"],
+            .register-container textarea {
+                width: 100%;
+                padding: 10px;
+                margin: 10px 0;
+                border: 2px solid #666;
+                border-radius: 20px;
+                background-color: #444;
+                color: white;
+                font-size: 16px;
+                text-align: center;
+            }
+
+            /* Checkbox and label */
+            .register-container input[type="checkbox"] {
+                margin-right: 5px;
+            }
+
+            /* Buttons */
+            .register-container button {
+                width: 100%;
+                padding: 10px;
+                margin: 10px 0;
+                border: none;
+                border-radius: 20px;
+                font-size: 16px;
+                font-weight: bold;
+                cursor: pointer;
+                background-color: #1db954;
+                color: #FFF;
+            }
+
+            /* Extra fields for artist */
+            #extraFields {
+                display: none;
+                margin-top: 10px;
+            }
+
+            /* Error message */
+            .error-message {
+                color: red;
+                margin-top: 10px;
+            }
+        </style>
         <script>
         function toggleFields() {
 
@@ -28,38 +119,47 @@
         </script>
     </head>
     <body>
-        <h1>Crear Cuenta</h1>
-        <form action="${pageContext.request.contextPath}/SvRegistro" method="post">
-            <p><label>Nickname<br></label><input type="text" name="nick"></p>
-            <p><label>Nombre<br></label><input type="text" name="nom"></p>
-            <p><label>Apellido<br></label><input type="text" name="ape"></p>
-            <p><label>Correo<br></label><input type="text" name="mail"></p>
-            <p><label>Contraseña<br></label><input type="password" name="pass"></p>
-            <p><label>Confirmar contraseña<br></label><input type="password" name="pass2"></p>
-            <p><label>Fecha Nacimiento<br></label><input type="date" name="fech"></p>
+        <div class="register-container">
+            <!-- Logo Placeholder -->
+            <div class="logo"></div>
 
-            <p>
-                <input type="checkbox" id="artista" name="esArtista" onclick="toggleFields()"> <!-- Cambié el ID a 'artista' -->
-                <label for="artista">Perfil de artista</label>
-            </p>
+            <!-- Title -->
+            <h2>Espotify</h2>
 
-            <div id="extraFields" style="display: none;"> <!-- 'extraFields' está oculto por defecto -->
-                <p><label>Página Web<br></label><input type="text" name="web"></p>
-                <p><label>Biografía:</label></p>
-                <p><textarea name="bio" rows="4" cols="50"></textarea></p>
-            </div>
-            <button type="submit">Crear perfil</button>
-        </form>
+            <!-- Registration Form -->
+            <form action="${pageContext.request.contextPath}/SvRegistro" method="post">
+                <input type="text" name="nick" placeholder="Nickname" required>
+                <input type="text" name="nom" placeholder="Nombre" required>
+                <input type="text" name="ape" placeholder="Apellido" required>
+                <input type="text" name="mail" placeholder="Correo" required>
+                <input type="password" name="pass" placeholder="Contraseña" required>
+                <input type="password" name="pass2" placeholder="Confirmar contraseña" required>
+                <input type="date" name="fech" placeholder="Fecha de Nacimiento" required>
 
-        <%-- Mostrar mensaje de error si existe --%>
-        <%
-            String errorMessage = (String) request.getSession().getAttribute("error");
-            if (errorMessage != null) {
-        %>
-        <p><label style="color: red;"> <%= errorMessage%> </label></p>
-        <%
-                request.getSession().removeAttribute("error"); // Limpiar el mensaje para que no persista
-            }
-        %>
+                <p>
+                    <input type="checkbox" id="artista" name="esArtista" onclick="toggleFields()">
+                    <label for="artista">Perfil de artista</label>
+                </p>
+
+                <div id="extraFields">
+                    <input type="text" name="web" placeholder="Página Web">
+                    <textarea name="bio" rows="4" placeholder="Biografía"></textarea>
+                </div>
+                
+                <button type="submit">Crear perfil</button>
+            </form>
+
+            <!-- Error Message -->
+            <%-- Mostrar mensaje de error si existe --%>
+            <%
+                String errorMessage = (String) request.getSession().getAttribute("error");
+                if (errorMessage != null) {
+            %>
+            <p class="error-message"><%= errorMessage %></p>
+            <%
+                    request.getSession().removeAttribute("error"); // Limpiar el mensaje para que no persista
+                }
+            %>
+        </div>
     </body>
 </html>
