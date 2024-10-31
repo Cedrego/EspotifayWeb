@@ -73,7 +73,7 @@ public class SvConsultarPerfil extends HttpServlet {
             request.setAttribute("dataArtistas", dataArtistas);
             request.setAttribute("DataClientes", ctrl.getDataClienteMin());
         }
-
+        request.setAttribute("Generos",ctrl.obtenerNombresDeGeneros());
         request.getRequestDispatcher("JSP/ConsultaPerfil.jsp").forward(request, response);
     }
 

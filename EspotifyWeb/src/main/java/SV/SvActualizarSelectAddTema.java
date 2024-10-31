@@ -62,47 +62,88 @@ public class SvActualizarSelectAddTema extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String tipoSeleccion = request.getParameter("tipoDelObjeto");
+        HttpSession misesion = request.getSession(false); // No crear una nueva si no existe
+        String  nickCliente = (String) misesion.getAttribute("NickSesion");
+        String listaAgregar = request.getParameter("listaAgregar");
+        String tipoSeleccion = request.getParameter("tipoDelObjeto");//Album, lista por defecto o pblicas
         System.out.println("Tipo de objeto recibido1: " + tipoSeleccion);
         PrintWriter out = response.getWriter();
-        String filtroSecundarioSeleccionado = request.getParameter("filtroPrincipal");
-        System.out.println("Tipo de objeto recibido2: " + filtroSecundarioSeleccionado);
+        String filtroSecundarioSeleccionado = request.getParameter("filtroPrincipal");//Filtro 2
+        System.out.println("Tipo de objeto recibido2: " + filtroSecundarioSeleccionado);//Si es TipoSeleccion es Lista particualr mostraremos los cliente con lista particualres publicas
+        String listaCliente = request.getParameter("listaCliente");
+        System.out.println("No entro");
+        if(listaAgregar.isEmpty()){
+            System.out.println("Entro");
+            out.write("<option value=''>Seleccionar Lista2</option>");
+            for(String list : ctrl.obtenerNombresDeListPart(nickCliente)){
+                out.write("<option value='" + list + "'>" + list + "</option>");
+            }
+        }
         if ("Album".equals(tipoSeleccion)) {
-            if(filtroSecundarioSeleccionado == null){
+            if(filtroSecundarioSeleccionado == null){               
+                 out.write("<option value=''>Seleccionar Album</option>");
                 for (String album : ctrl.obtenerNombresDeAlbumes()) {
                     out.write("<option value='" + album + "'>" + album + "</option>");
                     System.out.println("Album "+album);
                 }  
             } else{
-                for (String Tema : ctrl.obtenerTemasDeAlbum(filtroSecundarioSeleccionado)) {
-                    out.write("<option value='" + Tema + "'>" + Tema + "</option>");
-                    System.out.println("Temas "+Tema);
-                } 
-            } 
-            
-            
+                out.write("<option value=''>Seleccionar Tema</option>");
+                for (String tema : ctrl.obtenerTemasDeAlbum(filtroSecundarioSeleccionado)) {
+                    if(ctrl.obtenerTemasDeParticular(listaAgregar).contains(tema)){
+                        out.write("<option value=''>El tema '"+tema+"' ya esta agregado en '"+listaAgregar+"'</option>");
+                    }else{
+                        out.write("<option value='" + tema + "'>" + tema + "</option>");
+                        System.out.println("Tema "+tema);
+                    }
+                }                 
+            }                         
         } else if ("ListaPorDef".equals(tipoSeleccion)) {
             if(filtroSecundarioSeleccionado == null){
+                out.write("<option value=''>Seleccionar Lista</option>");
                 for(String pd : ctrl.obtenerNombresListasPDTODO()){
                     out.write("<option value='" + pd + "'>" + pd + "</option>");
                 }
             }else{
-                 for (String Tema : ctrl.obtenerTemasDePD(filtroSecundarioSeleccionado)) {
-                    out.write("<option value='" + Tema + "'>" + Tema + "</option>");
-                    System.out.println("Temas "+Tema);
-                }                 
+                out.write("<option value=''>Seleccionar Tema</option>");
+                 for (String tema : ctrl.obtenerTemasDePD(filtroSecundarioSeleccionado)) {
+                    if(ctrl.obtenerTemasDeParticular(listaAgregar).contains(tema)){
+                        out.write("<option value=''>El tema '"+tema+"' ya esta agregado en '"+listaAgregar+"'</option>");
+                    }else{
+                        out.write("<option value='" + tema + "'>" + tema + "</option>");
+                        System.out.println("Tema "+tema);
+                    }
+                }                      
             }
         } else if ("ListaPart".equals(tipoSeleccion)) {
             if(filtroSecundarioSeleccionado == null){
-                for(String p :  ctrl.obtenerNombresDeCliente()){//Cambiar a funcion que te de clientes con playlist part publicas
-                    out.write("<option value='" + p + "'>" + p + "</option>");
+                out.write("<option value=''>Seleccionar Cliente</option>");
+                for(String p :  ctrl.obtenerNombresClienteConParticular()){//Cambiar a funcion que te de clientes con playlist part publicas
+                    if(p.equalsIgnoreCase(nickCliente)){
+                        
+                    }else{
+                        out.write("<option value='" + p + "'>" + p + "</option>");
+                    }
                 }
             }else{
-                 for (String Tema : ctrl.obtenerTemasDeParticular(filtroSecundarioSeleccionado)) {
-                    out.write("<option value='" + Tema + "'>" + Tema + "</option>");
-                    System.out.println("Temas "+Tema);
-                }  
+                if(listaCliente==null){
+                    out.write("<option value=''>Seleccionar Lista</option>");
+                    for (String lis : ctrl.obtenerPartPublicaDeDuenio(filtroSecundarioSeleccionado)) {
+                        out.write("<option value='" + lis + "'>" + lis + "</option>");
+                        System.out.println("Lista "+lis);
+                    } 
+                }else{
+                    out.write("<option value=''>Seleccionar tema</option>");
+                    for (String tema : ctrl.obtenerTemasDeParticular(listaCliente)){
+                        if(ctrl.obtenerTemasDeParticular(listaAgregar).contains(tema)){
+                            out.write("<option value=''>El tema '"+tema+"' ya esta agregado en '"+listaAgregar+"'</option>");
+                        }else{
+                            out.write("<option value='" + tema + "'>" + tema + "</option>");
+                            System.out.println("Tema "+tema);
+                        }
+                    }   
+                }   
             }
+            
         }
         out.flush(); // Asegúrate de que los datos se envíen
     }
@@ -118,7 +159,58 @@ public class SvActualizarSelectAddTema extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        HttpSession misesion = request.getSession(false); // No crear una nueva si no existe
+        String  nickCliente = (String) misesion.getAttribute("NickSesion");
+        
+        String lista = request.getParameter("lista");//Lista del cliente que inicio sesion
+        String tipoDelObjeto = request.getParameter("tipoDelObjeto");//Filtro 1
+        String filtro2 = request.getParameter("filtroPrincipal");//filtro 2
+        String temas = request.getParameter("Temas");//si filtro1 es distino de ListaPart sera tema sino sera la la lista del cliente selecionada en el filtro 2
+        String opcionesListaPart = request.getParameter("opcionesListaPart");//Si filtro1 es ListPart sera tema sino no existira
+        //Controles
+        if (lista == null || lista.isEmpty()) {//lista del sesion
+            String error = "No se ha seleccionado ninguna lista.";
+            misesion.setAttribute("error", error);
+            request.getRequestDispatcher("JSP/AddTemaLista.jsp").forward(request, response); // Redirige al JSP
+        }else if(tipoDelObjeto == null || tipoDelObjeto.isEmpty()) {//album etc
+            String error = "No se ha seleccionado un Filtro primario.";
+            misesion.setAttribute("error", error);
+            request.getRequestDispatcher("JSP/AddTemaLista.jsp").forward(request, response); // Redirige al JSP
+        }else if("ListaPart".equals(tipoDelObjeto)){
+            if(filtro2 == null || filtro2.isEmpty()) {//Clientes con listas publicas
+                String error = "No se ha seleccionado un filtro secundario.";
+                misesion.setAttribute("error", error);
+                request.getRequestDispatcher("JSP/AddTemaLista.jsp").forward(request, response); // Redirige al JSP
+            }
+            if (temas == null || temas.isEmpty()) {//Tendra lista de clientes publica
+                String error = "No se ha seleccionado un Lista Publcia.";
+                misesion.setAttribute("error", error);
+                request.getRequestDispatcher("JSP/AddTemaLista.jsp").forward(request, response); // Redirige al JSP
+            }else if (opcionesListaPart == null || opcionesListaPart.isEmpty()) {//Tema de esa lista publica
+                String error = "No se ha seleccionado un Tema.";
+                misesion.setAttribute("error", error);
+                request.getRequestDispatcher("JSP/AddTemaLista.jsp").forward(request, response); // Redirige al JSP
+
+            }else{
+                ctrl.AddTemaList("Particular", lista, opcionesListaPart, nickCliente);
+                request.getRequestDispatcher("JSP/AddTemaLista.jsp").forward(request, response); // Redirige al JSP
+                
+            }
+        }else if(filtro2 == null || filtro2.isEmpty()) {//album o lista por defecto con temas
+            String error = "No se ha seleccionado un filtro secundario.";
+            misesion.setAttribute("error", error);
+            request.getRequestDispatcher("JSP/AddTemaLista.jsp").forward(request, response); // Redirige al JSP
+
+        }else if (temas == null || temas.isEmpty()) {//Tema
+                String error = "No se ha seleccionado un Tema.";
+                misesion.setAttribute("error", error);
+                request.getRequestDispatcher("JSP/AddTemaLista.jsp").forward(request, response); // Redirige al JSP
+        }else{
+            ctrl.AddTemaList("Particular", lista, temas, nickCliente);
+            request.getRequestDispatcher("JSP/AddTemaLista.jsp").forward(request, response); // Redirige al JSP
+
+        }
+    
     }
 
     /**
@@ -126,7 +218,7 @@ public class SvActualizarSelectAddTema extends HttpServlet {
      *
      * @return a String containing servlet description
      */
-    @Override
+    @Override   
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
