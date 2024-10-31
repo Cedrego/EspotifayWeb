@@ -175,7 +175,7 @@
                 <button onclick="window.location.href = '<%= request.getContextPath()%>/JSP/Registro.jsp'">Publicar Lista</button>
                 <button onclick="window.location.href = '<%= request.getContextPath()%>/JSP/GuardarTLA.jsp'">Guardar Tema/Lista/Álbum</button>
                 <button onclick="window.location.href = '<%= request.getContextPath()%>/JSP/SUS.jsp'">Contratar Suscripción</button>
-                <button onclick="window.location.href = '<%= request.getContextPath()%>/JSP/Registro.jsp'">Actualizar estado de Suscripción</button>
+                <button onclick="window.location.href = '<%= request.getContextPath()%>/SvActualizarSUS'">Actualizar estado de Suscripción</button>
                 <button onclick="window.location.href = '<%= request.getContextPath()%>/JSP/Seguir.jsp'">Seguir Usuario (Cliente/Artista)</button>
                 <button onclick="window.location.href = '<%= request.getContextPath()%>/JSP/DejarSeguir.jsp'">Dejar de Seguir a Usuario (Cliente/Artista)</button>
                 <button onclick="window.location.href = '<%= request.getContextPath()%>/JSP/ConsultarAlbum.jsp'">Consulta de Álbum</button>
