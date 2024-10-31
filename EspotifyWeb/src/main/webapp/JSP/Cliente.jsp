@@ -180,6 +180,7 @@
                 <button onclick="window.location.href = '<%= request.getContextPath()%>/JSP/DejarSeguir.jsp'">Dejar de Seguir a Usuario (Cliente/Artista)</button>
                 <button onclick="window.location.href = '<%= request.getContextPath()%>/JSP/ConsultarAlbum.jsp'">Consulta de Álbum</button>
                 <button onclick="window.location.href = '<%= request.getContextPath()%>/JSP/ConsultarLista.jsp'">Consulta de Lista de Reproducción</button>
+                <button onclick="window.location.href = '<%= request.getContextPath()%>/JSP/Buscador.jsp'">Buscador Test</button>
                 <button onclick="window.location.href='<%= request.getContextPath()%>/SvCerrarSesion'">Cerrar Sesión</button>
             </div>
 

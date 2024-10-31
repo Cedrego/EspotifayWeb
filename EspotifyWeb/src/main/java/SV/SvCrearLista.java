@@ -107,6 +107,7 @@ public class SvCrearLista extends HttpServlet {
         for(DataSuscripcion sus: ctrl.ObtenerSubscClietne(nickSesion)){
             if(sus.getEstado().toString().equals("Vigente")){
                 Exist=true;
+                break;
             }
         }
         if(Exist== false){
