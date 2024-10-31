@@ -46,17 +46,12 @@ public class SvAddTemaLista extends HttpServlet {
             HttpSession session = request.getSession(false);
             String nickSesion = (String) session.getAttribute("NickSesion");
             PrintWriter out = response.getWriter();
-            if (nickSesion != null) {                
-                // Obtener las listas del cliente desde la lógica
-                out.write("<option value=''>Seleccionar Lista</option>");
-               for(String list : ctrl.obtenerNombresDeListPart(nickSesion)){
-                   out.write("<option value='" + list + "'>" + list + "</option>");
-               }
-
-            } else {
-                // Si no hay sesión, redirigir al login o página de error
-                response.sendRedirect(request.getContextPath() + "/index.jsp");
-            }    
+            response.setContentType("text/html");
+            out.write("<option value=''>Seleccionar Lista</option>");
+            for (String list : ctrl.obtenerNombresDeListPart(nickSesion)) {
+                out.write("<option value='" + list + "'>" + list + "</option>");
+            }  
+            
     }
 
     /**
