@@ -172,7 +172,7 @@
                 <button onclick="window.location.href = '<%= request.getContextPath()%>/SvConsultarPerfil'">Consulta de Perfil de Usuario</button>
                 <button onclick="window.location.href = '<%= request.getContextPath()%>/JSP/CrearLista.jsp'">Crear lista de reproducción</button>
                 <button onclick="window.location.href = '<%= request.getContextPath()%>/JSP/AddTemaLista.jsp'">Agregar Tema a Lista</button>
-                <button onclick="window.location.href = '<%= request.getContextPath()%>/JSP/Registro.jsp'">Publicar Lista</button>
+                <button onclick="window.location.href = '<%= request.getContextPath()%>/JSP/PublicarLista.jsp'">Publicar Lista</button>
                 <button onclick="window.location.href = '<%= request.getContextPath()%>/JSP/GuardarTLA.jsp'">Guardar Tema/Lista/Álbum</button>
                 <button onclick="window.location.href = '<%= request.getContextPath()%>/JSP/Registro.jsp'">Contratar Suscripción</button>
                 <button onclick="window.location.href = '<%= request.getContextPath()%>/JSP/Registro.jsp'">Actualizar estado de Suscripción</button>
