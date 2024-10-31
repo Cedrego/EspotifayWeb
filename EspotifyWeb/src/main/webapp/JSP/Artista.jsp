@@ -5,7 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@ page import="jakarta.servlet.http.HttpSession" %>
+<%@ page import="javax.servlet.http.HttpSession" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -147,6 +147,11 @@
                 margin-top: 20px; /* Añadir un margen superior para separar el slider de los botones */
             }
         </style>
+        <script>
+            function loadContent(url) {
+                document.getElementById('dynamic-content').src = url;
+            }
+        </script>
     </head>
     <body>
         <div class="container">
@@ -168,14 +173,14 @@
             <div class="content">
                 <!-- Left Sidebar -->
                 <div class="sidebar">
-                    <button onclick="window.location.href = '<%= request.getContextPath() %>/JSP/AltaAlbum.jsp'">Alta de Álbum</button>
-                    <button onclick="window.location.href = '<%= request.getContextPath() %>/SvConsultarPerfil'">Consulta de Perfil de Usuario</button>
+                    <button onclick="loadContent('<%= request.getContextPath()%>/JSP/AltaAlbum.jsp')">Alta de Álbum</button>
+                    <button onclick="loadContent('<%= request.getContextPath()%>/SvConsultarPerfil')">Consulta de Perfil de Usuario</button>
                     <button onclick="window.location.href='<%= request.getContextPath() %>/SvCerrarSesion'">Cerrar Sesión</button>
                 </div>
 
                 <!-- Main Content Area -->
-                <div class="main-content">
-                    <!-- Placeholder para contenido principal -->
+                <div style="flex: 1; background-color: #000; color: #FFF;">
+                    <iframe id="dynamic-content" style="width: 100%; height: 100%; border: none;" src=""></iframe>
                 </div>
 
                 <!-- Right Panel with Controls -->
