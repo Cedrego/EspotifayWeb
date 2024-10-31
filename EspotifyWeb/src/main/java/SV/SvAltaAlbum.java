@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -89,6 +90,19 @@ public class SvAltaAlbum extends HttpServlet {
                 return;
             }
         }
+        
+        // Manejo de archivos
+        List<String> direccionesConArchivos = new ArrayList<>();
+        for (String direccion : direcciones) {
+            // Si es una dirección de archivo, verifica si tiene un nombre de archivo
+            if (direccion != null && !direccion.isEmpty() && new File(direccion).exists()) {
+                direccionesConArchivos.add(direccion); // Agregar la dirección de archivo
+            } else {
+                // Si no es un archivo válido, se puede asumir que es una URL o se ignora
+                direccionesConArchivos.add(direccion);
+            }
+        }
+
         //logica para ajustar las posiciones
         for (int i = 0; i < posiciones.length; i++) {
             for (int j = i + 1; j < posiciones.length; j++) {

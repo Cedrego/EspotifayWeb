@@ -7,27 +7,23 @@ package SV;
 import Capa_Presentacion.DataSuscripcion;
 import Logica.Factory;
 import Logica.ICtrl;
-import Logica.Suscripcion;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.PrintWriter;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
- * @author User
+ * @author tecnologo
  */
-@WebServlet(name = "SvCrearLista", urlPatterns = {"/SvCrearLista"})
-@MultipartConfig(maxFileSize = 16177215) // Tamaño máximo del archivo (15MB)
-public class SvCrearLista extends HttpServlet {
+@WebServlet(name = "SvPublicarLista", urlPatterns = {"/SvPublicarLista"})
+public class SvPublicarLista extends HttpServlet {
     Factory fabric =Factory.getInstance();
     ICtrl ctrl = fabric.getICtrl();
     /**
@@ -47,10 +43,10 @@ public class SvCrearLista extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet SvCrearLista</title>");
+            out.println("<title>Servlet SvPublicarLista</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet SvCrearLista at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet SvPublicarLista at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -68,7 +64,23 @@ public class SvCrearLista extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+            HttpSession session = request.getSession(false);
+            String nickSesion = (String) session.getAttribute("NickSesion");
+            PrintWriter out = response.getWriter();
+            response.setContentType("text/html");
+            out.write("<option value=''>Seleccionar Lista</option>");
+            List<String> ExistParticular = new ArrayList();
+
+            for (String list : ctrl.obtenerPartPrivadaDeDuenio(nickSesion)) {
+                //if(ctrl.esPrivado(list,nickSesion)){
+                    ExistParticular.add(list);
+                    out.write("<option value='" + list + "'>" + list + "</option>");
+                //}
+            } 
+            if(ExistParticular.isEmpty()){
+                out.write("<option value=''>No hay Lista disponibles</option>");
+            }
+            out.flush(); // Asegúrate de que los datos se envíen
     }
 
     /**
@@ -82,47 +94,29 @@ public class SvCrearLista extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String NombreLista = request.getParameter("NomLista");
-        HttpSession misesion = request.getSession(false); // No crear una nueva si no existe
-        String nickSesion = (String) misesion.getAttribute("NickSesion");
-        if(NombreLista.isEmpty()){
-            String error = "ERROR: Escriba un nombre para la lista";
-           misesion.setAttribute("error", error);
-           request.getRequestDispatcher("JSP/CrearLista.jsp").forward(request, response); // Redirige al JSP
-        }
-        /* Obtengo el archivo de imagen
-        Part filePart = request.getPart("imagen"); // Obtengo la parte del archivo
-        InputStream inputStream = null;
-        if (filePart != null) {
-             Obtengo el InputStream de la imagen subida
-            inputStream = filePart.getInputStream();
-        }
-        */
-        if(ctrl.ExisListPartEnCliente(NombreLista, nickSesion)){//Return false si es == a null osea no existe  
-          String error = "ERROR: Ya existe una lista con ese nombre";
-           misesion.setAttribute("error", error);
-           request.getRequestDispatcher("JSP/CrearLista.jsp").forward(request, response); // Redirige al JSP
-        }
-        boolean Exist =false;
-        for(DataSuscripcion sus: ctrl.ObtenerSubscClietne(nickSesion)){
-            if(sus.getEstado().toString().equals("Vigente")){
-                Exist=true;
-                break;
-            }
-        }
-        if(Exist== false){
-            String error = "ERROR: Suscripcion no vigente";
-           misesion.setAttribute("error", error);
-           request.getRequestDispatcher("JSP/CrearLista.jsp").forward(request, response); // Redirige al JSP
-        }else{
-            // Obtener solo la fecha actual sin la hora
-            LocalDate fechaActual = LocalDate.now();
-            // Formatear la fecha como String (ejemplo: "dd-MM-yyyy")
-            DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-            String fechaFormateada = fechaActual.format(formato);
-            ctrl.CreateLista(NombreLista, "Particular", nickSesion,fechaFormateada);
-            request.getRequestDispatcher("JSP/Cliente.jsp").forward(request, response); // Redirige al JSP
-            }
+            HttpSession session = request.getSession(false);
+            String nickSesion = (String) session.getAttribute("NickSesion");
+            String Lista= request.getParameter("listaPrivada");
+            boolean Exist =false;
+                for(DataSuscripcion sus: ctrl.ObtenerSubscClietne(nickSesion)){
+                    if(sus.getEstado().toString().equals("Vigente")){
+                        Exist=true;
+                    }
+                }
+                if(Exist== false){
+                    String error = "ERROR: Suscripcion no vigente";
+                    session.setAttribute("error", error);
+                   request.getRequestDispatcher("JSP/PublicarLista.jsp").forward(request, response); // Redirige al JSP
+                }else{
+                    if(ctrl.ExisListPartEnCliente(Lista,nickSesion)){
+                        ctrl.Publicar(Lista, nickSesion);
+                        request.getRequestDispatcher("JSP/Cliente.jsp").forward(request, response); // Redirige al JSP
+                    }else{
+                        String error = "ERROR: Suscripcion no vigente";
+                    session.setAttribute("error", error);
+                   request.getRequestDispatcher("JSP/PublicarLista.jsp").forward(request, response); 
+                    }
+                }           
     }
 
     /**

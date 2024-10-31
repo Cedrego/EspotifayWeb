@@ -79,25 +79,27 @@
             
         }
         function CargarListSesion() {
-            const Valor = document.getElementById("listaAgregar").value;
-            const listaAgregar = document.getElementById("listaAgregar");
+            const ListaPart = document.getElementById("listaAgregar");
+            // Limpiar la tercera ComboBox
+            ListaPart.innerHTML = "";
+            // Realiza una solicitud AJAX al servlet para obtener lo pedido
             const xhr = new XMLHttpRequest();
             const contextPath = "${pageContext.request.contextPath}";
-            xhr.open('GET', contextPath + '/SvActualizarSelectAddTema?listaAgregar='+ Valor +'&_=' + new Date().getTime(), true);
+            xhr.open('GET', contextPath + '/SvAddTemaLista?_=' + new Date().getTime(), true);
+
             xhr.onload = function() {
                 if (xhr.status === 200) {
                     // Verifica si la respuesta tiene opciones válidas
                     if (xhr.responseText.trim() !== "") {
-                        listaAgregar.innerHTML = xhr.responseText;
+                        ListaPart.innerHTML = xhr.responseText;
                     } else {
-                        listaAgregar.innerHTML = '<option value="">No se encontraron resultados</option>';
+                        ListaPart.innerHTML = '<option value="">No se encontraron resultados</option>';
                     }
                 } else {
-                    listaAgregar.innerHTML = '<option value="">Error al cargar los datos</option>';
+                    ListaPart.innerHTML = '<option value="">Error al cargar los datos</option>';
                 }
             };
             xhr.send();
-        } 
     }
         function toggleListaPart() {
             const listaAgregar = document.getElementById("listaAgregar").value;
@@ -140,11 +142,11 @@
         };
         </script>
     </head>
-    <body>
+    <body>        
         <form action="${pageContext.request.contextPath}/SvActualizarSelectAddTema" method="POST">
             <h1>Agregar Tema a Lista</h1>
-            <label for="lista">Selecciona una lista:</label>
-            <select id="listaAgregar" name="lista">
+            <label for="listaAgregar">Selecciona una lista:</label>
+            <select id="listaAgregar" name="listaAgregar">
               <option value="">Seleciona su Lista</option>
           </select>
       <label for="tipoSeleccion">Filtro:</label>

@@ -81,10 +81,12 @@ public class SvConsultarAlbum extends HttpServlet {
 
                 for (DataTema tema : da.getDataTemas()) {
                     albumData.append("<p>")
-                             .append("Posición: ").append(tema.getOrdenAlbum()).append(" - ")
-                             .append("Nombre: ").append(tema.getNombre()).append(" - ")
-                             .append("Duración: ").append(tema.getDuracion()).append(" mins")
-                             .append("</p>");
+                            .append("Posición: ").append(tema.getOrdenAlbum()).append(" - ")
+                            .append("Nombre: ").append(tema.getNombre()).append(" - ")
+                            .append("Duración: ").append(tema.getDuracion()).append(" mins")
+                            .append(" - <a href='").append(tema.getDireccion()).append("' download>")
+                            .append("<button>Descargar</button></a>")
+                            .append("</p>");
                 }
 
                 response.setContentType("text/html;charset=UTF-8");

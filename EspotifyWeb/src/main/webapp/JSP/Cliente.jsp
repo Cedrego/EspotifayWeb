@@ -172,7 +172,7 @@
                 <button onclick="window.location.href = '<%= request.getContextPath()%>/SvConsultarPerfil'">Consulta de Perfil de Usuario</button>
                 <button onclick="window.location.href = '<%= request.getContextPath()%>/JSP/CrearLista.jsp'">Crear lista de reproducción</button>
                 <button onclick="window.location.href = '<%= request.getContextPath()%>/JSP/AddTemaLista.jsp'">Agregar Tema a Lista</button>
-                <button onclick="window.location.href = '<%= request.getContextPath()%>/JSP/Registro.jsp'">Publicar Lista</button>
+                <button onclick="window.location.href = '<%= request.getContextPath()%>/JSP/PublicarLista.jsp'">Publicar Lista</button>
                 <button onclick="window.location.href = '<%= request.getContextPath()%>/JSP/GuardarTLA.jsp'">Guardar Tema/Lista/Álbum</button>
                 <button onclick="window.location.href = '<%= request.getContextPath()%>/JSP/SUS.jsp'">Contratar Suscripción</button>
                 <button onclick="window.location.href = '<%= request.getContextPath()%>/SvActualizarSUS'">Actualizar estado de Suscripción</button>
@@ -180,6 +180,7 @@
                 <button onclick="window.location.href = '<%= request.getContextPath()%>/JSP/DejarSeguir.jsp'">Dejar de Seguir a Usuario (Cliente/Artista)</button>
                 <button onclick="window.location.href = '<%= request.getContextPath()%>/JSP/ConsultarAlbum.jsp'">Consulta de Álbum</button>
                 <button onclick="window.location.href = '<%= request.getContextPath()%>/JSP/ConsultarLista.jsp'">Consulta de Lista de Reproducción</button>
+                <button onclick="window.location.href = '<%= request.getContextPath()%>/JSP/Buscador.jsp'">Buscador Test</button>
                 <button onclick="window.location.href='<%= request.getContextPath()%>/SvCerrarSesion'">Cerrar Sesión</button>
             </div>
 

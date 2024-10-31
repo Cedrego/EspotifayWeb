@@ -15,6 +15,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.util.ArrayList;
 
 /**
  *
@@ -71,14 +72,7 @@ public class SvActualizarSelectAddTema extends HttpServlet {
         String filtroSecundarioSeleccionado = request.getParameter("filtroPrincipal");//Filtro 2
         System.out.println("Tipo de objeto recibido2: " + filtroSecundarioSeleccionado);//Si es TipoSeleccion es Lista particualr mostraremos los cliente con lista particualres publicas
         String listaCliente = request.getParameter("listaCliente");
-        System.out.println("No entro");
-        if(listaAgregar.isEmpty()){
-            System.out.println("Entro");
-            out.write("<option value=''>Seleccionar Lista2</option>");
-            for(String list : ctrl.obtenerNombresDeListPart(nickCliente)){
-                out.write("<option value='" + list + "'>" + list + "</option>");
-            }
-        }
+        List<String> TemasDis = new ArrayList();
         if ("Album".equals(tipoSeleccion)) {
             if(filtroSecundarioSeleccionado == null){               
                  out.write("<option value=''>Seleccionar Album</option>");
@@ -90,12 +84,17 @@ public class SvActualizarSelectAddTema extends HttpServlet {
                 out.write("<option value=''>Seleccionar Tema</option>");
                 for (String tema : ctrl.obtenerTemasDeAlbum(filtroSecundarioSeleccionado)) {
                     if(ctrl.obtenerTemasDeParticular(listaAgregar).contains(tema)){
-                        out.write("<option value=''>El tema '"+tema+"' ya esta agregado en '"+listaAgregar+"'</option>");
+                        //El tema ya esta agregado a la lista
                     }else{
+                        TemasDis.add(tema);
                         out.write("<option value='" + tema + "'>" + tema + "</option>");
                         System.out.println("Tema "+tema);
+                
                     }
-                }                 
+                }
+                if(TemasDis.isEmpty()){
+                    out.write("<option value=''>No hay temas disponibles</option>");
+                }
             }                         
         } else if ("ListaPorDef".equals(tipoSeleccion)) {
             if(filtroSecundarioSeleccionado == null){
@@ -107,12 +106,17 @@ public class SvActualizarSelectAddTema extends HttpServlet {
                 out.write("<option value=''>Seleccionar Tema</option>");
                  for (String tema : ctrl.obtenerTemasDePD(filtroSecundarioSeleccionado)) {
                     if(ctrl.obtenerTemasDeParticular(listaAgregar).contains(tema)){
-                        out.write("<option value=''>El tema '"+tema+"' ya esta agregado en '"+listaAgregar+"'</option>");
+                        //El tema ya esta agregado a la lista
                     }else{
+                        TemasDis.add(tema);
                         out.write("<option value='" + tema + "'>" + tema + "</option>");
                         System.out.println("Tema "+tema);
+                
                     }
-                }                      
+                }
+                if(TemasDis.isEmpty()){
+                    out.write("<option value=''>No hay temas disponibles</option>");
+                }                  
             }
         } else if ("ListaPart".equals(tipoSeleccion)) {
             if(filtroSecundarioSeleccionado == null){
@@ -135,12 +139,17 @@ public class SvActualizarSelectAddTema extends HttpServlet {
                     out.write("<option value=''>Seleccionar tema</option>");
                     for (String tema : ctrl.obtenerTemasDeParticular(listaCliente)){
                         if(ctrl.obtenerTemasDeParticular(listaAgregar).contains(tema)){
-                            out.write("<option value=''>El tema '"+tema+"' ya esta agregado en '"+listaAgregar+"'</option>");
-                        }else{
-                            out.write("<option value='" + tema + "'>" + tema + "</option>");
-                            System.out.println("Tema "+tema);
-                        }
-                    }   
+                        //El tema ya esta agregado a la lista
+                    }else{
+                        TemasDis.add(tema);
+                        out.write("<option value='" + tema + "'>" + tema + "</option>");
+                        System.out.println("Tema "+tema);
+                
+                    }
+                }
+                if(TemasDis.isEmpty()){
+                    out.write("<option value=''>No hay temas disponibles</option>");
+                }   
                 }   
             }
             
@@ -162,7 +171,7 @@ public class SvActualizarSelectAddTema extends HttpServlet {
         HttpSession misesion = request.getSession(false); // No crear una nueva si no existe
         String  nickCliente = (String) misesion.getAttribute("NickSesion");
         
-        String lista = request.getParameter("lista");//Lista del cliente que inicio sesion
+        String lista = request.getParameter("listaAgregar");//Lista del cliente que inicio sesion
         String tipoDelObjeto = request.getParameter("tipoDelObjeto");//Filtro 1
         String filtro2 = request.getParameter("filtroPrincipal");//filtro 2
         String temas = request.getParameter("Temas");//si filtro1 es distino de ListaPart sera tema sino sera la la lista del cliente selecionada en el filtro 2
@@ -193,7 +202,7 @@ public class SvActualizarSelectAddTema extends HttpServlet {
 
             }else{
                 ctrl.AddTemaList("Particular", lista, opcionesListaPart, nickCliente);
-                request.getRequestDispatcher("JSP/AddTemaLista.jsp").forward(request, response); // Redirige al JSP
+                request.getRequestDispatcher("JSP/Cliente.jsp").forward(request, response); // Redirige al JSP
                 
             }
         }else if(filtro2 == null || filtro2.isEmpty()) {//album o lista por defecto con temas
@@ -207,7 +216,7 @@ public class SvActualizarSelectAddTema extends HttpServlet {
                 request.getRequestDispatcher("JSP/AddTemaLista.jsp").forward(request, response); // Redirige al JSP
         }else{
             ctrl.AddTemaList("Particular", lista, temas, nickCliente);
-            request.getRequestDispatcher("JSP/AddTemaLista.jsp").forward(request, response); // Redirige al JSP
+            request.getRequestDispatcher("JSP/Cliente.jsp").forward(request, response); // Redirige al JSP
 
         }
     
