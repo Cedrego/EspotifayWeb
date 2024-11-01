@@ -7,7 +7,6 @@
 <%@page import="Capa_Presentacion.DataSuscripcion"%>
 <%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");%>
 <!DOCTYPE html>
 <html>
 <head>

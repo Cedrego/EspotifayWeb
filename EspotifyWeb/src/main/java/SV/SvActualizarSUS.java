@@ -72,7 +72,9 @@ public class SvActualizarSUS extends HttpServlet {
             throws ServletException, IOException {
         processRequest(request, response);
         Map<String, String[]> parameterMap = request.getParameterMap();
-
+        HttpSession sesion = request.getSession(false);
+        String NickUsu = (String) sesion.getAttribute("NickSesion");
+        sesion.removeAttribute("suscripciones");
         // Iterar sobre las suscripciones y actualizar los estados
         for (String paramName : parameterMap.keySet()) {
             if (paramName.startsWith("nuevoEstado_")) {
@@ -86,8 +88,12 @@ public class SvActualizarSUS extends HttpServlet {
                 }
             }
         }
+        
+        // Obtener cliente y sus suscripciones
+        DataClienteAlt cliente = ctrl.getDataClienteAlt(NickUsu);
+        request.setAttribute("suscripciones", cliente.getDataSuscripcion());
         // Redirige de vuelta a la página de suscripciones
-        request.getRequestDispatcher("JSP/Cliente.jsp").forward(request, response);
+        request.getRequestDispatcher("JSP/ActualizarSUS.jsp").forward(request, response);
     }
 
     /**

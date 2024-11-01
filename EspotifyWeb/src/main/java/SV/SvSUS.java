@@ -78,15 +78,11 @@ public class SvSUS extends HttpServlet {
         HttpSession misesion = request.getSession(false);
         String NickUsu = (String) misesion.getAttribute("NickSesion");
         DataClienteAlt cliente = ctrl.getDataClienteAlt(NickUsu);
+        
         String error = null;
         for(DataSuscripcion DTSus : cliente.getDataSuscripcion()){
             if(DTSus.getEstado().toString().equals("Vigente") || DTSus.getEstado().toString().equals("Pendiente")){
-                if(DTSus.getEstado().toString().equals("Vigente")){
-                    error = ("El Usuario ya Cuenta con una Suscripcion Vigente");
-                }
-                if(DTSus.getEstado().toString().equals("Pendiente")){
-                    error = ("El Usuario cuenta con una suscripcion con pago/cancelacion pendiente");
-                }
+                    error = ("Si el Usuario cuenta con una Suscripcion Vigente o pendiente no se podra contratar una nueva suscripcion.");
                 misesion.setAttribute("error", error);
                 request.getRequestDispatcher("JSP/SUS.jsp").forward(request, response); 
                 return;
@@ -97,7 +93,7 @@ public class SvSUS extends HttpServlet {
             System.out.println("Tipo :" + tipoSus +"/nUsuario: " + NickUsu);
         }
         ctrl.crearSucscripcion(NickUsu,tipoSus);
-        request.getRequestDispatcher("JSP/Cliente.jsp").forward(request, response);
+        request.getRequestDispatcher("/SvSUS").forward(request, response);
     }
 
 

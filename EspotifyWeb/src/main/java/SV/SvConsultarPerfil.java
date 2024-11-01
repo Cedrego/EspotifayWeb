@@ -28,37 +28,41 @@ import jakarta.servlet.http.HttpSession;
 public class SvConsultarPerfil extends HttpServlet {
      Factory factory = Factory.getInstance();
     ICtrl ctrl = factory.getICtrl();
+    
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        HttpSession sesion = request.getSession(false);
+        String NickUsu = (String) sesion.getAttribute("NickSesion");
+        if (ctrl.obtenerNombresDeCliente().contains(NickUsu)) {
+            sesion.setAttribute("usuario", ctrl.getDataClienteAlt(NickUsu));
+            sesion.setAttribute("tipo", "cliente");
+        } else if (ctrl.obtenerNombresDeArtista().contains(NickUsu)) {
+            sesion.setAttribute("usuario", ctrl.getDataArtistaAlt(NickUsu));
+            sesion.setAttribute("tipo", "artista");
+        } else {
 
+            sesion.setAttribute("tipo", "");
+            List<DataArtistaAlt> DTAA = new ArrayList();
+            for (String NA : ctrl.obtenerNombresDeArtista()) {
+                DTAA.add(ctrl.getDataArtistaAlt(NA));
+            }
+            sesion.setAttribute("dataArtistas", DTAA);
+            sesion.setAttribute("DataClientes", ctrl.getDataClienteMin());
+        }
+        // Reenviar a la página JSP
+        request.getRequestDispatcher("/JSP/ConsultaPerfil.jsp").forward(request, response);
+    }
+    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession sesion = request.getSession(false);
-        String NickUsu = (String) sesion.getAttribute("NickSesion");
-
-        String tipo = (String) request.getAttribute("tipo");
-        Object usuario = request.getAttribute("usuario");
-        if (ctrl.obtenerNombresDeCliente().contains(NickUsu)) {
-            sesion.setAttribute("usuario",ctrl.getDataClienteAlt(NickUsu));
-            sesion.setAttribute("tipo","cliente");
-        }else if (ctrl.obtenerNombresDeArtista().contains(NickUsu)) {
-            sesion.setAttribute("usuario",ctrl.getDataArtistaAlt(NickUsu));
-            sesion.setAttribute("tipo","artista");
-        }else{
-            sesion.setAttribute("tipo","");
-            List<DataArtistaAlt> DTAA = new ArrayList();
-            for(String NA : ctrl.obtenerNombresDeArtista()){
-                DTAA.add(ctrl.getDataArtistaAlt(NA));
-            }
-            request.setAttribute("dataArtistas",DTAA);
-            request.setAttribute("DataClientes",ctrl.getDataClienteMin());
-        }
-        // Reenviar a la página JSP
-        request.getRequestDispatcher("JSP/ConsultaPerfil.jsp").forward(request, response);
+        processRequest(request, response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+        processRequest(request, response);
     }
 }

@@ -4,6 +4,7 @@
  */
 package SV;
 
+import Capa_Presentacion.DataSuscripcion;
 import Logica.Factory;
 import Logica.ICtrl;
 import java.io.IOException;
@@ -130,7 +131,13 @@ public class SvSeguir extends HttpServlet {
         String nickname = (String) session.getAttribute("NickSesion");
         String tipoUsuario = request.getParameter("tipoUsuario");
         String usuario = request.getParameter("usuario");
-        
+        boolean isSuS = false;
+        for (DataSuscripcion sus : ctrl.getDataClienteAlt(nickname).getDataSuscripcion()) {
+            if (sus.getEstado().name().equals("Vigente")) {
+                isSuS = true;
+            }
+        }
+        if (isSuS) {
         System.out.println("Estoy en el servlet");
         if (tipoUsuario.equalsIgnoreCase("Artista")) {
             System.out.println("Entro en seguir artista");
@@ -141,8 +148,11 @@ public class SvSeguir extends HttpServlet {
         }
         
         request.getRequestDispatcher("JSP/Seguir.jsp").forward(request, response);
+        }else {
+            request.setAttribute("errorMessage", "La suscripción no está vigente. No puedes dejar de seguir a otros usuarios.");
+            request.getRequestDispatcher("JSP/Seguir.jsp").forward(request, response);
+        }
     }
-
     /**
      * Returns a short description of the servlet.
      *

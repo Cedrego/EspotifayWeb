@@ -213,7 +213,6 @@
                 <button onclick="loadContent('<%= request.getContextPath()%>/JSP/DejarSeguir.jsp')">Dejar de Seguir a Usuario (Cliente/Artista)</button>
                 <button onclick="loadContent('<%= request.getContextPath()%>/JSP/ConsultarAlbum.jsp')">Consulta de Álbum</button>
                 <button onclick="loadContent('<%= request.getContextPath()%>/JSP/ConsultarLista.jsp')">Consulta de Lista de Reproducción</button>
-                <button onclick="loadContent('<%= request.getContextPath()%>/JSP/Buscador.jsp')">Buscador Test</button>
                 <button onclick="window.location.href='<%= request.getContextPath() %>/SvCerrarSesion'">Cerrar Sesión</button>
             </div>
             <div style="flex: 1; background-color: #000; color: #FFF;">

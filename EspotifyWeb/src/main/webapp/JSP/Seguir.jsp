@@ -87,7 +87,9 @@
     </head>
     <body> <!-- Ejecutar updateUsers al cargar la página -->
         <h1>Seguir usuario</h1>
-
+        <c:if test="${not empty errorMessage}">
+            <p style="color: white;">${errorMessage}</p>
+        </c:if>
         <form id="seguimientoForm" action="${pageContext.request.contextPath}/SvSeguir" method="POST">
             <br>
             <p><label for="tipoUsuario">Que tipo de usuario desea seguir?:</label>

@@ -86,7 +86,7 @@
 
             /* Mensaje de error */
             .error-message {
-                color: red;
+                color: white;
                 font-weight: bold;
                 text-align: center;
                 margin-top: 10px;

@@ -8,6 +8,7 @@ import Capa_Presentacion.DataSuscripcion;
 import Logica.Factory;
 import Logica.ICtrl;
 import Logica.Suscripcion;
+import antlr.collections.List;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
@@ -85,6 +86,12 @@ public class SvCrearLista extends HttpServlet {
         String NombreLista = request.getParameter("NomLista");
         HttpSession misesion = request.getSession(false); // No crear una nueva si no existe
         String nickSesion = (String) misesion.getAttribute("NickSesion");
+        boolean isSuS = false;
+        for (DataSuscripcion sus : ctrl.getDataClienteAlt(nickSesion).getDataSuscripcion()) {
+            if (sus.getEstado().name().equals("Vigente")) {
+                isSuS = true;
+            }
+        }
         if(NombreLista.isEmpty()){
             String error = "ERROR: Escriba un nombre para la lista";
            misesion.setAttribute("error", error);

@@ -61,10 +61,11 @@
             <%-- mensaje de error --%>
             <%
                 String error = (String) session.getAttribute("error");
+                
                 if (error != null) {
             %>
             <div style="color: white;">
-                <strong>Error:</strong> <%= error%>
+                <strong>Aviso:</strong> <%= error%>
             </div>
             <%
                     // limpio el mensaje de error después de mostrarlo

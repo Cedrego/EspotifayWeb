@@ -4,6 +4,7 @@
  */
 package SV;
 
+import Capa_Presentacion.DataSuscripcion;
 import Logica.Factory;
 import Logica.ICtrl;
 import java.io.IOException;
@@ -177,47 +178,59 @@ public class SvActualizarSelectAddTema extends HttpServlet {
         String temas = request.getParameter("Temas");//si filtro1 es distino de ListaPart sera tema sino sera la la lista del cliente selecionada en el filtro 2
         String opcionesListaPart = request.getParameter("opcionesListaPart");//Si filtro1 es ListPart sera tema sino no existira
         //Controles
-        if (lista == null || lista.isEmpty()) {//lista del sesion
-            String error = "No se ha seleccionado ninguna lista.";
-            misesion.setAttribute("error", error);
-            request.getRequestDispatcher("JSP/AddTemaLista.jsp").forward(request, response); // Redirige al JSP
-        }else if(tipoDelObjeto == null || tipoDelObjeto.isEmpty()) {//album etc
-            String error = "No se ha seleccionado un Filtro primario.";
-            misesion.setAttribute("error", error);
-            request.getRequestDispatcher("JSP/AddTemaLista.jsp").forward(request, response); // Redirige al JSP
-        }else if("ListaPart".equals(tipoDelObjeto)){
-            if(filtro2 == null || filtro2.isEmpty()) {//Clientes con listas publicas
+        boolean isSuS = false;
+        for (DataSuscripcion sus : ctrl.getDataClienteAlt(nickCliente).getDataSuscripcion()) {
+            if (sus.getEstado().name().equals("Vigente")) {
+                isSuS = true;
+            }
+        }
+        if(isSuS){
+            if (lista == null || lista.isEmpty()) {//lista del sesion
+                String error = "No se ha seleccionado ninguna lista.";
+                misesion.setAttribute("error", error);
+                request.getRequestDispatcher("JSP/AddTemaLista.jsp").forward(request, response); // Redirige al JSP
+            }else if(tipoDelObjeto == null || tipoDelObjeto.isEmpty()) {//album etc
+                String error = "No se ha seleccionado un Filtro primario.";
+                misesion.setAttribute("error", error);
+                request.getRequestDispatcher("JSP/AddTemaLista.jsp").forward(request, response); // Redirige al JSP
+            }else if("ListaPart".equals(tipoDelObjeto)){
+                if(filtro2 == null || filtro2.isEmpty()) {//Clientes con listas publicas
+                    String error = "No se ha seleccionado un filtro secundario.";
+                    misesion.setAttribute("error", error);
+                    request.getRequestDispatcher("JSP/AddTemaLista.jsp").forward(request, response); // Redirige al JSP
+                }
+                if (temas == null || temas.isEmpty()) {//Tendra lista de clientes publica
+                    String error = "No se ha seleccionado un Lista Publcia.";
+                    misesion.setAttribute("error", error);
+                    request.getRequestDispatcher("JSP/AddTemaLista.jsp").forward(request, response); // Redirige al JSP
+                }else if (opcionesListaPart == null || opcionesListaPart.isEmpty()) {//Tema de esa lista publica
+                    String error = "No se ha seleccionado un Tema.";
+                    misesion.setAttribute("error", error);
+                    request.getRequestDispatcher("JSP/AddTemaLista.jsp").forward(request, response); // Redirige al JSP
+
+                }else{
+                    ctrl.AddTemaList("Particular", lista, opcionesListaPart, nickCliente);
+                    request.getRequestDispatcher("JSP/Cliente.jsp").forward(request, response); // Redirige al JSP
+
+                }
+            }else if(filtro2 == null || filtro2.isEmpty()) {//album o lista por defecto con temas
                 String error = "No se ha seleccionado un filtro secundario.";
                 misesion.setAttribute("error", error);
                 request.getRequestDispatcher("JSP/AddTemaLista.jsp").forward(request, response); // Redirige al JSP
-            }
-            if (temas == null || temas.isEmpty()) {//Tendra lista de clientes publica
-                String error = "No se ha seleccionado un Lista Publcia.";
-                misesion.setAttribute("error", error);
-                request.getRequestDispatcher("JSP/AddTemaLista.jsp").forward(request, response); // Redirige al JSP
-            }else if (opcionesListaPart == null || opcionesListaPart.isEmpty()) {//Tema de esa lista publica
-                String error = "No se ha seleccionado un Tema.";
-                misesion.setAttribute("error", error);
-                request.getRequestDispatcher("JSP/AddTemaLista.jsp").forward(request, response); // Redirige al JSP
 
+            }else if (temas == null || temas.isEmpty()) {//Tema
+                    String error = "No se ha seleccionado un Tema.";
+                    misesion.setAttribute("error", error);
+                    request.getRequestDispatcher("JSP/AddTemaLista.jsp").forward(request, response); // Redirige al JSP
             }else{
-                ctrl.AddTemaList("Particular", lista, opcionesListaPart, nickCliente);
+                ctrl.AddTemaList("Particular", lista, temas, nickCliente);
                 request.getRequestDispatcher("JSP/Cliente.jsp").forward(request, response); // Redirige al JSP
-                
+
             }
-        }else if(filtro2 == null || filtro2.isEmpty()) {//album o lista por defecto con temas
-            String error = "No se ha seleccionado un filtro secundario.";
-            misesion.setAttribute("error", error);
-            request.getRequestDispatcher("JSP/AddTemaLista.jsp").forward(request, response); // Redirige al JSP
-
-        }else if (temas == null || temas.isEmpty()) {//Tema
-                String error = "No se ha seleccionado un Tema.";
-                misesion.setAttribute("error", error);
-                request.getRequestDispatcher("JSP/AddTemaLista.jsp").forward(request, response); // Redirige al JSP
         }else{
-            ctrl.AddTemaList("Particular", lista, temas, nickCliente);
-            request.getRequestDispatcher("JSP/Cliente.jsp").forward(request, response); // Redirige al JSP
-
+            String error = "Necesitas una suscripcion para poder hacer eso.";
+            misesion.setAttribute("error", error);
+            request.getRequestDispatcher("JSP/AddTemaLista.jsp").forward(request, response); // Redirige al JSP             
         }
     
     }

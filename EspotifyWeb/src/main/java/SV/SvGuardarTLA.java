@@ -4,6 +4,7 @@
  */
 package SV;
 
+import Capa_Presentacion.DataSuscripcion;
 import Logica.Factory;
 import Logica.ICtrl;
 import java.io.IOException;
@@ -196,10 +197,13 @@ public class SvGuardarTLA extends HttpServlet {
         String nombreDelObjeto = request.getParameter("NombreDelObjeto");
         String filtroPrincipal = request.getParameter("filtroPrincipal");
         String filtroSecundario = request.getParameter("filtroSecundario");
-        
-        
-        
-        
+        boolean isSuS = false;
+        for (DataSuscripcion sus : ctrl.getDataClienteAlt(nickCliente).getDataSuscripcion()) {
+            if (sus.getEstado().name().equals("Vigente")) {
+                isSuS = true;
+            }
+        }
+        if (isSuS) {
         if(tipoDelObjeto.equalsIgnoreCase("Tema")){
             if(ctrl.chequearFavorito(tipoDelObjeto, nombreDelObjeto, nickCliente)){
                 error = (nombreDelObjeto+" ya esta en favoritos del cliente");
@@ -243,6 +247,11 @@ public class SvGuardarTLA extends HttpServlet {
         }
         
         request.getRequestDispatcher("JSP/GuardarTLA.jsp").forward(request, response); // Redirige al JSP
+        }else{
+            error = ("Necesitas una suscripcion vigente");
+            sesion.setAttribute("error", error);
+            request.getRequestDispatcher("JSP/GuardarTLA.jsp").forward(request, response);
+        }
     }
 
     /**

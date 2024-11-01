@@ -68,12 +68,11 @@
     <body>
         <div class="container">
             <%
-                String tipo = (String) request.getAttribute("tipo");
-                Object usuario = request.getAttribute("usuario");
+                String tipo = (String) request.getSession(false).getAttribute("tipo");
+                Object usuario = request.getSession(false).getAttribute("usuario");
                 
-                session.removeAttribute("usuario");
-                session.removeAttribute("tipo");
-                if ("cliente".equals(tipo)) {
+                
+                if (tipo.equals("cliente")) {
                     DataClienteAlt cliente = (DataClienteAlt) usuario;
                     %>
             <div class="perfil">
@@ -84,8 +83,8 @@
                 <p><strong>Correo</strong> <%= cliente.getCorreo()%></p>
                 <p><strong>Fecha de Nacimiento:</strong> <%= cliente.getFecha().getDia() + "/" + cliente.getFecha().getMes() + "/" + cliente.getFecha().getAnio() %></p>
                 <%if(!cliente.getDataCliSeguidor().isEmpty()){ %>
-                <h4>Seguidores</h4>
-                <ul>
+                    <ul>           
+                    <h4>Seguidores</h4>
                     <%
                         for (String seguidor : cliente.getDataCliSeguidor()) {
                     %>
@@ -96,7 +95,7 @@
                 }
                 boolean isSuS = false;
                 for(DataSuscripcion sus : cliente.getDataSuscripcion()){
-                    if(sus.getEstado().toString().equals("Vigente")){
+                    if(sus.getEstado().name().equals("Vigente")){
                         isSuS = true;
                     }
                 }
@@ -104,23 +103,25 @@
                 
                     if(!cliente.getDataCliSeguido().isEmpty()){
                 %>
-                <h4>Usuarios Seguidos</h4>
+                
                 <ul>
+                <li>Usuarios Seguidos</li>
                     <%
                         for (String seguido : cliente.getDataCliSeguido()) {
                     %>
                     <li><%= "cliente - " + seguido%></li>
                         <% } %>
                 </ul>
+                <%}%>
                 <ul>
-                    <%
+                    <%if(!cliente.getDataArtSeguido().isEmpty()){
                         for (String aseguido : cliente.getDataArtSeguido()) {
                     %>
                     <li><%= "artista - " + aseguido%></li>
                         <% } %>
                 </ul>
                 <%}%>
-                <h4>Listas de Reproducción</h4>
+                <li>Listas de Reproducción</li>
                 <!-- Mostrar Listas de Reproducción -->
                 <div class="listas-reproduccion">
                     <div style="display: flex; flex-wrap: wrap; margin-bottom: 10px;">
@@ -250,8 +251,8 @@
                     <%}%>
                 </div>
                     <%
-                    List<String> Gros = (List<String>)request.getAttribute("Generos");
-                    session.removeAttribute("Generos");
+                    List<String> Gros = (List<String>)request.getSession(false).getAttribute("Generos");
+                    
                     if (!cliente.getDataAlmFav().isEmpty()) {%>
                         <h4>Álbumes Favoritos</h4>
                                         <% if (Gros != null && !Gros.isEmpty()) { %>
@@ -396,7 +397,7 @@
                 </script>
                 <%}%>
                 </div>
-            <%} else if ("artista".equals(tipo)) { DataArtistaAlt artista = (DataArtistaAlt) usuario;%>
+            <%} else if (tipo.equals("artista")) { DataArtistaAlt artista = (DataArtistaAlt) usuario;%>
             <div class="perfil">
                 <h3><%= artista.getNickname()%></h3>
                 <!-- IMAGEN -->
@@ -454,8 +455,8 @@
             <h2>Artistas Disponibles</h2>
             <div class="container">
                 <%
-                    List<DataArtistaAlt> dataArtistas = (List<DataArtistaAlt>) request.getAttribute("dataArtistas");
-                    session.removeAttribute("dataArtistas");
+                    List<DataArtistaAlt> dataArtistas = (List<DataArtistaAlt>) request.getSession(false).getAttribute("dataArtistas");
+                    
                     if (dataArtistas != null && !dataArtistas.isEmpty()) {
                         for (DataArtistaAlt artista : dataArtistas) {
                             String artistaId = "artista-" + artista.getNickname().replace(" ", "_");
@@ -530,9 +531,9 @@
             <h2>Clientes Disponibles</h2>
             <div class="container">
                 <%
-                    List<DataClienteMin> dataClientes = (List<DataClienteMin>) request.getAttribute("DataClientes");
-                    session.removeAttribute("DataClientes");
-                    if (!dataClientes.isEmpty()) {
+                    List<DataClienteMin> dataClientes = (List<DataClienteMin>) request.getSession(false).getAttribute("DataClientes");
+                    
+                    if (!(dataClientes == null)) {
                         for (DataClienteMin client : dataClientes) {
                 %>
                 <div class="perfil">
@@ -548,7 +549,9 @@
                     </ul>
                 </div>
                         <%}
-                    }%>
+                    }
+                        
+                        %>
             </div>
              <%}%>
         </div>

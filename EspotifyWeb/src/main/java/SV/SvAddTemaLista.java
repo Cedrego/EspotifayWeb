@@ -42,21 +42,21 @@ public class SvAddTemaLista extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-            // Obtener la sesión y el nick del usuario logueado
-            HttpSession session = request.getSession(false);
-            String nickSesion = (String) session.getAttribute("NickSesion");
-            PrintWriter out = response.getWriter();
-            response.setContentType("text/html");
-            List<String> ExistParticular = new ArrayList();
-            out.write("<option value=''>Seleccionar Lista</option>");
-            for (String list : ctrl.obtenerNombresDeListPart(nickSesion)) {
-                ExistParticular.add(list);
-                out.write("<option value='" + list + "'>" + list + "</option>");
-            }  
-            if(ExistParticular.isEmpty()){
-                out.write("<option value=''>No hay Lista disponibles</option>");
-            }
+        throws ServletException, IOException {
+        // Obtener la sesión y el nick del usuario logueado
+        HttpSession session = request.getSession(false);
+        String nickSesion = (String) session.getAttribute("NickSesion");
+        PrintWriter out = response.getWriter();
+        response.setContentType("text/html");
+        List<String> ExistParticular = new ArrayList();
+        out.write("<option value=''>Seleccionar Lista</option>");
+        for (String list : ctrl.obtenerNombresDeListPart(nickSesion)) {
+            ExistParticular.add(list);
+            out.write("<option value='" + list + "'>" + list + "</option>");
+        }  
+        if(ExistParticular.isEmpty()){
+            out.write("<option value=''>No hay Lista disponibles</option>");
+        }
             
     }
 

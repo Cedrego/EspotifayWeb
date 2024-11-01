@@ -86,7 +86,9 @@
 </head>
 <body onload="actualizarLista()">
     <h1>Dejar de Seguir usuario</h1>
-
+    <c:if test="${not empty errorMessage}">
+        <p style="color: white;">${errorMessage}</p>
+    </c:if>
     <form id="seguimientoForm" action="${pageContext.request.contextPath}/SvDejarSeguir" method="POST">
         <br>
         <p><button type="button" onclick="actualizarLista()">Recargar seguidos</button></p>
