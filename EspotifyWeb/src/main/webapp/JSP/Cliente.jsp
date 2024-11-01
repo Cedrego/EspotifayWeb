@@ -175,8 +175,8 @@
                 <button onclick="loadContent('<%= request.getContextPath()%>/JSP/AddTemaLista.jsp')">Agregar Tema a Lista</button>
                 <button onclick="loadContent('<%= request.getContextPath()%>/JSP/PublicarLista.jsp')">Publicar Lista</button>
                 <button onclick="loadContent('<%= request.getContextPath()%>/JSP/GuardarTLA.jsp')">Guardar Tema/Lista/Álbum</button>
-                <button onclick="loadContent('<%= request.getContextPath()%>/JSP/Registro.jsp')">Contratar Suscripción</button>
-                <button onclick="loadContent('<%= request.getContextPath()%>/JSP/Registro.jsp')">Actualizar estado de Suscripción</button>
+                <button onclick="loadContent('<%= request.getContextPath()%>/JSP/SUS.jsp')">Contratar Suscripción</button>
+                <button onclick="loadContent('<%= request.getContextPath()%>/SvActualizarSUS')">Actualizar estado de Suscripción</button>
                 <button onclick="loadContent('<%= request.getContextPath()%>/JSP/Seguir.jsp')">Seguir Usuario (Cliente/Artista)</button>
                 <button onclick="loadContent('<%= request.getContextPath()%>/JSP/DejarSeguir.jsp')">Dejar de Seguir a Usuario (Cliente/Artista)</button>
                 <button onclick="loadContent('<%= request.getContextPath()%>/JSP/ConsultarAlbum.jsp')">Consulta de Álbum</button>
@@ -184,7 +184,6 @@
                 <button onclick="loadContent('<%= request.getContextPath()%>/JSP/Buscador.jsp')">Buscador Test</button>
                 <button onclick="window.location.href='<%= request.getContextPath() %>/SvCerrarSesion'">Cerrar Sesión</button>
             </div>
-
             <div style="flex: 1; background-color: #000; color: #FFF;">
                 <iframe id="dynamic-content" style="width: 100%; height: 100%; border: none;" src=""></iframe>
             </div>
