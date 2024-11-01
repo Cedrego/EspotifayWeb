@@ -4,9 +4,6 @@
  */
 package SV;
 
-import Capa_Presentacion.DataAlbum;
-import Capa_Presentacion.DataParticular;
-import Capa_Presentacion.DataPorDefecto;
 import Capa_Presentacion.DataTema;
 import Logica.Factory;
 import Logica.ICtrl;
@@ -53,26 +50,35 @@ public class SvBuscador extends HttpServlet {
 
         if (query != null && !query.trim().isEmpty()) {
             List<String> albums = ctrl.buscadorAlbum(query);
-            List<String> temas = ctrl.buscadorTema(query);
+            List<DataTema> temas = ctrl.buscadorTema(query);
             List<String> part = ctrl.buscadorPart(query);
             List<String> pd = ctrl.buscadorPD(query);
             try (PrintWriter out = response.getWriter()) {
-                out.println("<h3>Álbumes</h3>");
-                for (String album : albums) {
-                    out.println("<p>" + album + "</p>");
+                if(!albums.isEmpty()){
+                    out.println("<h3>Álbumes</h3>");
+                    for (String album : albums) {
+                        out.println("<p>" + album + "</p>");
+                    }
                 }
 
-                out.println("<h3>Temas</h3>");
-                for (String tema : temas) {
-                    out.println("<p>" + tema + "</p>");
+                
+                if (!temas.isEmpty()) {
+                    out.println("<h3>Temas</h3>");
+                    for (DataTema tema : temas) {
+                        out.println("<p onclick=\"reproducirTema('" + tema.getDireccion() + "')\">" + tema.getNombre() + "</p>");
+                        }
+                } else {
+                    out.println("<h3>No se encontraron temas para la búsqueda.</h3>");
                 }
-
-                out.println("<h3>Listas de Reproducción</h3>");
-                for (String parti : part) {
-                    out.println("<p>" + parti + "</p>");
-                }
-                for (String pordef : pd) {
-                    out.println("<p>" + pordef + "</p>");
+                
+                if(!part.isEmpty()||!pd.isEmpty()){
+                    out.println("<h3>Listas de Reproducción</h3>");
+                    for (String parti : part) {
+                        out.println("<p>" + parti + "</p>");
+                    }
+                    for (String pordef : pd) {
+                        out.println("<p>" + pordef + "</p>");
+                    }
                 }
             }
         }
