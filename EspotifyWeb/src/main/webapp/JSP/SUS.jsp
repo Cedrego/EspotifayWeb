@@ -63,7 +63,7 @@
                 String error = (String) session.getAttribute("error");
                 if (error != null) {
             %>
-            <div style="color: red;">
+            <div style="color: white;">
                 <strong>Error:</strong> <%= error%>
             </div>
             <%
@@ -84,7 +84,6 @@
             <p><label for="montos">Monto de su suscripción:</label>
                 <span id="montoLabel">Monto de su suscripción</span>
             </p>
-            <button onclick="window.location.href = '<%= request.getContextPath() %>/JSP/Cliente.jsp'">Cancelar</button>
             <button type="submit">Confirmar</button>
         </form>
         <script>

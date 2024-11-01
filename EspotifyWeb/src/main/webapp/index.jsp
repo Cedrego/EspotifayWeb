@@ -193,7 +193,7 @@
             <div class="content">
                 <!-- Left Sidebar -->
                 <div class="sidebar">
-                    <button onclick="loadContent('<%= request.getContextPath()%>/SvConsultarPerfil')">Consulta de Perfies</button>
+                    <button onclick="loadContent('<%= request.getContextPath()%>/SvConsultarPerfil')">Consulta de Perfiles</button>
                     <button onclick="loadContent('<%= request.getContextPath()%>/SvConsultarAlbum')">Consulta de Albumes</button>
                     <button onclick="loadContent('<%= request.getContextPath()%>/SvConsultarLista')">Consulta de Listas</button>
                 </div>
