@@ -1,6 +1,6 @@
 <%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@ page import="jakarta.servlet.http.HttpSession" %>
+<%@ page import="javax.servlet.http.HttpSession" %>
 <!DOCTYPE html>
 
 <html>
@@ -41,12 +41,54 @@
                 window.location.href = 'JSP/Cliente.jsp';
             }
         </script>
+        <style>
+            /* Fondo y estilos de texto */
+            body {
+                background-color: #000;
+                color: #FFF;
+                font-family: 'Poppins', sans-serif;
+            }
+
+            h1, label, p {
+                color: #FFF;
+            }
+
+            /* Estilo de select */
+            select {
+                background-color: #1a1a1a;
+                color: #FFF;
+                padding: 5px;
+                border: none;
+                border-radius: 5px;
+                font-size: 16px;
+                transition: box-shadow 0.3s ease;
+            }
+
+            select:hover, select:focus {
+                box-shadow: 0 0 10px #1db954, 0 0 20px #1db954, 0 0 30px #1db954;
+            }
+
+            /* Estilo de botones */
+            button {
+                background-color: #1db954;
+                color: black;
+                padding: 10px 15px;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                font-size: 16px;
+                transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            }
+
+            button:hover {
+                box-shadow: 0 0 10px #1db954, 0 0 20px #1db954, 0 0 30px #1db954;
+            }
+        </style>
     </head>
     <body> <!-- Ejecutar updateUsers al cargar la página -->
         <h1>Seguir usuario</h1>
 
         <form id="seguimientoForm" action="${pageContext.request.contextPath}/SvSeguir" method="POST">
-            <button type="button" onclick="redirectToCliente()">Volver</button>
             <br>
             <p><label for="tipoUsuario">Que tipo de usuario desea seguir?:</label>
             <select id="tipoUsuario" name="tipoUsuario" onchange="updateUsers()"  required>

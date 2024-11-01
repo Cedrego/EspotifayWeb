@@ -5,7 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@ page import="jakarta.servlet.http.HttpSession" %>
+<%@ page import="javax.servlet.http.HttpSession" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -56,7 +56,8 @@
             .logo {
                 width: 50px;
                 height: 50px;
-                background-image: url('images/logo.png'); /* Ruta del logo */
+                margin: 0 auto 20px;
+                background-image: url('<%= request.getContextPath() %>/images/logo.png');
                 background-size: cover;
                 background-position: center;
                 border-radius: 5px;
@@ -87,7 +88,7 @@
 
             .sidebar button {
                 background-color: #1db954; /* Color de los botones */
-                color: white;
+                color: black;
                 padding: 10px 15px; /* Relleno para botones */
                 border: none;
                 border-radius: 5px;
@@ -99,11 +100,6 @@
 
             .sidebar button:hover {
                 box-shadow: 0 0 10px #1db954, 0 0 20px #1db954, 0 0 30px #1db954;
-            }
-
-            .sidebar button:active {
-                background-color: #3e8e41; /* Color al hacer clic */
-                transform: translateY(2px);
             }
 
             /* Panel derecho para el reproductor de música */
@@ -137,10 +133,6 @@
                 transition: box-shadow 0.3s ease; /* Transición para el brillo */
             }
 
-            .controls button:hover {
-                box-shadow: 0 0 10px #1db954, 0 0 20px #1db954, 0 0 30px #1db954; /* Efecto de brillo verde */
-            }
-
             .slider {
                 -webkit-appearance: none;
                 width: 100%;
@@ -152,13 +144,22 @@
                 margin-top: 20px; /* Añadir un margen superior para separar el slider de los botones */
             }
         </style>
+        <script>
+            function loadContent(url) {
+                document.getElementById('dynamic-content').src = url;
+            }
+        </script>
+
     </head>
     <body>
         <div class="top-bar">
             <div class="logo-container">
-                <div class="logo"></div> <!-- Logo aquí -->
-                <div>Espotify</div>
+                <div class="logo-container">
+                    <div class="logo"></div> <!-- Logo aquí -->
+                    <div>Espotify</div>
+                </div>
             </div>
+            
             <div class="client-name">
                 <%
                     String nick = (String) session.getAttribute("NickSesion"); // Obtener el nick de la sesión
@@ -169,28 +170,37 @@
         <div class="content">
             <!-- Columna izquierda -->
             <div class="sidebar">
-                <button onclick="window.location.href = '<%= request.getContextPath()%>/SvConsultarPerfil'">Consulta de Perfil de Usuario</button>
-                <button onclick="window.location.href = '<%= request.getContextPath()%>/JSP/CrearLista.jsp'">Crear lista de reproducción</button>
-                <button onclick="window.location.href = '<%= request.getContextPath()%>/JSP/AddTemaLista.jsp'">Agregar Tema a Lista</button>
-                <button onclick="window.location.href = '<%= request.getContextPath()%>/JSP/PublicarLista.jsp'">Publicar Lista</button>
-                <button onclick="window.location.href = '<%= request.getContextPath()%>/JSP/GuardarTLA.jsp'">Guardar Tema/Lista/Álbum</button>
-                <button onclick="window.location.href = '<%= request.getContextPath()%>/JSP/SUS.jsp'">Contratar Suscripción</button>
-                <button onclick="window.location.href = '<%= request.getContextPath()%>/SvActualizarSUS'">Actualizar estado de Suscripción</button>
-                <button onclick="window.location.href = '<%= request.getContextPath()%>/JSP/Seguir.jsp'">Seguir Usuario (Cliente/Artista)</button>
-                <button onclick="window.location.href = '<%= request.getContextPath()%>/JSP/DejarSeguir.jsp'">Dejar de Seguir a Usuario (Cliente/Artista)</button>
-                <button onclick="window.location.href = '<%= request.getContextPath()%>/JSP/ConsultarAlbum.jsp'">Consulta de Álbum</button>
-                <button onclick="window.location.href = '<%= request.getContextPath()%>/JSP/ConsultarLista.jsp'">Consulta de Lista de Reproducción</button>
-                <button onclick="window.location.href = '<%= request.getContextPath()%>/JSP/Buscador.jsp'">Buscador Test</button>
-                <button onclick="window.location.href='<%= request.getContextPath()%>/SvCerrarSesion'">Cerrar Sesión</button>
+                <button onclick="loadContent('<%= request.getContextPath()%>/SvConsultarPerfil')">Consulta de Perfil de Usuario</button>
+                <button onclick="loadContent('<%= request.getContextPath()%>/JSP/CrearLista.jsp')">Crear lista de reproducción</button>
+                <button onclick="loadContent('<%= request.getContextPath()%>/JSP/AddTemaLista.jsp')">Agregar Tema a Lista</button>
+                <button onclick="loadContent('<%= request.getContextPath()%>/JSP/PublicarLista.jsp')">Publicar Lista</button>
+                <button onclick="loadContent('<%= request.getContextPath()%>/JSP/GuardarTLA.jsp')">Guardar Tema/Lista/Álbum</button>
+                <button onclick="loadContent('<%= request.getContextPath()%>/JSP/SUS.jsp')">Contratar Suscripción</button>
+                <button onclick="loadContent('<%= request.getContextPath()%>/SvActualizarSUS')">Actualizar estado de Suscripción</button>
+                <button onclick="loadContent('<%= request.getContextPath()%>/JSP/Seguir.jsp')">Seguir Usuario (Cliente/Artista)</button>
+                <button onclick="loadContent('<%= request.getContextPath()%>/JSP/DejarSeguir.jsp')">Dejar de Seguir a Usuario (Cliente/Artista)</button>
+                <button onclick="loadContent('<%= request.getContextPath()%>/JSP/ConsultarAlbum.jsp')">Consulta de Álbum</button>
+                <button onclick="loadContent('<%= request.getContextPath()%>/JSP/ConsultarLista.jsp')">Consulta de Lista de Reproducción</button>
+                <button onclick="loadContent('<%= request.getContextPath()%>/JSP/Buscador.jsp')">Buscador Test</button>
+                <button onclick="window.location.href='<%= request.getContextPath() %>/SvCerrarSesion'">Cerrar Sesión</button>
             </div>
-
-            <!-- Espacio vacío en el medio -->
-            <div style="flex: 1;"></div>
+            <div style="flex: 1; background-color: #000; color: #FFF;">
+                <iframe id="dynamic-content" style="width: 100%; height: 100%; border: none;" src=""></iframe>
+            </div>
 
             <!-- Panel derecho para el reproductor de música -->
             <div class="right-panel">
                 <div class="top-right-image" style="width: 50px; height: 50px; background-color: #FFF; border-radius: 50%; margin-bottom: 20px;"></div>
-                <div class="dynamic-image" style="width: 200px; height: 200px; background-color: #FFC107; border-radius: 10px; margin-bottom: 20px;"></div>
+                <div class="dynamic-image" style="
+                     width: 200px;
+                     height: 200px;
+                     background-image: url('<%= request.getContextPath()%>/images/noImageSong.png');
+                     background-size: cover;
+                     background-position: center;
+                     border-radius: 10px;
+                     margin-bottom: 20px;">
+                </div>
+
                 <div class="controls">
                     <button>&#9664;&#9664;</button> <!-- Previous button -->
                     <button>&#9654;</button> <!-- Play button -->

@@ -13,6 +13,49 @@
 <head>
     <title>Suscripciones</title>
 </head>
+<style>
+        /* Estilo de fondo y texto */
+        body {
+            background-color: #000;
+            color: #FFF;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        h1, label {
+            color: #FFF;
+        }
+
+        /* Estilo para select */
+        select {
+            background-color: #1a1a1a;
+            color: #FFF;
+            padding: 5px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: box-shadow 0.3s ease;
+        }
+
+        select:hover, select:focus {
+            box-shadow: 0 0 10px #1db954, 0 0 20px #1db954, 0 0 30px #1db954;
+        }
+
+        /* Estilo para botones */
+        button {
+            background-color: #1db954;
+            color: black;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        button:hover {
+            box-shadow: 0 0 10px #1db954, 0 0 20px #1db954, 0 0 30px #1db954;
+        }
+</style>
 <body>
     <h1>Suscripciones de Cliente</h1>
     <form action="${pageContext.request.contextPath}/SvActualizarSUS" method="post">

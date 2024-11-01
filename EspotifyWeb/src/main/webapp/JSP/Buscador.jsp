@@ -26,26 +26,48 @@
                 }
             }
         </script>
-        
         <style>
-            #resultados {
-                border: 1px solid #ccc;
-                max-height: 200px;
-                overflow-y: auto;
-                position: absolute;
-                background-color: white;
-                width: 100%;
-            }
+        /* Estilo de fondo y texto */
+        body {
+            background-color: #000;
+            color: #FFF;
+            font-family: 'Poppins', sans-serif;
+        }
 
-            #resultados p {
-                margin: 0;
-                padding: 8px;
-                cursor: pointer;
-            }
+        h1, label {
+            color: #FFF;
+        }
 
-            #resultados p:hover {
-                background-color: #f0f0f0;
-            }
+        /* Estilo para select */
+        select {
+            background-color: #1a1a1a;
+            color: #FFF;
+            padding: 5px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: box-shadow 0.3s ease;
+        }
+
+        select:hover, select:focus {
+            box-shadow: 0 0 10px #1db954, 0 0 20px #1db954, 0 0 30px #1db954;
+        }
+
+        /* Estilo para botones */
+        button {
+            background-color: #1db954;
+            color: black;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        button:hover {
+            box-shadow: 0 0 10px #1db954, 0 0 20px #1db954, 0 0 30px #1db954;
+        }
         </style>
     </head>
     <body>

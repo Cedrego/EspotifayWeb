@@ -9,47 +9,54 @@
 <%@page import="Capa_Presentacion.DataParticular"%>
 <%@page import="Capa_Presentacion.DataClienteAlt"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@ page import="jakarta.servlet.http.HttpSession" %>
+<%@ page import="javax.servlet.http.HttpSession" %>
 <!DOCTYPE html>
 <%@ page import="java.util.List" %>
 <html>
     <head>
         <title>Consultar Perfil de Usuario</title>
         <style>
-            body {
-                background-color: #f0f0f0; /* Fondo gris */
-                font-family: Arial, sans-serif;
-            }
-            .container {
-                padding: 20px;
-            }
-            .perfil {
-                background-color: #ffffff; /* Fondo blanco */
-                border: 1px solid #ccc;
-                border-radius: 5px;
-                padding: 20px;
-                margin: 10px 0;
-                box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            }
-            .perfil img {
-                max-width: 100px;
-                height: auto;
-                border-radius: 5px;
-            }
-            .listas-reproduccion ul, .temas ul {
-                list-style-type: none;
-                padding: 0;
-            }
-            .listas-reproduccion li, .temas li {
-                margin: 5px 0;
-            }
-            .album-panel {
-                display: none; /* Oculto por defecto */
-                background-color: #f9f9f9;
-                padding: 10px;
-                margin-top: 10px;
-                border: 1px solid #ccc;
-            }
+        /* Estilo de fondo y texto */
+        body {
+            background-color: #000;
+            color: #FFF;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        h1, label {
+            color: #FFF;
+        }
+
+        /* Estilo para select */
+        select {
+            background-color: #1a1a1a;
+            color: #FFF;
+            padding: 5px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: box-shadow 0.3s ease;
+        }
+
+        select:hover, select:focus {
+            box-shadow: 0 0 10px #1db954, 0 0 20px #1db954, 0 0 30px #1db954;
+        }
+
+        /* Estilo para botones */
+        button {
+            background-color: #1db954;
+            color: black;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        button:hover {
+            box-shadow: 0 0 10px #1db954, 0 0 20px #1db954, 0 0 30px #1db954;
+        }
         </style>
         <script>
             function toggleAlbum(albumId) {
@@ -68,7 +75,7 @@
                 session.removeAttribute("tipo");
                 if ("cliente".equals(tipo)) {
                     DataClienteAlt cliente = (DataClienteAlt) usuario;
-                    %><button onclick="window.location.href = '<%= request.getContextPath() %>/JSP/Cliente.jsp'">Home</button>
+                    %>
             <div class="perfil">
                 <h3><%= cliente.getNickname()%></h3>
                 <img src="<%= cliente.getNickname()%>">
@@ -390,7 +397,6 @@
                 <%}%>
                 </div>
             <%} else if ("artista".equals(tipo)) { DataArtistaAlt artista = (DataArtistaAlt) usuario;%>
-            <button onclick="window.location.href = '<%= request.getContextPath() %>/JSP/Artista.jsp'">Home</button>
             <div class="perfil">
                 <h3><%= artista.getNickname()%></h3>
                 <!-- IMAGEN -->
@@ -445,7 +451,6 @@
             <%
             } else { // Es Invitado  
             %>
-            <button onclick="window.location.href = '<%= request.getContextPath() %>/JSP/Invitado.jsp'">Home</button>
             <h2>Artistas Disponibles</h2>
             <div class="container">
                 <%

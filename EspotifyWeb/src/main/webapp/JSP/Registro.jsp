@@ -5,7 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@ page import="jakarta.servlet.http.HttpSession" %>
+<%@ page import="javax.servlet.http.HttpSession" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -109,7 +109,7 @@
 
             /* Error message */
             .error-message {
-                color: red;
+                color: white;
                 margin-top: 10px;
             }
         </style>
