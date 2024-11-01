@@ -18,54 +18,24 @@
                 padding: 0;
                 box-sizing: border-box;
             }
+
             body {
-                background-color: #000; /* Cambiar a negro para eliminar el borde gris */
-                color: #FFF;
-                font-family: 'Biski', sans-serif; /* fuente Biski */
-                font-weight: bold; /* negrita */
-                font-size: 24px;
+                background-color: #333; /* Fondo general */
+                color: #FFF; /* Color de texto */
+                font-family: 'Poppins', sans-serif; /* Fuente */
                 display: flex;
-                justify-content: center;
-                align-items: center;
-                height: 100vh;
+                flex-direction: column;
+                height: 100vh; /* Altura completa */
             }
 
+            /* Contenedor principal */
             .container {
                 display: flex;
                 flex-direction: column;
-                width: 100%; /* Cambiar a 100% para ocupar todo el ancho */
-                height: 100vh; /* Mantener el alto completo de la pantalla */
-                background-color: #222; /* Mantener el fondo del contenedor */
-                border-radius: 0; /* Eliminar el borde redondeado */
-                overflow: hidden;
-            }
-
-            .content {
-                display: flex;
                 flex: 1;
-                margin: 0; /* Eliminar cualquier margen */
-                padding: 0; /* Eliminar cualquier padding */
             }
 
-            .sidebar {
-                width: 15%;
-                background-color: #1a1a1a;
-                padding: 20px; /* Puedes ajustar este padding según sea necesario */
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                gap: 15px;
-            }
-
-            .right-panel {
-                width: 25%;
-                background-color: #1a1a1a;
-                padding: 20px; /* Puedes ajustar este padding según sea necesario */
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-            }
-            /* Top bar */
+            /* Barra superior */
             .top-bar {
                 display: flex;
                 align-items: center;
@@ -76,7 +46,23 @@
                 font-size: 24px;
                 font-weight: bold;
             }
+            .top-bar-buttons button {
+                background-color: #1db954; /* Verde */
+                color: black; /* Texto negro */
+                font-weight: bold; /* Texto en negrita */
+                padding: 10px 15px; /* Espaciado */
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                font-size: 16px;
+                transition: box-shadow 0.3s ease, background-color 0.3s ease;
+            }
 
+            /* Efecto de brillo al pasar el mouse */
+            .top-bar-buttons button:hover {
+                box-shadow: 0 0 10px #1db954, 0 0 20px #1db954, 0 0 30px #1db954;
+            }
+            
             .top-bar .logo-container {
                 display: flex;
                 align-items: center;
@@ -87,82 +73,62 @@
                 width: 50px;
                 height: 50px;
                 margin: 0 auto 20px;
-                background-image: url('images/logo.png');
+                background-image: url('<%= request.getContextPath() %>/images/logo.png');
                 background-size: cover;
                 background-position: center;
                 border-radius: 5px;
             }
 
-            .top-bar-buttons {
-                display: flex;
-                gap: 10px;
+            .client-name {
+                color: #FFF; /* Color del nombre del cliente */
+                font-size: 20px; /* Tamaño del nombre */
             }
 
-            .top-bar button {
-                background-color: #1db954;
-                color: #000;
-                border: none;
-                border-radius: 5px;
-                padding: 5px 10px;
-                cursor: pointer;
-                font-weight: bold;
-            }
-            
-            .top-bar button:hover {
-                box-shadow: 0 0 10px #1db954, 0 0 20px #1db954, 0 0 30px #1db954;
-            }
-
-            /* Content container */
+            /* Contenido principal */
             .content {
                 display: flex;
                 flex: 1;
+                background-color: #000; /* Parte central en negro */
             }
 
-            /* Oval buttons on the sidebar */
+            /* Columna izquierda para botones */
+            .sidebar {
+                width: 20%;
+                background-color: #1a1a1a; /* Fondo de la barra lateral */
+                padding: 20px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 15px; /* Espacio entre botones */
+            }
+
             .sidebar button {
-                background-color: #1db954;
+                background-color: #1db954; /* Color de los botones */
+                color: black;
+                padding: 10px 15px; /* Relleno para botones */
                 border: none;
-                border-radius: 20px;
-                width: 40px;
-                height: 40px;
-                color: #000;
+                border-radius: 5px;
                 cursor: pointer;
-                font-weight: bold;
+                font-size: 16px; /* Tamaño de fuente */
                 transition: background-color 0.3s ease;
+                width: 80%; /* Ancho fijo para los botones */
             }
 
             .sidebar button:hover {
                 box-shadow: 0 0 10px #1db954, 0 0 20px #1db954, 0 0 30px #1db954;
             }
 
-            /* Main display area */
-            .main-content {
-                flex: 1;
-                background-color: #000;
+            /* Panel derecho para el reproductor de música */
+            .right-panel {
+                width: 30%; /* Ancho del panel derecho */
+                background-color: #1a1a1a; /* Fondo del panel */
+                padding: 20px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
             }
 
-            /* Top right static image */
-            .top-right-image {
-                width: 50px;
-                height: 50px;
-                background-color: #FFF;
-                border-radius: 50%;
-                margin-bottom: 20px;
-            }
-
-            /* Dynamic image area - make it square */
-            .dynamic-image {
-                width: 80%;
-                height: 0;
-                padding-bottom: 80%; /* Makes it square based on width */
-                background-color: #FFC107;
-                border-radius: 10px;
-                margin-bottom: 20px;
-                background-size: cover;
-                background-position: center;
-            }
-
-            /* Control buttons and slider */
+            /* Espaciado para los controles del reproductor */
             .controls {
                 display: flex;
                 align-items: center;
@@ -170,46 +136,36 @@
                 margin-top: 20px;
             }
 
+            /* Botones en el panel derecho */
             .controls button {
                 background-color: #FFF;
+                color: #000; /* Texto en negro */
                 border: none;
                 border-radius: 50%;
                 width: 40px;
                 height: 40px;
                 cursor: pointer;
                 font-size: 18px;
+                transition: box-shadow 0.3s ease; /* Transición para el brillo */
             }
 
             .slider {
                 -webkit-appearance: none;
                 width: 100%;
                 height: 5px;
-                background: #333; /* Color de fondo del slider */
+                background: #333;
                 outline: none;
-                opacity: 1;
+                opacity: 0.7;
                 transition: opacity .2s;
                 margin-top: 20px; /* Añadir un margen superior para separar el slider de los botones */
             }
-
-            /* Para estilizar la parte izquierda del slider */
-            .slider::-webkit-slider-thumb {
-                -webkit-appearance: none;
-                appearance: none;
-                width: 20px; /* Ancho del "thumb" */
-                height: 20px; /* Alto del "thumb" */
-                background: #FFF; /* Color del "thumb" */
-                border-radius: 50%; /* Hacer el "thumb" redondeado */
-                cursor: pointer;
-            }
-
-            /* Estilo para la parte izquierda verde */
-            .slider::-webkit-slider-runnable-track {
-                background: linear-gradient(to right, #1db954 0%, #1db954 var(--value), #333 var(--value), #333 100%);
-                height: 5px; /* Altura del track */
-            }
-
         </style>
-            <script>
+        <script>
+            function loadContent(url) {
+                document.getElementById('dynamic-content').src = url;
+            }
+        </script>
+        <script>
             function redirect(option) {
                 if (option === "Iniciar Sesion") {
                     window.location.href = "JSP/Usuario.jsp";  // Ruta actualizada
@@ -237,31 +193,35 @@
             <div class="content">
                 <!-- Left Sidebar -->
                 <div class="sidebar">
-                    <button onclick="redirect('Button1')">1</button>
-                    <button onclick="redirect('Button2')">2</button>
-                    <button onclick="redirect('Button3')">3</button>
-                    <button onclick="redirect('Button4')">4</button>
+                    <button onclick="loadContent('<%= request.getContextPath()%>/SvConsultarPerfil')">Consulta de Perfies</button>
+                    <button onclick="loadContent('<%= request.getContextPath()%>/SvConsultarAlbum')">Consulta de Albumes</button>
+                    <button onclick="loadContent('<%= request.getContextPath()%>/SvConsultarLista')">Consulta de Listas</button>
                 </div>
 
-                <!-- Main Content Area -->
-                <div class="main-content"></div>
+                <div style="flex: 1; background-color: #000; color: #FFF;">
+                    <iframe id="dynamic-content" style="width: 100%; height: 100%; border: none;" src=""></iframe>
+                </div>
 
                 <!-- Right Panel with Controls and Image -->
                 <div class="right-panel">
-                    <!-- Static top-right image -->
-                    <div class="top-right-image"></div>
-
-                    <!-- Dynamic image area (Square) -->
-                    <div id="dynamic-image" class="dynamic-image"></div>
-
-                    <!-- Controls -->
-                    <div class="controls">
-                        <button>&#9664;&#9664;</button> <!-- Previous button -->
-                        <button>&#9654;</button> <!-- Play button -->
-                        <button>&#9654;&#9654;</button> <!-- Next button -->
-                    </div>
-                    <input type="range" min="0" max="100" value="50" class="slider" oninput="this.style.setProperty('--value', this.value + '%');">
+                <div class="top-right-image" style="width: 50px; height: 50px; background-color: #FFF; border-radius: 50%; margin-bottom: 20px;"></div>
+                <div class="dynamic-image" style="
+                     width: 200px;
+                     height: 200px;
+                     background-image: url('<%= request.getContextPath()%>/images/noImageSong.png');
+                     background-size: cover;
+                     background-position: center;
+                     border-radius: 10px;
+                     margin-bottom: 20px;">
                 </div>
+
+                <div class="controls">
+                    <button>&#9664;&#9664;</button> <!-- Previous button -->
+                    <button>&#9654;</button> <!-- Play button -->
+                    <button>&#9654;&#9654;</button> <!-- Next button -->
+                </div>
+                <input type="range" min="0" max="100" value="50" class="slider">
+            </div>
             </div>
         </div>
 

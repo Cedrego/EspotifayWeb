@@ -16,39 +16,74 @@
     <head>
         <title>Consultar Perfil de Usuario</title>
         <style>
+            /* Estilo del cuerpo */
             body {
-                background-color: #f0f0f0; /* Fondo gris */
-                font-family: Arial, sans-serif;
+                background-color: #000;
+                font-family: 'Poppins', sans-serif;
+                color: #FFF;
             }
+
+            /* Contenedor principal */
             .container {
                 padding: 20px;
             }
+
+            /* Estilo de los perfiles */
             .perfil {
-                background-color: #ffffff; /* Fondo blanco */
-                border: 1px solid #ccc;
-                border-radius: 5px;
+                background-color: #000;
                 padding: 20px;
                 margin: 10px 0;
-                box-shadow: 0 2px 5px rgba(0,0,0,0.1);
             }
+
+            /* Estilo de imágenes de perfil */
             .perfil img {
                 max-width: 100px;
                 height: auto;
                 border-radius: 5px;
             }
+
+            /* Listas de reproducción y temas */
             .listas-reproduccion ul, .temas ul {
                 list-style-type: none;
                 padding: 0;
             }
+
+            /* Elementos de las listas */
             .listas-reproduccion li, .temas li {
                 margin: 5px 0;
             }
+
+            /* Panel de álbumes */
             .album-panel {
-                display: none; /* Oculto por defecto */
-                background-color: #f9f9f9;
+                display: none;
+                background-color: #000;
                 padding: 10px;
                 margin-top: 10px;
-                border: 1px solid #ccc;
+                border: 1px solid #1db954;
+                border-radius: 5px;
+            }
+
+            /* Botones de interacción */
+            button {
+                background-color: #1db954;
+                color: black;
+                padding: 10px;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                font-size: 14px;
+                transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            }
+
+            /* Efecto de hover en botones */
+            button:hover {
+                box-shadow: 0 0 10px #1db954, 0 0 20px #1db954, 0 0 30px #1db954;
+            }
+
+            /* Estilo del audio */
+            audio {
+                width: 100%;
+                margin-top: 10px;
             }
         </style>
         <script>
@@ -68,7 +103,7 @@
                 session.removeAttribute("tipo");
                 if ("cliente".equals(tipo)) {
                     DataClienteAlt cliente = (DataClienteAlt) usuario;
-                    %><button onclick="window.location.href = '<%= request.getContextPath() %>/JSP/Cliente.jsp'">Home</button>
+                    %>
             <div class="perfil">
                 <h3><%= cliente.getNickname()%></h3>
                 <img src="<%= cliente.getNickname()%>">
@@ -390,7 +425,6 @@
                 <%}%>
                 </div>
             <%} else if ("artista".equals(tipo)) { DataArtistaAlt artista = (DataArtistaAlt) usuario;%>
-            <button onclick="window.location.href = '<%= request.getContextPath() %>/JSP/Artista.jsp'">Home</button>
             <div class="perfil">
                 <h3><%= artista.getNickname()%></h3>
                 <!-- IMAGEN -->
@@ -445,7 +479,6 @@
             <%
             } else { // Es Invitado  
             %>
-            <button onclick="window.location.href = '<%= request.getContextPath() %>/JSP/Invitado.jsp'">Home</button>
             <h2>Artistas Disponibles</h2>
             <div class="container">
                 <%

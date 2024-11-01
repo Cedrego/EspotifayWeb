@@ -170,7 +170,7 @@
         <div class="content">
             <!-- Columna izquierda -->
             <div class="sidebar">
-                <button onclick="loadContent('<%= request.getContextPath()%>/SvConsultrPerfil')">Consulta de Perfil de Usuario</button>
+                <button onclick="loadContent('<%= request.getContextPath()%>/SvConsultarPerfil')">Consulta de Perfil de Usuario</button>
                 <button onclick="loadContent('<%= request.getContextPath()%>/JSP/CrearLista.jsp')">Crear lista de reproducción</button>
                 <button onclick="loadContent('<%= request.getContextPath()%>/JSP/AddTemaLista.jsp')">Agregar Tema a Lista</button>
                 <button onclick="loadContent('<%= request.getContextPath()%>/JSP/PublicarLista.jsp')">Publicar Lista</button>
@@ -192,7 +192,16 @@
             <!-- Panel derecho para el reproductor de música -->
             <div class="right-panel">
                 <div class="top-right-image" style="width: 50px; height: 50px; background-color: #FFF; border-radius: 50%; margin-bottom: 20px;"></div>
-                <div class="dynamic-image" style="width: 200px; height: 200px; background-color: #FFC107; border-radius: 10px; margin-bottom: 20px;"></div>
+                <div class="dynamic-image" style="
+                     width: 200px;
+                     height: 200px;
+                     background-image: url('<%= request.getContextPath()%>/images/noImageSong.png');
+                     background-size: cover;
+                     background-position: center;
+                     border-radius: 10px;
+                     margin-bottom: 20px;">
+                </div>
+
                 <div class="controls">
                     <button>&#9664;&#9664;</button> <!-- Previous button -->
                     <button>&#9654;</button> <!-- Play button -->
