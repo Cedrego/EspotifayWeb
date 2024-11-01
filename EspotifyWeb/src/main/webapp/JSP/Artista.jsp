@@ -57,7 +57,7 @@
                 width: 50px;
                 height: 50px;
                 margin: 0 auto 20px;
-                background-image: url('<%= request.getContextPath()%>/images/logo.png');
+                background-image: url('<%= request.getContextPath() %>/images/logo.png');
                 background-size: cover;
                 background-position: center;
                 border-radius: 5px;
@@ -148,30 +148,6 @@
             function loadContent(url) {
                 document.getElementById('dynamic-content').src = url;
             }
-
-        function buscar() {
-            let query = document.getElementById("query").value;
-            if (query.length > 1) { // Ejecuta la búsqueda solo si hay al menos 2 caracteres
-                fetch("<%= request.getContextPath()%>/SvBuscador?query=" + query)
-                    .then(response => response.text())
-                    .then(data => {
-                        document.getElementById("resultados").innerHTML = data;
-                    })
-                    .catch(error => console.error("Error en búsqueda:", error));
-            } else {
-                document.getElementById("resultados").innerHTML = ""; // Limpia si no hay consulta
-            }
-        }
-            
-        function buscarResultados() {
-        const query = document.getElementById('query').value;
-        if (query.length > 1) { // Ejecuta la búsqueda solo si hay al menos 2 caracteres
-            const url = "<%= request.getContextPath()%>/SvBuscador?query=" + encodeURIComponent(query);
-            loadContent(url); // Utiliza loadContent para cargar el URL en el iframe
-        } else {
-            // Si la consulta es corta, limpia el iframe
-            loadContent("");
-        }
         </script>
     </head>
     <body>
@@ -184,13 +160,6 @@
                         <div>Espotify</div>
                     </div>
                 </div>
-                <form onsubmit="buscarResultados(); return false;" style="display: flex; align-items: center; gap: 10px;">
-                    <input type="text" id="query" name="query" placeholder="Buscar álbumes, temas, listas de reproducción" 
-                           style="width: 300px; padding: 10px; border-radius: 5px; border: none; font-size: 16px; color: #000; background-color: #FFF;">
-                    <button type="submit" style="background-color: #1db954; color: black; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; font-weight: bold; transition: box-shadow 0.3s ease;">
-                        Buscar
-                    </button>
-                </form>
                 <div class="client-name">
                     <%
                         String nick = (String) session.getAttribute("NickSesion"); // Obtener el nick de la sesión
