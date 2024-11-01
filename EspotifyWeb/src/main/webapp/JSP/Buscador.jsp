@@ -25,6 +25,14 @@
                     document.getElementById("resultados").innerHTML = ""; //limpio si no hay consulta
                 }
             }
+            
+            
+            // Función para reproducir un tema cuando se hace clic
+            function reproducirTema(direccion) {
+                const audio = document.getElementById("audioPlayer");
+                audio.src = direccion;
+                audio.play();
+            }
         </script>
         
         <style>
@@ -57,6 +65,9 @@
             <button type="submit">Buscar</button>
         </form>
 
-
+            <!-- Reproductor de audio -->
+        <!--<audio id="audioPlayer" controls style="display:block; margin-top:20px;"> -->
+            <!--Tu navegador no soporta el elemento de audio. -->
+        <!--</audio> -->
     </body>
 </html>

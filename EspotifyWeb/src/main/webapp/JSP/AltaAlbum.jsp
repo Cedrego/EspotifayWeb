@@ -1,6 +1,6 @@
 <%-- 
     Document   : AltaAlbum
-    Created on : 21 oct. 2024, 7:23:39 p. m.
+    Created on : 21 oct. 2024, 7:23:39 p. m.
     Author     : Franco
 --%>
 
@@ -144,7 +144,7 @@
             <select id="anioCreacion" name="anio" required>
                 <% for (int anioCreacion = 2024; anioCreacion > 1950; anioCreacion--) {%>
                     <option value="<%= anioCreacion %>"><%= anioCreacion %></option>
-                <% }%>
+                <% }%>
             </select><br>
             
             

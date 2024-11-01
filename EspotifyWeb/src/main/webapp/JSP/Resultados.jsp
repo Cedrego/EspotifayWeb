@@ -13,7 +13,7 @@
     ICtrl ctrl = factory.getICtrl();
 
     List<String> albums = ctrl.buscadorAlbum(query);
-    List<String> temas = ctrl.buscadorTema(query);
+    List<DataTema> temas = ctrl.buscadorTema(query);
     List<String> part = ctrl.buscadorPart(query);
     List<String> pd = ctrl.buscadorPD(query);
 %>
@@ -33,8 +33,8 @@
     <% } %>
 
     <h3>Temas</h3>
-    <% for (String tema : temas) { %>
-        <p><%= tema %></p>
+    <% for (DataTema tema : temas) { %>
+        <p><%=tema.getNombre()%></p>
     <% } %>
 
     <h3>Listas de Reproduccion</h3>
