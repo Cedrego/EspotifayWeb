@@ -4,6 +4,9 @@
  */
 package SV;
 
+import Capa_Presentacion.DataClienteAlt;
+import Logica.Factory;
+import Logica.ICtrl;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -12,14 +15,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
+import java.util.Map;
 /**
  *
- * @author User
+ * @author tecnologo
  */
-@WebServlet(name = "SvCerrarSesion", urlPatterns = {"/SvCerrarSesion"})
-public class SvCerrarSesion extends HttpServlet {
-
+@WebServlet(name = "SvActualizarSUS", urlPatterns = {"/SvActualizarSUS"})
+public class SvActualizarSUS extends HttpServlet {
+    Factory factory = Factory.getInstance();
+    ICtrl ctrl = factory.getICtrl();
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -31,20 +35,7 @@ public class SvCerrarSesion extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet SvCerrarSesion</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet SvCerrarSesion at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
-    }
+            }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -53,20 +44,19 @@ public class SvCerrarSesion extends HttpServlet {
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @throws IOException if an I/O error occursActualizarSUS
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // Obtener la sesión actual
-        HttpSession session = request.getSession(false); // No crear una nueva sesión
-        if (session != null) {
-            // Invalidar la sesión
-            session.invalidate();
-        }
-        // Redirigir a index.jsp
-        response.sendRedirect(request.getContextPath() + "/index.jsp");
+            HttpSession sesion = request.getSession(false);
+            String NickUsu = (String) sesion.getAttribute("NickSesion");
+            // Obtener cliente y sus suscripciones
+            DataClienteAlt cliente = ctrl.getDataClienteAlt(NickUsu);
+            request.setAttribute("suscripciones", cliente.getDataSuscripcion());
 
+            // Reenviar a la página JSP
+            request.getRequestDispatcher("JSP/ActualizarSUS.jsp").forward(request, response);
     }
 
     /**
@@ -81,6 +71,23 @@ public class SvCerrarSesion extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
+        Map<String, String[]> parameterMap = request.getParameterMap();
+
+        // Iterar sobre las suscripciones y actualizar los estados
+        for (String paramName : parameterMap.keySet()) {
+            if (paramName.startsWith("nuevoEstado_")) {
+                Long suscripcionId = Long.parseLong(paramName.split("_")[1]);
+                String nuevoEstado = request.getParameter(paramName);
+
+                // Solo actualizar si el nuevo estado no es vacío
+                if (!"".equals(nuevoEstado)) {
+                    // Llamada al servicio para actualizar el estado
+                    ctrl.actualizarEstado(suscripcionId, nuevoEstado);
+                }
+            }
+        }
+        // Redirige de vuelta a la página de suscripciones
+        request.getRequestDispatcher("JSP/Cliente.jsp").forward(request, response);
     }
 
     /**

@@ -13,13 +13,13 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.MultipartConfig;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -90,14 +90,6 @@ public class SvCrearLista extends HttpServlet {
            misesion.setAttribute("error", error);
            request.getRequestDispatcher("JSP/CrearLista.jsp").forward(request, response); // Redirige al JSP
         }
-        /* Obtengo el archivo de imagen
-        Part filePart = request.getPart("imagen"); // Obtengo la parte del archivo
-        InputStream inputStream = null;
-        if (filePart != null) {
-             Obtengo el InputStream de la imagen subida
-            inputStream = filePart.getInputStream();
-        }
-        */
         if(ctrl.ExisListPartEnCliente(NombreLista, nickSesion)){//Return false si es == a null osea no existe  
           String error = "ERROR: Ya existe una lista con ese nombre";
            misesion.setAttribute("error", error);

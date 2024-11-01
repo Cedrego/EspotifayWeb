@@ -6,6 +6,7 @@ package SV;
 
 import Capa_Presentacion.DataArtistaAlt;
 import Capa_Presentacion.DataClienteAlt;
+import Capa_Presentacion.DataSuscripcion;
 import Logica.Factory;
 import Logica.ICtrl;
 import java.io.IOException;
@@ -25,82 +26,39 @@ import jakarta.servlet.http.HttpSession;
  */
 @WebServlet(name = "SvConsultarPerfil", urlPatterns = {"/SvConsultarPerfil"})
 public class SvConsultarPerfil extends HttpServlet {
-    Factory fabric = Factory.getInstance();
-    ICtrl ctrl = fabric.getICtrl();
+     Factory factory = Factory.getInstance();
+    ICtrl ctrl = factory.getICtrl();
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        
-    }
-
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession misesion = request.getSession(false); // No crear una nueva si no existe
-        String nU = (String) misesion.getAttribute("NickSesion");
+        HttpSession sesion = request.getSession(false);
+        String NickUsu = (String) sesion.getAttribute("NickSesion");
 
-        if (ctrl.obtenerNombresDeCliente().contains(nU)) { // Es Cliente
-            DataClienteAlt cliente = ctrl.getDataClienteAlt(nU);
-            request.setAttribute("usuario", cliente);
-            request.setAttribute("tipo", "cliente");
-        } else if (ctrl.obtenerNombresDeArtista().contains(nU)) { // Es Artista
-            DataArtistaAlt artista = ctrl.getDataArtistaAlt(nU);
-            request.setAttribute("usuario", artista);
-            request.setAttribute("tipo", "artista");
-        } else { // Es Invitado
-            List<DataArtistaAlt> dataArtistas = new ArrayList();
-            for (String nA : ctrl.obtenerNombresDeArtista()) {
-                dataArtistas.add(ctrl.getDataArtistaAlt(nA));
+        String tipo = (String) request.getAttribute("tipo");
+        Object usuario = request.getAttribute("usuario");
+        if (ctrl.obtenerNombresDeCliente().contains(NickUsu)) {
+            sesion.setAttribute("usuario",ctrl.getDataClienteAlt(NickUsu));
+            sesion.setAttribute("tipo","cliente");
+        }else if (ctrl.obtenerNombresDeArtista().contains(NickUsu)) {
+            sesion.setAttribute("usuario",ctrl.getDataArtistaAlt(NickUsu));
+            sesion.setAttribute("tipo","artista");
+        }else{
+            sesion.setAttribute("tipo","");
+            List<DataArtistaAlt> DTAA = new ArrayList();
+            for(String NA : ctrl.obtenerNombresDeArtista()){
+                DTAA.add(ctrl.getDataArtistaAlt(NA));
             }
-            request.setAttribute("dataArtistas", dataArtistas);
-            request.setAttribute("DataClientes", ctrl.getDataClienteMin());
+            request.setAttribute("dataArtistas",DTAA);
+            request.setAttribute("DataClientes",ctrl.getDataClienteMin());
         }
-        request.setAttribute("Generos",ctrl.obtenerNombresDeGeneros());
+        // Reenviar a la página JSP
         request.getRequestDispatcher("JSP/ConsultaPerfil.jsp").forward(request, response);
     }
 
-
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        processRequest(request, response);
     }
-
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
-
 }

@@ -5,7 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@ page import="jakarta.servlet.http.HttpSession" %>
+<%@ page import="javax.servlet.http.HttpSession" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -56,7 +56,8 @@
             .logo {
                 width: 50px;
                 height: 50px;
-                background-image: url('images/logo.png'); /* Ruta del logo */
+                margin: 0 auto 20px;
+                background-image: url('<%= request.getContextPath() %>/images/logo.png');
                 background-size: cover;
                 background-position: center;
                 border-radius: 5px;
@@ -72,7 +73,6 @@
                 display: flex;
                 flex: 1;
                 background-color: #000; /* Parte central en negro */
-                justify-content: space-between; /* Asegúrate de que los paneles se distribuyan */
             }
 
             /* Columna izquierda para botones */
@@ -88,7 +88,7 @@
 
             .sidebar button {
                 background-color: #1db954; /* Color de los botones */
-                color: white;
+                color: black;
                 padding: 10px 15px; /* Relleno para botones */
                 border: none;
                 border-radius: 5px;
@@ -99,12 +99,7 @@
             }
 
             .sidebar button:hover {
-                background-color: #45a049; /* Color al pasar el mouse */
-            }
-
-            .sidebar button:active {
-                background-color: #3e8e41; /* Color al hacer clic */
-                transform: translateY(2px);
+                box-shadow: 0 0 10px #1db954, 0 0 20px #1db954, 0 0 30px #1db954;
             }
 
             /* Panel derecho para el reproductor de música */
@@ -115,7 +110,6 @@
                 display: flex;
                 flex-direction: column;
                 align-items: center;
-                justify-content: flex-start; /* Asegúrate de que los controles estén al inicio */
             }
 
             /* Espaciado para los controles del reproductor */
@@ -126,14 +120,17 @@
                 margin-top: 20px;
             }
 
+            /* Botones en el panel derecho */
             .controls button {
                 background-color: #FFF;
+                color: #000; /* Texto en negro */
                 border: none;
                 border-radius: 50%;
                 width: 40px;
                 height: 40px;
                 cursor: pointer;
                 font-size: 18px;
+                transition: box-shadow 0.3s ease; /* Transición para el brillo */
             }
 
             .slider {
@@ -147,14 +144,21 @@
                 margin-top: 20px; /* Añadir un margen superior para separar el slider de los botones */
             }
         </style>
+        <script>
+            function loadContent(url) {
+                document.getElementById('dynamic-content').src = url;
+            }
+        </script>
     </head>
     <body>
         <div class="container">
             <!-- Top Bar -->
             <div class="top-bar">
                 <div class="logo-container">
-                    <div class="logo"></div> <!-- Logo aquí -->
-                    <div>Espotify</div>
+                    <div class="logo-container">
+                        <div class="logo"></div> <!-- Logo aquí -->
+                        <div>Espotify</div>
+                    </div>
                 </div>
                 <div class="client-name">
                     <%
@@ -168,27 +172,34 @@
             <div class="content">
                 <!-- Left Sidebar -->
                 <div class="sidebar">
-                    <button onclick="window.location.href = '<%= request.getContextPath() %>/JSP/AltaAlbum.jsp'">Alta de Álbum</button>
-                    <button onclick="window.location.href = '<%= request.getContextPath() %>/SvConsultarPerfil'">Consulta de Perfil de Usuario</button>
+                    <button onclick="loadContent('<%= request.getContextPath()%>/JSP/AltaAlbum.jsp')">Alta de Álbum</button>
+                    <button onclick="loadContent('<%= request.getContextPath()%>/SvConsultarPerfil')">Consulta de Perfil de Usuario</button>
                     <button onclick="window.location.href='<%= request.getContextPath() %>/SvCerrarSesion'">Cerrar Sesión</button>
                 </div>
 
-                <!-- Main Content Area -->
-                <div class="main-content">
-                    <!-- Placeholder para contenido principal -->
+                <div style="flex: 1; background-color: #000; color: #FFF;">
+                    <iframe id="dynamic-content" style="width: 100%; height: 100%; border: none;" src=""></iframe>
                 </div>
 
                 <!-- Right Panel with Controls -->
                 <div class="right-panel">
                 <div class="top-right-image" style="width: 50px; height: 50px; background-color: #FFF; border-radius: 50%; margin-bottom: 20px;"></div>
-                <div class="dynamic-image" style="width: 200px; height: 200px; background-color: #FFC107; border-radius: 10px; margin-bottom: 20px;"></div>
+                <div class="dynamic-image" style="
+                     width: 200px;
+                     height: 200px;
+                     background-image: url('<%= request.getContextPath()%>/images/noImageSong.png');
+                     background-size: cover;
+                     background-position: center;
+                     border-radius: 10px;
+                     margin-bottom: 20px;">
+                </div>
+
                 <div class="controls">
                     <button>&#9664;&#9664;</button> <!-- Previous button -->
                     <button>&#9654;</button> <!-- Play button -->
                     <button>&#9654;&#9654;</button> <!-- Next button -->
                 </div>
                 <input type="range" min="0" max="100" value="50" class="slider">
-            </div>
             </div>
         </div>
     </body>
