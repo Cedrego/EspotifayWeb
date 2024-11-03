@@ -164,6 +164,16 @@
             function loadContent(url) {
                 document.getElementById('dynamic-content').src = url;
             }
+            function buscarResultados() {
+                const query = document.getElementById('query').value;
+                if (query.length > 1) { // Ejecuta la búsqueda solo si hay al menos 2 caracteres
+                    const url = "<%= request.getContextPath()%>/SvBuscador?query=" + encodeURIComponent(query);
+                    loadContent(url); // Utiliza loadContent para cargar el URL en el iframe
+                } else {
+                    // Si la consulta es corta, limpia el iframe
+                    loadContent("");
+                }
+            }
         </script>
         <script>
             function redirect(option) {
@@ -176,18 +186,25 @@
         </script>
     </head>
     <body>
-        <div class="container">
+        
             <!-- Top Bar -->
-            <div class="top-bar">
+        <div class="top-bar">
                 <div class="logo-container">
                     <div class="logo"></div> <!-- Logo aquí -->
                     <div>Espotify</div>
                 </div>
+            <form onsubmit="buscarResultados(); return false;" style="display: flex; align-items: center; gap: 10px;">
+                <input type="text" id="query" name="query" placeholder="Buscar álbumes, temas, listas de reproducción" 
+                       style="width: 300px; padding: 10px; border-radius: 5px; border: none; font-size: 16px; color: #000; background-color: #FFF;">
+                <button type="submit" style="background-color: #1db954; color: black; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; font-weight: bold; transition: box-shadow 0.3s ease;">
+                    Buscar
+                </button>
+            </form>
                 <div class="top-bar-buttons">
                     <button onclick="redirect('Iniciar Sesion')">Iniciar Sesion</button>
                     <button onclick="redirect('Registrarse')">Registrarse</button>
                 </div>
-            </div>
+        </div>
 
             <!-- Main Content -->
             <div class="content">
@@ -223,7 +240,7 @@
                 <input type="range" min="0" max="100" value="50" class="slider">
             </div>
             </div>
-        </div>
+        
 
         <!-- Script to load dynamic image from command -->
         <script>
