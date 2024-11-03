@@ -187,7 +187,7 @@ public class SvRegistro extends HttpServlet {
                 ctrl.crearArtista(nick, nom, ape, mail, pass, dia, mes, anio, bio, web);
             }else{
                 //crear cliente
-                ctrl.crearCliente(nick, nom, ape, pass, mail, dia, mes, anio);
+                ctrl.crearCliente(nick, nom, ape, mail, pass, dia, mes, anio);
             }
             request.getRequestDispatcher("index.jsp").forward(request, response); // Redirige al JSP
         }
