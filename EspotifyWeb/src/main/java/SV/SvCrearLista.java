@@ -14,13 +14,13 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.MultipartConfig;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -120,7 +120,7 @@ public class SvCrearLista extends HttpServlet {
             DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd-MM-yyyy");
             String fechaFormateada = fechaActual.format(formato);
             ctrl.CreateLista(NombreLista, "Particular", nickSesion,fechaFormateada);
-            request.getRequestDispatcher("JSP/Cliente.jsp").forward(request, response); // Redirige al JSP
+            request.getRequestDispatcher("JSP/CrearLista.jsp").forward(request, response); // Redirige al JSP
             }
     }
 

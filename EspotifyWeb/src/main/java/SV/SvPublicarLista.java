@@ -9,12 +9,12 @@ import Logica.Factory;
 import Logica.ICtrl;
 import java.io.IOException;
 import java.io.PrintWriter;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -110,11 +110,11 @@ public class SvPublicarLista extends HttpServlet {
                 }else{
                     if(ctrl.ExisListPartEnCliente(Lista,nickSesion)){
                         ctrl.Publicar(Lista, nickSesion);
-                        request.getRequestDispatcher("JSP/Cliente.jsp").forward(request, response); // Redirige al JSP
+                        request.getRequestDispatcher("JSP/PublicarLista.jsp").forward(request, response); // Redirige al JSP
                     }else{
                         String error = "ERROR: Suscripcion no vigente";
-                    session.setAttribute("error", error);
-                   request.getRequestDispatcher("JSP/PublicarLista.jsp").forward(request, response); 
+                        session.setAttribute("error", error);
+                        request.getRequestDispatcher("JSP/PublicarLista.jsp").forward(request, response); 
                     }
                 }           
     }
