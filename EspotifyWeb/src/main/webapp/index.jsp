@@ -211,8 +211,8 @@
                 <!-- Left Sidebar -->
                 <div class="sidebar">
                     <button onclick="loadContent('<%= request.getContextPath()%>/SvConsultarPerfil')">Consulta de Perfiles</button>
-                    <button onclick="loadContent('<%= request.getContextPath()%>/SvConsultarAlbum')">Consulta de Albumes</button>
-                    <button onclick="loadContent('<%= request.getContextPath()%>/SvConsultarLista')">Consulta de Listas</button>
+                    <button onclick="loadContent('<%= request.getContextPath()%>/JSP/ConsultarAlbum.jsp')">Consulta de Albumes</button>
+                    <button onclick="loadContent('<%= request.getContextPath()%>/JSP/ConsultarLista.jsp')">Consulta de Listas</button>
                 </div>
 
                 <div style="flex: 1; background-color: #000; color: #FFF;">
