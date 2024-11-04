@@ -103,6 +103,29 @@
                 display: none; /* Inicialmente oculto */
                 margin-top: 10px;
             }
+            
+            body {
+                background-color: #000;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                font-family: 'Biski', sans-serif; /* Aplica la fuente Biski */
+                font-weight: bold; /* Asegúrate de que sea negrita */
+                font-size: 24px;
+                overflow-y: auto; /* Permite el desplazamiento vertical */
+            }
+
+            .register-container {
+                width: 300px;
+                max-height: 90vh; /* Limita la altura máxima */
+                padding: 40px 20px;
+                background-color: #333;
+                border-radius: 10px;
+                text-align: center;
+                color: white;
+                overflow-y: auto; /* Permite el desplazamiento vertical */
+            }
         </style>
         <script>
         function toggleFields() {

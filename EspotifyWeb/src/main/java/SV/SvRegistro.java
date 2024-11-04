@@ -115,16 +115,6 @@ public class SvRegistro extends HttpServlet {
         String imagen = saveImage(request);
         String url = request.getParameter("url");
         
-        System.out.println("====================================");
-        System.out.println("IMAGEN ARCHIVO: "+imagen);
-        System.out.println("IMAGEN URL: "+url);
-
-        if (imagen != null) {
-            System.out.println("Imagen guardada en la ruta relativa: " + imagen);
-        } else {
-            System.out.println("No se subió ninguna imagen.");
-        }
-        
         //date = año-mes-dia
         LocalDate date = LocalDate.parse(fecha);
         int anio = date.getYear();
@@ -209,27 +199,28 @@ public class SvRegistro extends HttpServlet {
             error = "ERROR: ese correo ya esta en uso, elija otro";
         }
         // Crear usuario
+        System.out.println("URL: "+url);
         if (error != null) {
             sesion.setAttribute("error", error);
             request.getRequestDispatcher("JSP/Registro.jsp").forward(request, response); // Redirige al JSP
         } else {
             if (artista != null) {
                 //crear artista
-                if(imagen != null){
+                if(imagen != null && imagen != ""){
                     ctrl.crearArtista(nick, nom, ape, mail, pass, dia, mes, anio, bio, web, imagen);
-                }else if(url != null){
+                }else if(url != null && url != ""){
                     ctrl.crearArtista(nick, nom, ape, mail, pass, dia, mes, anio, bio, web, url);
                 }else{
-                    ctrl.crearArtista(nick, nom, ape, mail, pass, dia, mes, anio, bio, web, "blank.png");
+                    ctrl.crearArtista(nick, nom, ape, mail, pass, dia, mes, anio, bio, web, null);
                 }
             } else {
                 //crear cliente
-                if(imagen != null){
+                if(imagen != null && imagen != ""){
                     ctrl.crearCliente(nick, nom, ape, mail, pass, dia, mes, anio, imagen);
-                }else if(url != null){
+                }else if(url != null && url != ""){
                     ctrl.crearCliente(nick, nom, ape, mail, pass, dia, mes, anio, url);
                 }else{
-                    ctrl.crearCliente(nick, nom, ape, mail, pass, dia, mes, anio, "black.png");
+                    ctrl.crearCliente(nick, nom, ape, mail, pass, dia, mes, anio, null);
                 }
             }
             request.getRequestDispatcher("index.jsp").forward(request, response); // Redirige al JSP
