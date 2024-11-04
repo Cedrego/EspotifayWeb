@@ -39,20 +39,6 @@
                 text-align: center;
                 color: white;
             }
-
-            /* Logo image */
-            .logo {
-                display: flex; /* Activar Flexbox */
-                justify-content: center; /* Centrar horizontalmente */
-                align-items: center; /* Centrar verticalmente */
-                width: 100%; /* Asegura que ocupe todo el ancho del contenedor */
-                margin: 0 auto 20px; /* Mantener márgenes */
-                padding: 10px; /* Agregar espacio interno */
-            }
-
-
-
-
             /* Title */
             .register-container h2 {
                 font-size: 24px;
@@ -152,9 +138,6 @@
     </head>
     <body>
         <div class="register-container">
-            <div class="logo">
-                <img src="${pageContext.request.contextPath}/images/logo.png" alt="Espotify Logo" style="width: 100px; height: auto; border-radius: 5px;">
-            </div>
             
             <!-- Title -->
             <h2>Espotify</h2>
