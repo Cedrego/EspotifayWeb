@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
 package SV;
 
 import Logica.Factory;
@@ -13,18 +9,21 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import jakarta.servlet.annotation.MultipartConfig;
 
 
 /**
  *
  * @author Franco
  */
+@MultipartConfig
 @WebServlet(name = "SvAltaAlbum", urlPatterns = {"/SvAltaAlbum"})
 public class SvAltaAlbum extends HttpServlet {
     Factory factory = Factory.getInstance();
@@ -34,7 +33,6 @@ public class SvAltaAlbum extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
@@ -47,7 +45,6 @@ public class SvAltaAlbum extends HttpServlet {
         }
     }
     
-    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html");
@@ -58,58 +55,84 @@ public class SvAltaAlbum extends HttpServlet {
         }  
     }
     
-    @Override
+        @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession sesion = request.getSession();
-        String error;
-        HttpSession misesion = request.getSession(false); // No crear una nueva si no existe
-        String  nickArtista = (String) misesion.getAttribute("NickSesion");
-                    
+        String nickArtista = (String) sesion.getAttribute("NickSesion");
+        
         String nombreAlbum = request.getParameter("nombreAlbum");
         String anio = request.getParameter("anio");
-        
         String generosSeleccionados = request.getParameter("generosSeleccionados");
-        String[] generosArray = generosSeleccionados.split(",");
 
-        String[] nombresTemas = request.getParameterValues("nombresTemas[]");
-        String[] duraciones = request.getParameterValues("duraciones[]");
-        String[] posiciones = request.getParameterValues("posiciones[]");
-        String[] direcciones = request.getParameterValues("direcciones[]");
+        String[] nombresTemas = request.getParameterValues("nombresTemas");
+        String[] duraciones = request.getParameterValues("duraciones");
+        String[] posiciones = request.getParameterValues("posiciones");
+        String[] urls = request.getParameterValues("urls"); // contiene las URLs
+        String[] archivos = request.getParameterValues("archivos"); // contiene las rutas de los archivos
         
-        // logica de validación de nombres de temas duplicados
+        String[] generosArray = generosSeleccionados.split(",");
+        
+        //validacion de nombres
         Set<String> nombresSet = new HashSet<>();
         for (String nombreTema : nombresTemas) {
-            if (nombresSet.add(nombreTema)) {       
-                
-            } else {
-                // si no se puede añadir, es un duplicado
-                error = ("El tema '" + nombreTema + "' ya existe en el album.");
+            if (!nombresSet.add(nombreTema)) {
+                String error = "El tema '" + nombreTema + "' ya existe en el álbum.";
                 sesion.setAttribute("error", error);
-                request.getRequestDispatcher("JSP/AltaAlbum.jsp").forward(request, response); 
+                request.getRequestDispatcher("JSP/AltaAlbum.jsp").forward(request, response);
                 return;
             }
         }
-        //logica para ajustar las posiciones
+
+        // ajueste de posiciones
         for (int i = 0; i < posiciones.length; i++) {
             for (int j = i + 1; j < posiciones.length; j++) {
-                // si encontramos dos valores iguales, incrementamos el segundo
                 while (posiciones[j].equals(posiciones[i])) {
-                    int nuevaPos = Integer.parseInt(posiciones[j]) + 1;  // sncrementamos la posición repetida
-                    posiciones[j] = String.valueOf(nuevaPos); // actualizamos el valor en el array
+                    int nuevaPos = Integer.parseInt(posiciones[j]) + 1;
+                    posiciones[j] = String.valueOf(nuevaPos);
                 }
-                System.out.println("VALOR POS: "+posiciones[j]);
             }
         }
-        // si pasa las validaciones anteriores, crea la lista de temas
-        List<DataTema> temas = new ArrayList();
+        
+        //creacion de datatema
+        List<DataTema> temas = new ArrayList<>();
         for (int i = 0; i < nombresTemas.length; i++) {
-            DataTema tema =  new DataTema(nombresTemas[i], nombreAlbum, duraciones[i], Integer.parseInt(posiciones[i]), direcciones[i], List.of(generosArray));
+            String direccionFinal;
+
+            // con esto verifico si es una url o un archivo,
+            if (urls != null && urls.length > i && urls[i] != null && !urls[i].isEmpty()) {
+                direccionFinal = urls[i]; // Asignar URL si existe
+            } else if (archivos != null && archivos.length > i && archivos[i] != null && !archivos[i].isEmpty()) {
+                // si es un archivo lo mando a un servlet aparte para gestionarlo y conseguir la direccion
+                direccionFinal = enviarArchivoAServlet(archivos[i], request); 
+            } else {
+                // error por las dudas
+                String error = "No se ha proporcionado ni URL ni archivo para el tema '" + nombresTemas[i] + "'.";
+                sesion.setAttribute("error", error);
+                request.getRequestDispatcher("JSP/AltaAlbum.jsp").forward(request, response);
+                return;
+            }
+
+            DataTema tema = new DataTema(nombresTemas[i], nombreAlbum, duraciones[i], Integer.parseInt(posiciones[i]), direccionFinal, List.of(generosArray));
             temas.add(tema);
         }
-        //ordeno las posiciones por las dudas
+
         ctrl.ordenarTemasPorPosicion(temas);
-        // crear el álbum
         ctrl.CrearAlbum(nombreAlbum, nickArtista, Integer.parseInt(anio), List.of(generosArray), temas);
-        request.getRequestDispatcher("JSP/Artista.jsp").forward(request, response); // Redirige al JSP
+        request.getRequestDispatcher("JSP/Artista.jsp").forward(request, response);
+    }
+
+    private String enviarArchivoAServlet(String filePath, HttpServletRequest request) throws IOException {
+        String servletURL = request.getContextPath() + "/SvGuardarArchivo";
+        HttpURLConnection conn = (HttpURLConnection) new URL(servletURL).openConnection();
+        conn.setRequestMethod("POST");
+        conn.setDoOutput(true);
+        try (PrintWriter writer = new PrintWriter(conn.getOutputStream())) {
+            writer.write("filePath=" + filePath);
+            writer.flush();
+        }
+        
+        // retorna la ruta del archivo guardado
+        BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+        return reader.readLine(); 
     }
 }
