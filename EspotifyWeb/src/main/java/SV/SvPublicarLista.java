@@ -110,11 +110,11 @@ public class SvPublicarLista extends HttpServlet {
                 }else{
                     if(ctrl.ExisListPartEnCliente(Lista,nickSesion)){
                         ctrl.Publicar(Lista, nickSesion);
-                        request.getRequestDispatcher("JSP/Cliente.jsp").forward(request, response); // Redirige al JSP
+                        request.getRequestDispatcher("JSP/PublicarLista.jsp").forward(request, response); // Redirige al JSP
                     }else{
                         String error = "ERROR: Suscripcion no vigente";
-                    session.setAttribute("error", error);
-                   request.getRequestDispatcher("JSP/PublicarLista.jsp").forward(request, response); 
+                        session.setAttribute("error", error);
+                        request.getRequestDispatcher("JSP/PublicarLista.jsp").forward(request, response); 
                     }
                 }           
     }

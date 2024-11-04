@@ -210,7 +210,7 @@ public class SvActualizarSelectAddTema extends HttpServlet {
 
                 }else{
                     ctrl.AddTemaList("Particular", lista, opcionesListaPart, nickCliente);
-                    request.getRequestDispatcher("JSP/Cliente.jsp").forward(request, response); // Redirige al JSP
+                    request.getRequestDispatcher("JSP/AddTemaLista.jsp").forward(request, response); // Redirige al JSP
 
                 }
             }else if(filtro2 == null || filtro2.isEmpty()) {//album o lista por defecto con temas
@@ -224,7 +224,7 @@ public class SvActualizarSelectAddTema extends HttpServlet {
                     request.getRequestDispatcher("JSP/AddTemaLista.jsp").forward(request, response); // Redirige al JSP
             }else{
                 ctrl.AddTemaList("Particular", lista, temas, nickCliente);
-                request.getRequestDispatcher("JSP/Cliente.jsp").forward(request, response); // Redirige al JSP
+                request.getRequestDispatcher("JSP/AddTemaLista.jsp").forward(request, response); // Redirige al JSP
 
             }
         }else{

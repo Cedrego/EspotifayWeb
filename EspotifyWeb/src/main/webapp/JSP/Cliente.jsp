@@ -5,7 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@ page import="jakarta.servlet.http.HttpSession" %>
+<%@ page import="javax.servlet.http.HttpSession" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -163,15 +163,15 @@
         }
             
         function buscarResultados() {
-        const query = document.getElementById('query').value;
-        if (query.length > 1) { // Ejecuta la búsqueda solo si hay al menos 2 caracteres
-            const url = "<%= request.getContextPath() %>/SvBuscador?query=" + encodeURIComponent(query);
-            loadContent(url); // Utiliza loadContent para cargar el URL en el iframe
-        } else {
-            // Si la consulta es corta, limpia el iframe
-            loadContent("");
+            const query = document.getElementById('query').value;
+            if (query.length > 1) { // Ejecuta la búsqueda solo si hay al menos 2 caracteres
+                const url = "<%= request.getContextPath() %>/SvBuscador?query=" + encodeURIComponent(query);
+                loadContent(url); // Utiliza loadContent para cargar el URL en el iframe
+            } else {
+                // Si la consulta es corta, limpia el iframe
+                loadContent("");
+            }
         }
-    }
 
         </script>
 
