@@ -13,12 +13,21 @@ import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+//image imports
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import javax.servlet.ServletContext;
+import javax.servlet.annotation.MultipartConfig;
+import javax.servlet.http.Part;
 
 
 /**
@@ -27,10 +36,18 @@ import jakarta.servlet.http.HttpSession;
  */
 //@WebServlet(name = "SvRegistro", urlPatterns = {"/SvRegistro"})
 @WebServlet("/SvRegistro")
+@MultipartConfig // Añade esta línea
 public class SvRegistro extends HttpServlet {
+    
+    private static final String UPLOAD_DIR = "images/profiles";
     Factory fabric = Factory.getInstance();
     ICtrl ctrl = fabric.getICtrl();
+    private ServletContext context;
     
+    @Override
+    public void init() throws ServletException {
+        context = getServletContext(); // Inicializar el contexto al iniciar el servlet
+    }
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -56,7 +73,6 @@ public class SvRegistro extends HttpServlet {
             out.println("</html>");
         }
     }
-
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -94,6 +110,21 @@ public class SvRegistro extends HttpServlet {
         String bio = request.getParameter("bio");
         String fecha = request.getParameter("fech");
         String artista = request.getParameter("esArtista");
+        
+        //imagenes
+        String imagen = saveImage(request);
+        String url = request.getParameter("url");
+        
+        System.out.println("====================================");
+        System.out.println("IMAGEN ARCHIVO: "+imagen);
+        System.out.println("IMAGEN URL: "+url);
+
+        if (imagen != null) {
+            System.out.println("Imagen guardada en la ruta relativa: " + imagen);
+        } else {
+            System.out.println("No se subió ninguna imagen.");
+        }
+        
         //date = año-mes-dia
         LocalDate date = LocalDate.parse(fecha);
         int anio = date.getYear();
@@ -116,7 +147,7 @@ public class SvRegistro extends HttpServlet {
             mails.add(Correo);
         }
         //Obtener mes
-        if(month==1){
+        if (month == 1) {
             mes = "Enero";
         } else if (month == 2) {
             mes = "Febrero";
@@ -154,7 +185,7 @@ public class SvRegistro extends HttpServlet {
             error = "ERROR: campo contraseña vacío";
         } else if (fecha == null || fecha.isEmpty()) {
             error = "ERROR: campo fecha de nacimiento vacío";
-        } else if(anio >= 2024){
+        } else if (anio >= 2024) {
             error = "ERROR: ingrese una fecha valida(31/12/2023 o anterior)";
         } else if (nicknames.contains(nick)) {
             error = "ERROR: ese nickname ya está en uso";
@@ -172,9 +203,9 @@ public class SvRegistro extends HttpServlet {
             }
         }
         // Control de nickname y mail
-        if(nicknames.contains(nick)){
+        if (nicknames.contains(nick)) {
             error = "ERROR: ese nickname ya esta en uso, elija otro";
-        }else if(mails.contains(mail)){
+        } else if (mails.contains(mail)) {
             error = "ERROR: ese correo ya esta en uso, elija otro";
         }
         // Crear usuario
@@ -182,16 +213,68 @@ public class SvRegistro extends HttpServlet {
             sesion.setAttribute("error", error);
             request.getRequestDispatcher("JSP/Registro.jsp").forward(request, response); // Redirige al JSP
         } else {
-            if(artista!=null){
+            if (artista != null) {
                 //crear artista
-                ctrl.crearArtista(nick, nom, ape, mail, pass, dia, mes, anio, bio, web);
-            }else{
+                if(imagen != null){
+                    ctrl.crearArtista(nick, nom, ape, mail, pass, dia, mes, anio, bio, web, imagen);
+                }else if(url != null){
+                    ctrl.crearArtista(nick, nom, ape, mail, pass, dia, mes, anio, bio, web, url);
+                }else{
+                    ctrl.crearArtista(nick, nom, ape, mail, pass, dia, mes, anio, bio, web, "blank.png");
+                }
+            } else {
                 //crear cliente
-                ctrl.crearCliente(nick, nom, ape, mail, pass, dia, mes, anio);
+                if(imagen != null){
+                    ctrl.crearCliente(nick, nom, ape, mail, pass, dia, mes, anio, imagen);
+                }else if(url != null){
+                    ctrl.crearCliente(nick, nom, ape, mail, pass, dia, mes, anio, url);
+                }else{
+                    ctrl.crearCliente(nick, nom, ape, mail, pass, dia, mes, anio, "black.png");
+                }
             }
             request.getRequestDispatcher("index.jsp").forward(request, response); // Redirige al JSP
         }
     }
+    
+    private String saveImage(HttpServletRequest request) throws IOException, ServletException {
+        Part filePart = request.getPart("file"); // Asegúrate de que el campo de formulario sea "file"
+        if (filePart != null && filePart.getSize() > 0) {
+            String fileName = filePart.getSubmittedFileName();
+
+            // Obtener la ruta del directorio donde se ejecuta el servidor
+            String projectDir = new File(getServletContext().getRealPath("/")).getParentFile().getParent();
+            System.out.println("DIRECCION: "+projectDir);
+            String uploadPath = projectDir + File.separator + "src"+ File.separator + "main"+ File.separator + "webapp" + File.separator + "images" + File.separator + "profiles";
+
+            File uploadDir = new File(uploadPath);
+
+            // Verifica si el directorio de carga existe y crea si no existe
+            if (!uploadDir.exists()) {
+                boolean dirCreated = uploadDir.mkdirs(); // Crea la carpeta si no existe
+                if (dirCreated) {
+                    System.out.println("Directorio creado: " + uploadDir.getAbsolutePath());
+                } else {
+                    System.out.println("No se pudo crear el directorio: " + uploadDir.getAbsolutePath());
+                }
+            }
+
+            // Archivo destino final en la carpeta "profiles"
+            File file = new File(uploadDir, fileName);
+            try (InputStream inputStream = filePart.getInputStream()) {
+                Files.copy(inputStream, file.toPath(), java.nio.file.StandardCopyOption.REPLACE_EXISTING); // Copia el archivo
+                System.out.println("Archivo guardado en: " + file.getAbsolutePath());
+            } catch (IOException e) {
+                e.printStackTrace();
+                throw new IOException("Error al guardar el archivo: " + e.getMessage());
+            }
+
+            // Devuelve la ruta relativa que se usará para acceder a la imagen en la aplicación
+            return "images/profiles/" + fileName; // Ruta relativa
+        }
+        return null; // Retorna null si no se sube ninguna imagen
+    }
+
+
 
     /**
      * Returns a short description of the servlet.
@@ -202,5 +285,5 @@ public class SvRegistro extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
+    
 }

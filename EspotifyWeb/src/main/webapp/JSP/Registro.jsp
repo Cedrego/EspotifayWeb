@@ -112,11 +112,14 @@
                 color: white;
                 margin-top: 10px;
             }
+            
+            #uploadContainer {
+                display: none; /* Inicialmente oculto */
+                margin-top: 10px;
+            }
         </style>
         <script>
         function toggleFields() {
-
-
             const checkbox = document.getElementById('artista'); // Usamos el ID correcto del checkbox
             const extraFields = document.getElementById('extraFields');
 
@@ -126,21 +129,43 @@
                 } else {
                     extraFields.style.display = 'none';  // Ocultar los campos
                 }
+        }
+        
+        function toggleUploadType(type) {
+            document.getElementById('uploadContainer').style.display = 'block'; // Mostrar el contenedor al seleccionar
+
+            if (type === 'file') {
+                document.getElementById('fileInput').style.display = 'block';
+                document.getElementById('urlInput').style.display = 'none';
+
+                // Vaciar el campo de URL
+                document.querySelector('#urlInput input').value = ''; // Vacía el input de URL
+            } else {
+                document.getElementById('fileInput').style.display = 'none';
+                document.getElementById('urlInput').style.display = 'block';
+
+                // Vaciar el campo de archivo
+                document.querySelector('#fileInput input').value = ''; // Vacía el input de archivo
             }
+        }
         </script>
     </head>
     <body>
         <div class="register-container">
-            <!-- Logo Placeholder -->
             <div class="logo">
                 <img src="${pageContext.request.contextPath}/images/logo.png" alt="Espotify Logo" style="width: 100px; height: auto; border-radius: 5px;">
             </div>
-
+            
             <!-- Title -->
             <h2>Espotify</h2>
+            
+            <!--Subir imagenes-->
+            <label for="uploadType">Selecciona tipo de carga:</label>
+            <button onclick="toggleUploadType('file')">Cargar archivo</button>
+            <button onclick="toggleUploadType('url')">Usar URL</button>
 
             <!-- Registration Form -->
-            <form action="${pageContext.request.contextPath}/SvRegistro" method="post">
+            <form action="${pageContext.request.contextPath}/SvRegistro" method="post" enctype="multipart/form-data">
                 <input type="text" name="nick" placeholder="Nickname" required>
                 <input type="text" name="nom" placeholder="Nombre" required>
                 <input type="text" name="ape" placeholder="Apellido" required>
@@ -148,6 +173,15 @@
                 <input type="password" name="pass" placeholder="Contraseña" required>
                 <input type="password" name="pass2" placeholder="Confirmar contraseña" required>
                 <input type="date" name="fech" placeholder="Fecha de Nacimiento" required>
+                
+                <div id="uploadContainer" style="display: none;"> <!-- Mostrarlo inicialmente oculto -->
+                    <div id="fileInput" style="display: none;">
+                        <input type="file" name="file" accept="image/*">
+                    </div>
+                    <div id="urlInput" style="display: none;">
+                        <input type="text" name="url" placeholder="Ingresa la URL">
+                    </div>
+                </div>
 
                 <p>
                     <input type="checkbox" id="artista" name="esArtista" onclick="toggleFields()">
