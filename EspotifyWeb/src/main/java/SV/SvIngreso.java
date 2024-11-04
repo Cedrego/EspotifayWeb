@@ -50,12 +50,20 @@ public class SvIngreso extends HttpServlet {
                 List<String>sesion = ctrl.ContraXCliente(NOE,Contra);
                 misesion.setAttribute("NickSesion",sesion.getFirst());
                 response.sendRedirect("JSP/Cliente.jsp");
+            }else {
+                String error = "ERROR: El nick, email o contraseña no son validos";
+                misesion.setAttribute("error", error);
+                request.getRequestDispatcher("JSP/Usuario.jsp").forward(request, response); // Redirige al JSP
             }
         }else if(ctrl.obtenerNombresDeArtista().contains(NOE) || ctrl.obtenerMailDeArtista().contains(NOE)){
             if(ctrl.existePassA(NOE,Contra)){//Verifico si ingreso bien el pass
                 List<String>sesion = ctrl.ContraXArtista(NOE,Contra);
                 misesion.setAttribute("NickSesion",sesion.getFirst());
                 response.sendRedirect("JSP/Artista.jsp");
+            }else {
+                String error = "ERROR: El nick, email o contraseña no son validos";
+                misesion.setAttribute("error", error);
+                request.getRequestDispatcher("JSP/Usuario.jsp").forward(request, response); // Redirige al JSP
             }
         }else{
             String error = "ERROR: El nick, email o contraseña no son validos";

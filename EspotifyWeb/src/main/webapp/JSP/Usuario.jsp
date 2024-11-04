@@ -106,7 +106,7 @@
 
             /* Error message */
             .error-message {
-                color: red;
+                color: white;
                 margin-top: 10px;
             }
         </style>

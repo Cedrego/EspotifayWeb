@@ -120,7 +120,7 @@ public class SvCrearLista extends HttpServlet {
             DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd-MM-yyyy");
             String fechaFormateada = fechaActual.format(formato);
             ctrl.CreateLista(NombreLista, "Particular", nickSesion,fechaFormateada);
-            request.getRequestDispatcher("JSP/Cliente.jsp").forward(request, response); // Redirige al JSP
+            request.getRequestDispatcher("JSP/CrearLista.jsp").forward(request, response); // Redirige al JSP
             }
     }
 
