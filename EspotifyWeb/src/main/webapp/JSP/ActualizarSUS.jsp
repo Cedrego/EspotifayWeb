@@ -7,7 +7,14 @@
 <%@page import="Capa_Presentacion.DataSuscripcion"%>
 <%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="jakarta.servlet.http.HttpSession"%>
+<%
+    response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+    response.setHeader("Pragma", "no-cache");
+    response.setDateHeader("Expires", 0);
+%>
 <!DOCTYPE html>
+
 <html>
 <head>
     <title>Suscripciones</title>
@@ -68,8 +75,8 @@
             </tr>
             <% 
                 // Obtener la lista de suscripciones desde el atributo de solicitud
-                List<DataSuscripcion> suscripciones = (List<DataSuscripcion>) request.getAttribute("suscripciones");
-                request.removeAttribute("suscripciones");
+                List<DataSuscripcion> suscripciones = (List<DataSuscripcion>) request.getSession(false).getAttribute("suscripciones");
+                request.getSession(false).removeAttribute("suscripciones");
                 // Verificar si la lista no es nula
                 if (suscripciones != null) {
                     for (DataSuscripcion suscripcion : suscripciones) {

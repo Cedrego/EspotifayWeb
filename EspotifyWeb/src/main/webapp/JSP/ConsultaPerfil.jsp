@@ -12,6 +12,11 @@
 <%@ page import="jakarta.servlet.http.HttpSession" %>
 <!DOCTYPE html>
 <%@ page import="java.util.List" %>
+<%
+    response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+    response.setHeader("Pragma", "no-cache");
+    response.setDateHeader("Expires", 0);
+%>
 <html>
     <head>
         <title>Consultar Perfil de Usuario</title>
@@ -23,7 +28,7 @@
             font-family: 'Poppins', sans-serif;
         }
 
-        h1, label {
+        h1,h2,h3,h4, label ,li{
             color: #FFF;
         }
 
@@ -70,7 +75,8 @@
             <%
                 String tipo = (String) request.getSession(false).getAttribute("tipo");
                 Object usuario = request.getSession(false).getAttribute("usuario");
-                
+                request.getSession(false).removeAttribute("tipo");
+                request.getSession(false).removeAttribute("usuario");
                 
                 if (tipo.equals("cliente")) {
                     DataClienteAlt cliente = (DataClienteAlt) usuario;
@@ -84,7 +90,7 @@
                 <p><strong>Fecha de Nacimiento:</strong> <%= cliente.getFecha().getDia() + "/" + cliente.getFecha().getMes() + "/" + cliente.getFecha().getAnio() %></p>
                 <%if(!cliente.getDataCliSeguidor().isEmpty()){ %>
                     <ul>           
-                    <h4>Seguidores</h4>
+                    <h2>Seguidores</h2>
                     <%
                         for (String seguidor : cliente.getDataCliSeguidor()) {
                     %>
@@ -99,13 +105,15 @@
                         isSuS = true;
                     }
                 }
-                if(isSuS){
+                if(!isSuS){
+                    %><h3> Suscripcion vigente requerida para mas informacion </h3><%
+                }else{
                 
                     if(!cliente.getDataCliSeguido().isEmpty()){
                 %>
                 
                 <ul>
-                <li>Usuarios Seguidos</li>
+                <h2>Usuarios Seguidos</h2>
                     <%
                         for (String seguido : cliente.getDataCliSeguido()) {
                     %>
@@ -120,8 +128,10 @@
                     <li><%= "artista - " + aseguido%></li>
                         <% } %>
                 </ul>
-                <%}%>
-                <li>Listas de Reproducción</li>
+                <%}
+                if(!cliente.getDataPart().isEmpty()){
+                %>
+                <li><h2>Listas de Reproducción</h2></li>
                 <!-- Mostrar Listas de Reproducción -->
                 <div class="listas-reproduccion">
                     <div style="display: flex; flex-wrap: wrap; margin-bottom: 10px;">
@@ -166,8 +176,9 @@
                         <% } %>
                     </div>
                 </div>
+                    <%}%>
                 <%if(!cliente.getDataPartFav().isEmpty() && !cliente.getDataPorDefFav().isEmpty()){%>
-                <h4>Playlists Favoritas</h4>
+                <h2>Playlists Favoritas</h2>
                 <!-- Mostrar Listas de Reproducción -->
                 <div class="listas-reproduccion">
                     <div style="display: flex; flex-wrap: wrap; margin-bottom: 10px;">
@@ -254,7 +265,7 @@
                     List<String> Gros = (List<String>)request.getSession(false).getAttribute("Generos");
                     
                     if (!cliente.getDataAlmFav().isEmpty()) {%>
-                        <h4>Álbumes Favoritos</h4>
+                        <h2>Álbumes Favoritos</h2>
                                         <% if (Gros != null && !Gros.isEmpty()) { %>
                             <label for="generoFiltro">Filtrar por género:</label>
                             <select id="generoFiltro" onchange="filtrarAlbumes()">
@@ -333,7 +344,7 @@
                                         <% } %>
 
                 <%if(!cliente.getDataTemaFav().isEmpty()){%>
-                <h4>Temas Favoritos</h4>
+                <h2>Temas Favoritos</h2>
                 <!-- Mostrar Temas en dos columnas -->
                 <div class="temas-lista">
                     <div style="display: flex; flex-wrap: wrap; margin-bottom: 10px;">
@@ -397,7 +408,9 @@
                 </script>
                 <%}%>
                 </div>
-            <%} else if (tipo.equals("artista")) { DataArtistaAlt artista = (DataArtistaAlt) usuario;%>
+            <%} else if (tipo.equals("artista")) { 
+                DataArtistaAlt artista = (DataArtistaAlt) usuario;
+            %>
             <div class="perfil">
                 <h3><%= artista.getNickname()%></h3>
                 <!-- IMAGEN -->
@@ -407,7 +420,7 @@
                 <p><strong>Fecha de Nacimiento:</strong> <%= artista.getFecha().getDia() + "/" + artista.getFecha().getMes() + "/" + artista.getFecha().getAnio()%></p>
 
                 <% if (!artista.getDataalbumes().isEmpty()) { %>
-                <h4>Álbumes</h4>
+                <h2>Álbumes</h2>
                 <ul>
                     <%
                         for (DataAlbum album : artista.getDataalbumes()) {
@@ -456,6 +469,7 @@
             <div class="container">
                 <%
                     List<DataArtistaAlt> dataArtistas = (List<DataArtistaAlt>) request.getSession(false).getAttribute("dataArtistas");
+                    request.getSession(false).removeAttribute("dataArtistas");
                     
                     if (dataArtistas != null && !dataArtistas.isEmpty()) {
                         for (DataArtistaAlt artista : dataArtistas) {
@@ -471,14 +485,14 @@
                     <p><strong>Página Web:</strong> <a href="<%= artista.getSitioWeb()%>" target="_blank"><%= artista.getSitioWeb()%></a></p>
 
                     <div id="<%= artistaId%>" class="artist-info" style="display: none;">
-                        <h4>Información Adicional</h4>
+                        <h2>Información Adicional</h2>
                         <p><strong>Nombre:</strong> <%= artista.getNombre()%></p>
                         <p><strong>Apellido:</strong> <%= artista.getApellido()%></p>
                         <p><strong>Fecha de Nacimiento:</strong> <%= artista.getFecha().getDia() + "/" + artista.getFecha().getMes() + "/" + artista.getFecha().getAnio()%></p>
                         <p><strong>Biografía:</strong> <%= artista.getBiografia()%></p>
                         <p><strong>Cantidad de Seguidores:</strong> <%= artista.getDataseguidoPorA().size()%></p>
 
-                        <h4>Álbumes</h4>
+                        <h2>Álbumes</h2>
                         <ul>
                             <%
                                 for (DataAlbum album : artista.getDataalbumes()) {
@@ -528,10 +542,11 @@
                 }
             </script>
 
-            <h2>Clientes Disponibles</h2>
+            <h3>Clientes Disponibles</h3>
             <div class="container">
                 <%
                     List<DataClienteMin> dataClientes = (List<DataClienteMin>) request.getSession(false).getAttribute("DataClientes");
+                    request.getSession(false).removeAttribute("DataClientes");
                     
                     if (!(dataClientes == null)) {
                         for (DataClienteMin client : dataClientes) {
@@ -539,7 +554,7 @@
                 <div class="perfil">
                     <h3><%= client.getNickname()%></h3>
                     <img src="<%= client.getNickname()%>">
-                    <h4>Listas de Reproducción</h4>
+                    <h2>Listas de Reproducción</h2>
                     <ul>
                         <%
                             for (DataParticular lista : client.getDataPart()) {

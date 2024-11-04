@@ -18,10 +18,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-/**
- *
- * @author camin
- */
 @WebServlet(name = "SvDejarSeguir", urlPatterns = {"/SvDejarSeguir"})
 public class SvDejarSeguir extends HttpServlet {
     Factory fabric = Factory.getInstance();
@@ -119,11 +115,7 @@ public class SvDejarSeguir extends HttpServlet {
     }
 
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
+
     @Override
     public String getServletInfo() {
         return "Short description";

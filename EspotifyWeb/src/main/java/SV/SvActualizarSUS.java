@@ -9,12 +9,12 @@ import Logica.Factory;
 import Logica.ICtrl;
 import java.io.IOException;
 import java.io.PrintWriter;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.Map;
 /**
  *
@@ -53,7 +53,7 @@ public class SvActualizarSUS extends HttpServlet {
             String NickUsu = (String) sesion.getAttribute("NickSesion");
             // Obtener cliente y sus suscripciones
             DataClienteAlt cliente = ctrl.getDataClienteAlt(NickUsu);
-            request.setAttribute("suscripciones", cliente.getDataSuscripcion());
+            sesion.setAttribute("suscripciones", cliente.getDataSuscripcion());
 
             // Reenviar a la página JSP
             request.getRequestDispatcher("JSP/ActualizarSUS.jsp").forward(request, response);
@@ -91,7 +91,7 @@ public class SvActualizarSUS extends HttpServlet {
         
         // Obtener cliente y sus suscripciones
         DataClienteAlt cliente = ctrl.getDataClienteAlt(NickUsu);
-        request.setAttribute("suscripciones", cliente.getDataSuscripcion());
+        sesion.setAttribute("suscripciones", cliente.getDataSuscripcion());
         // Redirige de vuelta a la página de suscripciones
         request.getRequestDispatcher("JSP/ActualizarSUS.jsp").forward(request, response);
     }

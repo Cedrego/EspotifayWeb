@@ -202,7 +202,7 @@
         <div class="content">
             <!-- Columna izquierda -->
             <div class="sidebar">
-                <button onclick="loadContent('<%= request.getContextPath()%>/SvConsultarPerfil')">Consulta de Perfil de Usuario</button>
+                <button onclick="loadContent('<%= request.getContextPath()%>/JSP/LoadingScreen.jsp')">Consulta de Perfil de Usuario</button>
                 <button onclick="loadContent('<%= request.getContextPath()%>/JSP/CrearLista.jsp')">Crear lista de reproducción</button>
                 <button onclick="loadContent('<%= request.getContextPath()%>/JSP/AddTemaLista.jsp')">Agregar Tema a Lista</button>
                 <button onclick="loadContent('<%= request.getContextPath()%>/JSP/PublicarLista.jsp')">Publicar Lista</button>
