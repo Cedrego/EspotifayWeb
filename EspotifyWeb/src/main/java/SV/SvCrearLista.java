@@ -8,7 +8,6 @@ import Capa_Presentacion.DataSuscripcion;
 import Logica.Factory;
 import Logica.ICtrl;
 import Logica.Suscripcion;
-import antlr.collections.List;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;

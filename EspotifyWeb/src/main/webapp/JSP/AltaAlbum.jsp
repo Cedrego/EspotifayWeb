@@ -48,6 +48,19 @@
         button:hover {
             box-shadow: 0 0 10px #1db954, 0 0 20px #1db954, 0 0 30px #1db954;
         }
+
+        /* Estilo para la textarea de URL */
+        .url-input {
+            display: none;
+            width: 100%;
+            height: 50px;
+            background-color: #1a1a1a;
+            color: #FFF;
+            border: none;
+            border-radius: 5px;
+            padding: 5px;
+            font-size: 16px;
+        }
     </style>
     <script>
         // array para almacenar los géneros seleccionados
@@ -95,68 +108,61 @@
             }
         }
 
-
-        // Función para agregar tema
         function agregarTema() {
             const temasContainer = document.getElementById("temasContainer");
             const temaDiv = document.createElement("div");
 
-            // Crear campos para nombre, duración y posición
+            // Crear campos para nombre, duración, posición, archivo y URL
             temaDiv.innerHTML = `
                 <p>
                     <span>
                         <label>Nombre Tema</label>
-                        <input type="text" name="nombresTemas" required>
+                        <input type="text" name="nombresTemas" required><br>
                     </span>
                     <span>
                         <label>Duración</label>
-                        <input type="text" name="duraciones" required>
+                        <input type="text" name="duraciones" required><br>
                     </span>
                     <span>
                         <label>Posición</label>
-                        <input type="text" name="posiciones" required>
+                        <input type="text" name="posiciones" required><br>
                     </span>
                     <span>
-                        <label>
-                            <input type="checkbox" class="tipoDireccion" onchange="toggleInput(this)"> Archivo
-                        </label>
-                        <input type="file" name="archivo" style="display:none;">
+                        <button type="button" onclick="mostrarInputArchivo(this)">Archivo</button>
+                        <input type="file" name="archivos" accept=".mp3" style="display:none;">
                     </span>
                     <span>
-                        <label>
-                            <input type="checkbox" class="tipoDireccion" onchange="toggleInput(this)"> URL
-                        </label>
-                        <input type="text" name="url" placeholder="Ingrese la URL" style="display:none;">
+                        <button type="button" onclick="mostrarInputURL(this)">URL</button>
+                        <textarea name="urls" placeholder="Ingrese la URL" class="url-input"></textarea>
                     </span>
                 </p>
             `;
             temasContainer.appendChild(temaDiv);
         }
-        
-        // Función para mostrar/ocultar inputs
-        function toggleInput(checkbox) {
-            const parent = checkbox.closest('span'); // Encuentra el span que contiene el checkbox
-            const inputFile = parent.querySelector('input[type="file"]');
-            const inputURL = parent.querySelector('input[type="text"]');
 
-            if (checkbox.checked) {
-                if (checkbox.nextSibling.nodeName === "INPUT" && checkbox.nextSibling.type === "file") {
-                    inputURL.style.display = "none";
-                    inputFile.style.display = "block";
-                } else {
-                    inputFile.style.display = "none";
-                    inputURL.style.display = "block";
-                }
-            } else {
-                // Solo ocultar el input correspondiente al checkbox que se desmarcó
-                if (inputFile.style.display === "block") {
-                    inputFile.style.display = "none";
-                } else if (inputURL.style.display === "block") {
-                    inputURL.style.display = "none";
-                }
-            }
+        // Función para mostrar el input de archivo
+        function mostrarInputArchivo(button) {
+            const temaDiv = button.closest("p");
+            const inputFile = temaDiv.querySelector('input[type="file"]');
+            inputFile.style.display = "block"; // Mostrar el input de archivo
+            temaDiv.querySelector('.url-input').style.display = "none"; // Ocultar el textarea de URL
+
+            // Limpiar el campo de URL
+            const urlInput = temaDiv.querySelector('.url-input');
+            urlInput.value = ""; // Vaciar el contenido de URL
         }
 
+        // Función para mostrar el textarea de URL
+        function mostrarInputURL(button) {
+            const temaDiv = button.closest("p");
+            const urlInput = temaDiv.querySelector('.url-input');
+            urlInput.style.display = "block"; // Mostrar el textarea de URL
+            temaDiv.querySelector('input[type="file"]').style.display = "none"; // Ocultar el input de archivo
+
+            // Limpiar el campo de archivo
+            const inputFile = temaDiv.querySelector('input[type="file"]');
+            inputFile.value = ""; // Vaciar el contenido de archivo
+        }
 
         window.onload = function() {
             cargarGeneros();
@@ -167,27 +173,33 @@
 <body>
     <h1>Bienvenido a Alta de Album</h1>
     <div>
-        <%-- mensaje de error --%>
-        <%
-        String error = (String) session.getAttribute("error");
-        if (error != null) {
-        %>
-            <div style="color: red;">
-                <strong>Error:</strong> <%= error %>
-            </div>
-        <%
-            // limpio el mensaje de error después de mostrarlo
-            session.removeAttribute("error");
-        }
-        %>
-    </div>
+            <%-- mensaje de error --%>
+            <%
+            String error = (String) session.getAttribute("error");
+            if (error != null) {
+            %>
+                <div style="color: white;">
+                    <%= error %>
+                </div>
+            <%
+                // limpio el mensaje de error después de mostrarlo
+                session.removeAttribute("error");
+            }
+            %>
+        </div>
     
     <form action="${pageContext.request.contextPath}/SvAltaAlbum" method="post" enctype="multipart/form-data">
         
-        <p><label>Nombre del Album<br></lable><input type="text" name="nombreAlbum" required></p>
+        <p><label>Nombre del Album<br></label><input type="text" name="nombreAlbum" required></p>
+        
+        <p>
+        <label>Portada del Álbum:</label>
+        <input type="file" name="imagenPortada" accept="image/*" required>
+        </p>
+
         <p><label for="anioCreacion">Año de Creación:</label>
         <select id="anioCreacion" name="anio" required>
-            <% for (int anioCreacion = 2024; anioCreacion > 1950; anioCreacion--) {%>
+            <% for (int anioCreacion = 2024; anioCreacion > 1920; anioCreacion--) {%>
                 <option value="<%= anioCreacion %>"><%= anioCreacion %></option>
             <% }%>
         </select><br>

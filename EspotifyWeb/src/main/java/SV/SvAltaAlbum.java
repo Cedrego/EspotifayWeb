@@ -17,6 +17,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import jakarta.servlet.annotation.MultipartConfig;
+import jakarta.servlet.http.Part;
+import java.nio.file.Files;
 
 
 /**
@@ -55,84 +57,145 @@ public class SvAltaAlbum extends HttpServlet {
         }  
     }
     
-        @Override
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession sesion = request.getSession();
-        String nickArtista = (String) sesion.getAttribute("NickSesion");
-        
+        String error;
+        HttpSession misesion = request.getSession(false); // No crear una nueva si no existe
+        String nickArtista = (String) misesion.getAttribute("NickSesion");
+
         String nombreAlbum = request.getParameter("nombreAlbum");
         String anio = request.getParameter("anio");
+
         String generosSeleccionados = request.getParameter("generosSeleccionados");
+        String[] generosArray = generosSeleccionados.split(",");
 
         String[] nombresTemas = request.getParameterValues("nombresTemas");
         String[] duraciones = request.getParameterValues("duraciones");
         String[] posiciones = request.getParameterValues("posiciones");
-        String[] urls = request.getParameterValues("urls"); // contiene las URLs
-        String[] archivos = request.getParameterValues("archivos"); // contiene las rutas de los archivos
+        String[] urls = request.getParameterValues("urls");
         
-        String[] generosArray = generosSeleccionados.split(",");
-        
-        //validacion de nombres
+        for(int i=0; i<urls.length;i++){
+            if(urls[i]==null){
+                System.out.println("ESTA POSICION "+i+" ESTA NULL");
+            }else{
+                System.out.println("ESTA POSICION "+i+" TIENE ESTA ESTA URL:"+urls[i]);
+            }   
+        }
+        // logica de validación de nombres de temas duplicados
         Set<String> nombresSet = new HashSet<>();
         for (String nombreTema : nombresTemas) {
-            if (!nombresSet.add(nombreTema)) {
-                String error = "El tema '" + nombreTema + "' ya existe en el álbum.";
+            if (nombresSet.add(nombreTema)) {
+
+            } else {
+                // si no se puede añadir, es un duplicado
+                error = ("ERROR: El tema '" + nombreTema + "' ya existe en el album.");
                 sesion.setAttribute("error", error);
                 request.getRequestDispatcher("JSP/AltaAlbum.jsp").forward(request, response);
                 return;
             }
         }
-
-        // ajueste de posiciones
+        String imagenPortadaUrl = guardarImagen(request);
+        
+        //logica para ajustar las posiciones
         for (int i = 0; i < posiciones.length; i++) {
             for (int j = i + 1; j < posiciones.length; j++) {
+                // si encontramos dos valores iguales, incrementamos el segundo
                 while (posiciones[j].equals(posiciones[i])) {
-                    int nuevaPos = Integer.parseInt(posiciones[j]) + 1;
-                    posiciones[j] = String.valueOf(nuevaPos);
+                    int nuevaPos = Integer.parseInt(posiciones[j]) + 1;  // sncrementamos la posición repetida
+                    posiciones[j] = String.valueOf(nuevaPos); // actualizamos el valor en el array
                 }
+                System.out.println("VALOR POS: " + posiciones[j]);
             }
         }
         
-        //creacion de datatema
-        List<DataTema> temas = new ArrayList<>();
+        List<String> archivosGuardados = guardarArchivos(request);
+        int archivoIndex = 0;  // Índice para rastrear archivos
+
         for (int i = 0; i < nombresTemas.length; i++) {
-            String direccionFinal;
-
-            // con esto verifico si es una url o un archivo,
-            if (urls != null && urls.length > i && urls[i] != null && !urls[i].isEmpty()) {
-                direccionFinal = urls[i]; // Asignar URL si existe
-            } else if (archivos != null && archivos.length > i && archivos[i] != null && !archivos[i].isEmpty()) {
-                // si es un archivo lo mando a un servlet aparte para gestionarlo y conseguir la direccion
-                direccionFinal = enviarArchivoAServlet(archivos[i], request); 
-            } else {
-                // error por las dudas
-                String error = "No se ha proporcionado ni URL ni archivo para el tema '" + nombresTemas[i] + "'.";
-                sesion.setAttribute("error", error);
-                request.getRequestDispatcher("JSP/AltaAlbum.jsp").forward(request, response);
-                return;
+            // Solo asigna un archivo si urls[i] está vacío y hay archivos disponibles
+            if (urls[i].isEmpty() && archivoIndex < archivosGuardados.size()) {
+                urls[i] = archivosGuardados.get(archivoIndex);
+                archivoIndex++;  // Incrementa solo si se asignó un archivo
             }
-
-            DataTema tema = new DataTema(nombresTemas[i], nombreAlbum, duraciones[i], Integer.parseInt(posiciones[i]), direccionFinal, List.of(generosArray));
+        }
+        // si pasa las validaciones anteriores, crea la lista de temas
+        List<DataTema> temas = new ArrayList();
+        for (int i = 0; i < nombresTemas.length; i++) {
+            DataTema tema = new DataTema(nombresTemas[i], nombreAlbum, duraciones[i], Integer.parseInt(posiciones[i]), urls[i], List.of(generosArray));
             temas.add(tema);
         }
-
+        //ordeno las posiciones por las dudas
         ctrl.ordenarTemasPorPosicion(temas);
-        ctrl.CrearAlbum(nombreAlbum, nickArtista, Integer.parseInt(anio), List.of(generosArray), temas);
-        request.getRequestDispatcher("JSP/Artista.jsp").forward(request, response);
+        // crear el álbum
+        ctrl.CrearAlbum(imagenPortadaUrl,nombreAlbum, nickArtista, Integer.parseInt(anio), List.of(generosArray), temas);
+        error = ("Se creo el album " + nombreAlbum + " con exito");
+        sesion.setAttribute("error", error);
+        request.getRequestDispatcher("JSP/AltaAlbum.jsp").forward(request, response);
     }
 
-    private String enviarArchivoAServlet(String filePath, HttpServletRequest request) throws IOException {
-        String servletURL = request.getContextPath() + "/SvGuardarArchivo";
-        HttpURLConnection conn = (HttpURLConnection) new URL(servletURL).openConnection();
-        conn.setRequestMethod("POST");
-        conn.setDoOutput(true);
-        try (PrintWriter writer = new PrintWriter(conn.getOutputStream())) {
-            writer.write("filePath=" + filePath);
-            writer.flush();
+
+    private List<String> guardarArchivos(HttpServletRequest request) throws IOException, ServletException {
+        List<String> archivosGuardados = new ArrayList<>();
+        String projectDir = new File(getServletContext().getRealPath("/")).getParentFile().getParent();
+        String uploadPath = projectDir + File.separator + "src" + File.separator + "main" + File.separator + "webapp" + File.separator + "musica";
+        File uploadDir = new File(uploadPath);
+
+        if (!uploadDir.exists() && !uploadDir.mkdirs()) {
+            throw new IOException("No se pudo crear el directorio de almacenamiento de archivos.");
         }
-        
-        // retorna la ruta del archivo guardado
-        BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-        return reader.readLine(); 
+
+        for (Part part : request.getParts()) {
+            if (part.getName().equals("archivos") && part.getSize() > 0) {
+                String fileName = part.getSubmittedFileName();
+                File file = new File(uploadDir, fileName);
+                String uniqueFileName = fileName;
+                int fileSuffix = 1;
+
+                // Evitar sobreescritura si el archivo ya existe
+                while (file.exists()) {
+                    uniqueFileName = fileName.replaceFirst("(\\.[^.]*)?$", "_" + fileSuffix + "$1"); // Agrega un sufijo antes de la extensión
+                    file = new File(uploadDir, uniqueFileName);
+                    fileSuffix++;
+                }
+
+                // Guardar el archivo
+                try (InputStream inputStream = part.getInputStream()) {
+                    Files.copy(inputStream, file.toPath(), java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+                }
+
+                // Agregar la ruta relativa a la lista
+                archivosGuardados.add("musica/" + uniqueFileName);
+            }
+        }
+
+        return archivosGuardados;
     }
+    
+    private String guardarImagen(HttpServletRequest request) throws IOException, ServletException {
+        String imagePath = null;
+        String projectDir = new File(getServletContext().getRealPath("/")).getParentFile().getParent();
+        String uploadPath = projectDir + File.separator + "src" + File.separator + "main" + File.separator + "webapp" + File.separator + "images"+ File.separator + "portadas";
+        File uploadDir = new File(uploadPath);
+
+        if (!uploadDir.exists() && !uploadDir.mkdirs()) {
+            throw new IOException("No se pudo crear el directorio de almacenamiento de imágenes.");
+        }
+
+        Part part = request.getPart("imagenPortada"); // Obtén el archivo de imagen
+        if (part != null && part.getSize() > 0) {
+            String fileName = part.getSubmittedFileName();
+            File file = new File(uploadDir, fileName);
+
+            try (InputStream inputStream = part.getInputStream()) {
+                Files.copy(inputStream, file.toPath(), java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+            }
+
+            // Agrega la ruta relativa de la imagen
+            imagePath = "images/portadas/" + fileName;
+        }
+        return imagePath;
+    }
+
+
 }

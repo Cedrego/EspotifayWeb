@@ -115,11 +115,12 @@ public class SvConsultarAlbum extends HttpServlet {
                 
                 System.out.println("Nombre del album:"+nombreAlbum);
                 DataAlbum da = ctrl.obtenerDataAlbum(nombreAlbum);
-
+                String imagen = request.getContextPath()+"/"+da.getPic();
                 // crear una respuesta HTML
                 StringBuilder albumData = new StringBuilder();
                 albumData.append("<h3>Información del Álbum</h3>")
                          .append("<p>Nombre: ").append(da.getNombre()).append("</p>")
+                         .append("<p>Imagen: <img src='").append(imagen).append("' alt='Imagen del Álbum' style='width:200px;height:auto;'/></p>")
                          .append("<p>Año de creación: ").append(da.getCreacion()).append("</p>")
                          .append("<p>Géneros: ").append(String.join(" || ", da.getGeneros())).append("</p>")
                          .append("<h4>Temas:</h4>");

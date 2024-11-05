@@ -5,7 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@ page import="javax.servlet.http.HttpSession" %>
+<%@ page import="jakarta.servlet.http.HttpSession" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -148,7 +148,7 @@
                 document.getElementById('urlInput').style.display = 'none';
 
                 // Vaciar el campo de URL
-                document.querySelector('#urlInput input').value = ''; // Vacía el input de URL
+                document.querySelector('#urlInput input').value = null; // Vacía el input de URL
             } else {
                 document.getElementById('fileInput').style.display = 'none';
                 document.getElementById('urlInput').style.display = 'block';
