@@ -70,12 +70,29 @@ public class SvConsultarAlbum extends HttpServlet {
             }else{
                 System.out.println("Nombre del album:"+nombreAlbum);
                 DataAlbum da = ctrl.obtenerDataAlbum(nombreAlbum);
+                String pic = da.getPic();
+                if (pic == null || pic.isBlank()) {
+                    pic = "images/noImageSong.png"; // Imagen predeterminada si no hay imagen
+                }
+                String imagen = request.getContextPath() + "/" +pic;
+                // crear una respuesta HTML
+                
+                StringBuilder albumData = new StringBuilder();
+                albumData.append("<style>")
+                    .append(".imagen-cliente {")
+                    .append("    max-width: 100px;") // Tamaño máximo de ancho
+                    .append("    max-height: 100px;") // Tamaño máximo de alto
+                    .append("    width: auto;") // Mantiene la proporción
+                    .append("    height: auto;") // Mantiene la proporción
+                    .append("    object-fit: cover;") // Asegura que la imagen cubra el área sin distorsionarse
+                    .append("}")
+                    .append("</style>");
 
                 // crear una respuesta HTML
-                StringBuilder albumData = new StringBuilder();
                 albumData.append("<h3>Información del Álbum</h3>")
                          .append("<p>Nombre: ").append(da.getNombre()).append("</p>")
-                         .append("<p>Año de creación: ").append(da.getCreacion()).append("</p>")
+                        .append("<p><img src=\"").append(imagen).append("\" class=\"imagen-cliente\" style=\"margin-right: 12px;\"></p>") 
+                        .append("<p>Año de creación: ").append(da.getCreacion()).append("</p>")
                          .append("<p>Géneros: ").append(String.join(" || ", da.getGeneros())).append("</p>")
                          .append("<h4>Temas:</h4>");
 
@@ -84,9 +101,13 @@ public class SvConsultarAlbum extends HttpServlet {
                             .append("Posición: ").append(tema.getOrdenAlbum()).append(" - ")
                             .append("Nombre: ").append(tema.getNombre()).append(" - ")
                             .append("Duración: ").append(tema.getDuracion()).append(" mins")
-                            .append(" - <a href='").append(tema.getDireccion()).append("' download>")
+                            .append(" - <a href='")
+                            .append(request.getContextPath())  // Esto obtiene el contexto de la aplicación, e.g., /EspotifyWeb
+                            .append("/"+tema.getDireccion())  // Ruta completa desde el contexto raíz
+                            .append("' download>")
                             .append("<button>Descargar</button></a>")
                             .append("</p>");
+                    
                 }
 
                 response.setContentType("text/html;charset=UTF-8");
@@ -115,11 +136,27 @@ public class SvConsultarAlbum extends HttpServlet {
                 
                 System.out.println("Nombre del album:"+nombreAlbum);
                 DataAlbum da = ctrl.obtenerDataAlbum(nombreAlbum);
-
+                String pic = da.getPic();
+                if (pic == null || pic.isBlank()) {
+                    pic = "images/noImageSong.png"; // Imagen predeterminada si no hay imagen
+                }
+                String imagen = request.getContextPath() + "/" +pic;
                 // crear una respuesta HTML
+                
                 StringBuilder albumData = new StringBuilder();
+                albumData.append("<style>")
+                    .append(".imagen-cliente {")
+                    .append("    max-width: 100px;") // Tamaño máximo de ancho
+                    .append("    max-height: 100px;") // Tamaño máximo de alto
+                    .append("    width: auto;") // Mantiene la proporción
+                    .append("    height: auto;") // Mantiene la proporción
+                    .append("    object-fit: cover;") // Asegura que la imagen cubra el área sin distorsionarse
+                    .append("}")
+                    .append("</style>");
+                
                 albumData.append("<h3>Información del Álbum</h3>")
                          .append("<p>Nombre: ").append(da.getNombre()).append("</p>")
+                         .append("<p><img src=\"").append(imagen).append("\" class=\"imagen-cliente\" style=\"margin-right: 12px;\"></p>")
                          .append("<p>Año de creación: ").append(da.getCreacion()).append("</p>")
                          .append("<p>Géneros: ").append(String.join(" || ", da.getGeneros())).append("</p>")
                          .append("<h4>Temas:</h4>");
@@ -129,7 +166,12 @@ public class SvConsultarAlbum extends HttpServlet {
                              .append("Posición: ").append(tema.getOrdenAlbum()).append(" - ")
                              .append("Nombre: ").append(tema.getNombre()).append(" - ")
                              .append("Duración: ").append(tema.getDuracion()).append(" mins")
-                             .append("</p>");
+                             .append(" - <a href='")
+                            .append(request.getContextPath()) // Esto obtiene el contexto de la aplicación, e.g., /EspotifyWeb
+                            .append("/" + tema.getDireccion()) // Ruta completa desde el contexto raíz
+                            .append("' download>")
+                            .append("<button>Descargar</button></a>")
+                            .append("</p>");
                 }
 
                 response.setContentType("text/html;charset=UTF-8");

@@ -135,7 +135,6 @@
             <!-- Botones para seleccionar tipo de carga -->
             <label for="uploadType">Selecciona tipo de carga:</label>
             <button type="button" onclick="toggleUploadType('file')">Cargar archivo</button>
-            <button type="button" onclick="toggleUploadType('url')">Usar URL</button>
             <br>
             
             <!-- Contenedor para mostrar el input correspondiente -->

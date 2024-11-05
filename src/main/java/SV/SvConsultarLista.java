@@ -108,7 +108,10 @@ public class SvConsultarLista extends HttpServlet {
                             .append("Posición: ").append(tema.getOrdenAlbum()).append(" - ")
                             .append("Nombre: ").append(tema.getNombre()).append(" - ")
                             .append("Duración: ").append(tema.getDuracion()).append(" mins")
-                            .append(" - <a href='").append(tema.getDireccion()).append("' download>")
+                            .append(" - <a href='")
+                            .append(request.getContextPath()) // Esto obtiene el contexto de la aplicación, e.g., /EspotifyWeb
+                            .append("/" + tema.getDireccion()) // Ruta completa desde el contexto raíz
+                            .append("' download>")
                             .append("<button>Descargar</button></a>")
                             .append("</p>");
                 }
@@ -153,7 +156,10 @@ public class SvConsultarLista extends HttpServlet {
                             .append("Posición: ").append(tema.getOrdenAlbum()).append(" - ")
                             .append("Nombre: ").append(tema.getNombre()).append(" - ")
                             .append("Duración: ").append(tema.getDuracion()).append(" mins")
-                            .append(" - <a href='").append(tema.getDireccion()).append("' download>")
+                            .append(" - <a href='")
+                            .append(request.getContextPath()) // Esto obtiene el contexto de la aplicación, e.g., /EspotifyWeb
+                            .append("/" + tema.getDireccion()) // Ruta completa desde el contexto raíz
+                            .append("' download>")
                             .append("<button>Descargar</button></a>")
                             .append("</p>");
                 }

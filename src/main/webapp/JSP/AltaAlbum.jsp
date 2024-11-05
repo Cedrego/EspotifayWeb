@@ -191,9 +191,15 @@
     <form action="${pageContext.request.contextPath}/SvAltaAlbum" method="post" enctype="multipart/form-data">
         
         <p><label>Nombre del Album<br></label><input type="text" name="nombreAlbum" required></p>
+        
+        <p>
+        <label>Portada del Álbum:</label>
+        <input type="file" name="imagenPortada" accept="image/*" required>
+        </p>
+
         <p><label for="anioCreacion">Año de Creación:</label>
         <select id="anioCreacion" name="anio" required>
-            <% for (int anioCreacion = 2024; anioCreacion > 1950; anioCreacion--) {%>
+            <% for (int anioCreacion = 2024; anioCreacion > 1920; anioCreacion--) {%>
                 <option value="<%= anioCreacion %>"><%= anioCreacion %></option>
             <% }%>
         </select><br>

@@ -179,8 +179,8 @@
             </select><br>
             
             <button type="button" onclick="consultarAlbum()">Consultar Datos</button>
-            <div id="albumInfo"></div><!-- contenedor para los datos del album -->
-        </form>
             
+        </form>
+            <div id="albumInfo"></div><!-- contenedor para los datos del album -->
     </body>
 </html>

@@ -35,6 +35,7 @@ public class SvBuscador extends HttpServlet {
             out.println("<head>");
             out.println("<title>Servlet SvBuscador</title>");
             out.println("</head>");
+            out.println("<style>body { color: white; background-color: #000; }</style>");
             out.println("<body>");
             out.println("<h1>Servlet SvBuscador at " + request.getContextPath() + "</h1>");
             out.println("</body>");
@@ -54,6 +55,14 @@ public class SvBuscador extends HttpServlet {
             List<String> part = ctrl.buscadorPart(query);
             List<String> pd = ctrl.buscadorPD(query);
             try (PrintWriter out = response.getWriter()) {
+                out.println("<!DOCTYPE html>");
+                out.println("<html>");
+                out.println("<head>");
+                out.println("<title>Servlet SvBuscador</title>");
+                // Estilo para que el texto sea blanco
+                out.println("<style>body { color: white; background-color: #000; }</style>");
+                out.println("</head>");
+                
                 if(!albums.isEmpty()){
                     //estilo
                     out.println("<h3>Álbumes</h3>");
