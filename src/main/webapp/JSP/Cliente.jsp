@@ -200,7 +200,20 @@
                 document.getElementById("resultados").innerHTML = ""; // Limpia si no hay consulta
             }
         }
-            
+        // Función para mostrar/ocultar el menú desplegable
+        function toggleMenu() {
+            const menu = document.getElementById("dropdown-menu");
+            menu.style.display = menu.style.display === "none" ? "block" : "none";
+        }
+
+        // Oculta el menú si se hace clic fuera de él
+        window.addEventListener("click", function(event) {
+            const menu = document.getElementById("dropdown-menu");
+            const clientName = document.querySelector(".client-name");
+            if (menu.style.display === "block" && !clientName.contains(event.target)) {
+                menu.style.display = "none";
+            }
+        });
         function buscarResultados() {
             const query = document.getElementById('query').value;
             if (query.length > 1) { // Ejecuta la búsqueda solo si hay al menos 2 caracteres
@@ -231,11 +244,16 @@
                 </button>
             </form>
 
-            <div class="client-name">
+            <div class="client-name" onclick="toggleMenu()" style="position: relative; cursor: pointer;">
                 <%
                     String nick = (String) session.getAttribute("NickSesion"); // Obtener el nick de la sesión
                     out.print(nick); // Mostrar el nombre del cliente
                 %>
+                <!-- Menú desplegable -->
+                <div id="dropdown-menu" style="display: none; position: absolute; top: 100%; right: 0; background-color: #1a1a1a; border: 1px solid #333; border-radius: 5px; padding: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.5);">
+                    <a onclick="loadContent('<%= request.getContextPath()%>/JSP/LoadingScreen.jsp')" style="color: #FFF; text-decoration: none; display: block; padding: 5px 10px;">Perfil</a>
+                    <a onclick="window.location.href='<%= request.getContextPath() %>/SvCerrarSesion'" style="color: #FFF; text-decoration: none; display: block; padding: 5px 10px;">Cerrar Sesion</a>
+                </div>
             </div>
         </div>
         <div class="content">
