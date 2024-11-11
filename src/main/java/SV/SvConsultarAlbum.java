@@ -107,8 +107,8 @@ public class SvConsultarAlbum extends HttpServlet {
                             .append(request.getContextPath()) // Esto obtiene el contexto de la aplicación, e.g., /EspotifyWeb
                             .append("/").append(tema.getDireccion()) // Ruta completa desde el contexto raíz
                             .append("' download>")
-                            .append("<button>Descargar</button></a>");
-                            
+                            .append("<button>Descargar</button></a>")
+                            .append("</p>");
 
                     String direccion = tema.getDireccion();
                     boolean isMp3 = direccion.toLowerCase().endsWith(".mp3");
