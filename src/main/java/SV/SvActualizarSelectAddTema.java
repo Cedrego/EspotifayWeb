@@ -10,13 +10,14 @@ import Logica.ICtrl;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
+import javax.servlet.RequestDispatcher;
 
 /**
  *
@@ -210,8 +211,8 @@ public class SvActualizarSelectAddTema extends HttpServlet {
 
                 }else{
                     ctrl.AddTemaList("Particular", lista, opcionesListaPart, nickCliente);
-                    request.getRequestDispatcher("JSP/AddTemaLista.jsp").forward(request, response); // Redirige al JSP
-
+                     // Redirigir al JSP con los datos
+                    //request.getRequestDispatcher("JSP/AddTemaLista.jsp").forward(request, response); // Redirige al JSP
                 }
             }else if(filtro2 == null || filtro2.isEmpty()) {//album o lista por defecto con temas
                 String error = "No se ha seleccionado un filtro secundario.";
@@ -224,15 +225,23 @@ public class SvActualizarSelectAddTema extends HttpServlet {
                     request.getRequestDispatcher("JSP/AddTemaLista.jsp").forward(request, response); // Redirige al JSP
             }else{
                 ctrl.AddTemaList("Particular", lista, temas, nickCliente);
-                request.getRequestDispatcher("JSP/AddTemaLista.jsp").forward(request, response); // Redirige al JSP
-
+                // Redirigir al JSP con los datos
+               // request.getRequestDispatcher("JSP/AddTemaLista.jsp").forward(request, response); // Redirige al JSP
             }
         }else{
             String error = "Necesitas una suscripcion para poder hacer eso.";
             misesion.setAttribute("error", error);
             request.getRequestDispatcher("JSP/AddTemaLista.jsp").forward(request, response); // Redirige al JSP             
         }
-    
+        request.setAttribute("lista", lista);
+        request.setAttribute("tipoDelObjeto", tipoDelObjeto);
+        request.setAttribute("filtro2", filtro2);
+        request.setAttribute("temas", temas);
+        request.setAttribute("opcionesListaPart", opcionesListaPart);
+
+        // Redirigir al JSP con los datos
+        request.getRequestDispatcher("JSP/AddTemaLista.jsp").forward(request, response);
+
     }
 
     /**

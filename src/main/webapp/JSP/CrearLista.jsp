@@ -3,7 +3,7 @@
     Created on : 22 oct. 2024, 8:53:45 p. m.
     Author     : User
 --%>
-<%@ page import="jakarta.servlet.http.HttpSession" %>
+<%@ page import="javax.servlet.http.HttpSession" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -133,15 +133,15 @@
             <br>
             
             <!-- Botones para seleccionar tipo de carga -->
-            <label for="uploadType">Selecciona tipo de carga:</label>
-            <button type="button" onclick="toggleUploadType('file')">Cargar archivo</button>
+            <label for="uploadType">Selecciona una Imagen de Portada:</label>
+            <button type="button" onclick="toggleUploadType('file')">Cargar Imagen</button>
             <br>
             
             <!-- Contenedor para mostrar el input correspondiente -->
             <div id="uploadContainer">
                 <!-- Campo para cargar archivo -->
                 <div id="fileInput">
-                    <label for="file">Selecciona un archivo:</label>
+                    <label for="file">Selecciona una imagen</label>
                     <input type="file" name="file" accept="image/*" />
                 </div>
 
@@ -163,6 +163,18 @@
             <p><label style="color: red;"> <%= errorMessage%> </label></p>
             <%
                     request.getSession().removeAttribute("error"); // Limpiar el mensaje para que no persista
+                    request.getSession().removeAttribute("exito"); // Limpiar el mensaje para que no persista
+                }
+            %>
+             <%-- Mostrar mensaje de Exito --%>
+            <%
+                String Exito = (String) request.getSession().getAttribute("exito");
+                if (Exito != null) {
+            %>
+            <p><label style="color: white;"> <%= Exito%> </label></p>
+            <%
+                    request.getSession().removeAttribute("error"); // Limpiar el mensaje para que no persista
+                    request.getSession().removeAttribute("exito"); // Limpiar el mensaje para que no persista
                 }
             %>
         </form>

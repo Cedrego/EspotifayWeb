@@ -1,5 +1,5 @@
 <%@ page import="java.util.List"%>
-<%@ page import="jakarta.servlet.http.HttpSession" %>
+<%@ page import="javax.servlet.http.HttpSession" %>
 <%@ page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -185,32 +185,46 @@
         };
         </script>
     </head>
-    <body>        
+    <body>       
+                <% 
+    String lista = (String) request.getAttribute("lista");
+    String tipoDelObjeto = (String) request.getAttribute("tipoDelObjeto");
+    String filtro2 = (String) request.getAttribute("filtro2");
+    String temas = (String) request.getAttribute("temas");
+    String opcionesListaPart = (String) request.getAttribute("opcionesListaPart");
+%>
         <form action="${pageContext.request.contextPath}/SvActualizarSelectAddTema" method="POST">
             <h1>Agregar Tema a Lista</h1>
             <label for="listaAgregar">Selecciona una lista:</label>
             <select id="listaAgregar" name="listaAgregar">
-              <option value="">Seleciona su Lista</option>
+                <option value="">Seleciona su Lista</option>                 
           </select>
         <br>
-        <br>
+        <br> 
       <label for="tipoSeleccion">Filtro:</label>
-        <select id="tipoDelObjeto" name="tipoDelObjeto" onchange="toggleListaPart(); actualizarFiltrosSecundarios(); actualizarListTemas();">
+        <select id="tipoDelObjeto" name="tipoDelObjeto" onclick="toggleListaPart(); actualizarFiltrosSecundarios(); actualizarListTemas();">
             <option value="">Seleccione un filtro</option>
-            <option value="Album">Album</option>
-            <option value="ListaPorDef">Lista Por Defecto</option>
-            <option value="ListaPart">Listas públicas de clientes</option>
+            <option value="Album" ${requestScope.tipoDelObjeto != null && 'Album' == requestScope.tipoDelObjeto ? 'selected' : ''}>Álbum</option>
+            <option value="Cliente" ${requestScope.tipoDelObjeto != null && 'Cliente' == requestScope.tipoDelObjeto ? 'selected' : ''}>Cliente</option>
+            <option value="ListaPorDefecto" ${requestScope.tipoDelObjeto != null && 'ListaPorDefecto' == requestScope.tipoDelObjeto ? 'selected' : ''}>Lista por Defecto</option>
         </select>
         <br>
         <br>
         <label for="opcionesSeleccion">Filtro 2:</label>
         <select id="opcionesSeleccion" name="filtroPrincipal" onclick="actualizarListTemas();">
             <option value="">Seleccione un filtro</option>
+             <% 
+                if (filtro2 != null) { 
+            %>
+                <option value="<%= filtro2 %>" selected><%= filtro2 %></option>
+            <% 
+                }
+            %>
         </select>      
         <br>
         <br>
          <label for="TemasPos" id="temasPosLabel">Temas:</label>
-        <select id="TemasPos" name="Temas" onchange="toggleListaPart();">
+        <select id="TemasPos" name="Temas" onclick="toggleListaPart();">
             <option value="">Seleccione un Tema</option>
         </select>
         <br>
@@ -236,5 +250,13 @@
             }
         %>
         </form>
+
+
+<!-- Mostrar los valores para depuración -->
+<p>Lista: <%= lista %></p>
+<p>Tipo de Objeto: <%= tipoDelObjeto %></p>
+<p>Filtro2: <%= filtro2 %></p>
+<p>Temas: <%= temas %></p>
+<p>Opciones de Lista Particular: <%= opcionesListaPart %></p>
     </body>
 </html>

@@ -14,14 +14,14 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.MultipartConfig;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import jakarta.servlet.http.Part;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import javax.servlet.http.Part;
 import java.io.File;
 import java.nio.file.Files;
 
@@ -143,7 +143,8 @@ public class SvCrearLista extends HttpServlet {
                 LocalDate fechaActual = LocalDate.now();
                 DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd-MM-yyyy");
                 String fechaFormateada = fechaActual.format(formato);
-
+                String exito = "Lista Creada con Exito";
+                misesion.setAttribute("exito", exito);
                 ctrl.CreateLista(NombreLista, "Particular", nickSesion, fechaFormateada, url);
                 request.getRequestDispatcher("JSP/CrearLista.jsp").forward(request, response); // Redirige al JSP
             } else {
@@ -153,7 +154,8 @@ public class SvCrearLista extends HttpServlet {
                 LocalDate fechaActual = LocalDate.now();
                 DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd-MM-yyyy");
                 String fechaFormateada = fechaActual.format(formato);
-
+                String exito = "Lista Creada con Exito";
+                misesion.setAttribute("exito", exito);
                 ctrl.CreateLista(NombreLista, "Particular", nickSesion, fechaFormateada, null);
                 request.getRequestDispatcher("JSP/CrearLista.jsp").forward(request, response); // Redirige al JSP
             }
