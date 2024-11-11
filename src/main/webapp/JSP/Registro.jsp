@@ -163,13 +163,20 @@
         <div class="register-container">
             
             <!-- Title -->
-            <h2>Espotify</h2>
-            
+            <h2>Crear Cuenta</h2>
             <!--Subir imagenes-->
-            <label for="uploadType">Selecciona tipo de carga:</label>
-            <button onclick="toggleUploadType('file')">Cargar archivo</button>
+            <label for="uploadType">Agregar imagen:</label>
+            <button onclick="toggleUploadType('file')">Subir imagen</button>
             <button onclick="toggleUploadType('url')">Usar URL</button>
-
+            <div id="uploadContainer" style="display: none;"> <!-- Mostrarlo inicialmente oculto -->
+                <div id="fileInput" style="display: none;">
+                    <input type="file" name="file" accept="image/*">
+                </div>
+                <div id="urlInput" style="display: none;">
+                    <input type="text" name="url" placeholder="Ingresa la URL">
+                </div>
+            </div>
+                
             <!-- Registration Form -->
             <form action="${pageContext.request.contextPath}/SvRegistro" method="post" enctype="multipart/form-data">
                 <input type="text" name="nick" placeholder="Nickname" required>
@@ -179,15 +186,6 @@
                 <input type="password" name="pass" placeholder="Contraseña" required>
                 <input type="password" name="pass2" placeholder="Confirmar contraseña" required>
                 <input type="date" name="fech" placeholder="Fecha de Nacimiento" required>
-                
-                <div id="uploadContainer" style="display: none;"> <!-- Mostrarlo inicialmente oculto -->
-                    <div id="fileInput" style="display: none;">
-                        <input type="file" name="file" accept="image/*">
-                    </div>
-                    <div id="urlInput" style="display: none;">
-                        <input type="text" name="url" placeholder="Ingresa la URL">
-                    </div>
-                </div>
 
                 <p>
                     <input type="checkbox" id="artista" name="esArtista" onclick="toggleFields()">
