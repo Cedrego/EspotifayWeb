@@ -102,46 +102,85 @@
                 box-shadow: 0 0 10px #1db954, 0 0 20px #1db954, 0 0 30px #1db954;
             }
 
-            /* Panel derecho para el reproductor de música */
-            .right-panel {
-                width: 30%; /* Ancho del panel derecho */
-                background-color: #1a1a1a; /* Fondo del panel */
-                padding: 20px;
+            /* Footer Styles */
+            .footer {
+                width: 100%;
+                background-color: #1a1a1a;
+                padding: 10px 20px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                height: 80px;
+            }
+
+            .footer-content {
+                display: flex;
+                align-items: center;
+                width: 100%;
+                max-width: 1200px;
+                justify-content: space-between;
+            }
+
+            /* Imagen y Etiqueta */
+            .image-and-label {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+
+            .dynamic-image {
+                width: 50px;
+                height: 50px;
+                background-image: url('<%= request.getContextPath()%>/images/noImageSong.png');
+                background-size: cover;
+                background-position: center;
+                border-radius: 5px;
+            }
+
+            .song-label {
+                color: #FFF;
+                font-size: 16px;
+                font-weight: bold;
+            }
+
+            /* Controles y Barra de Progreso */
+            .footer-controls {
                 display: flex;
                 flex-direction: column;
                 align-items: center;
+                flex: 1;
             }
 
-            /* Espaciado para los controles del reproductor */
             .controls {
                 display: flex;
                 align-items: center;
                 gap: 15px;
-                margin-top: 20px;
+                margin-bottom: 5px;
             }
 
-            /* Botones en el panel derecho */
             .controls button {
                 background-color: #FFF;
-                color: #000; /* Texto en negro */
+                color: #000;
                 border: none;
                 border-radius: 50%;
-                width: 40px;
-                height: 40px;
+                width: 30px;
+                height: 30px;
                 cursor: pointer;
-                font-size: 18px;
-                transition: box-shadow 0.3s ease; /* Transición para el brillo */
+                font-size: 16px;
+                transition: box-shadow 0.3s ease;
             }
 
             .slider {
                 -webkit-appearance: none;
-                width: 100%;
+                width: 80%;
                 height: 5px;
                 background: #333;
                 outline: none;
                 opacity: 0.7;
                 transition: opacity .2s;
-                margin-top: 20px; /* Añadir un margen superior para separar el slider de los botones */
             }
         </style>
         <script>
@@ -202,7 +241,9 @@
         <div class="content">
             <!-- Columna izquierda -->
             <div class="sidebar">
+                <!-- comentando botones que se van a cambiar de lugar
                 <button onclick="loadContent('<%= request.getContextPath()%>/JSP/LoadingScreen.jsp')">Consulta de Perfil de Usuario</button>
+                -->
                 <button onclick="loadContent('<%= request.getContextPath()%>/JSP/CrearLista.jsp')">Crear lista de reproducción</button>
                 <button onclick="loadContent('<%= request.getContextPath()%>/JSP/AddTemaLista.jsp')">Agregar Tema a Lista</button>
                 <button onclick="loadContent('<%= request.getContextPath()%>/JSP/PublicarLista.jsp')">Publicar Lista</button>
@@ -213,31 +254,32 @@
                 <button onclick="loadContent('<%= request.getContextPath()%>/JSP/DejarSeguir.jsp')">Dejar de Seguir a Usuario (Cliente/Artista)</button>
                 <button onclick="loadContent('<%= request.getContextPath()%>/JSP/ConsultarAlbum.jsp')">Consulta de Álbum</button>
                 <button onclick="loadContent('<%= request.getContextPath()%>/JSP/ConsultarLista.jsp')">Consulta de Lista de Reproducción</button>
+                <button onclick="loadContent('<%= request.getContextPath()%>/JSP/ConsultarLista.jsp')">AAAAAAAAAA AAAAAAAAAA </button>
+                <!-- comentando botones que se van a cambiar de lugar
                 <button onclick="window.location.href='<%= request.getContextPath() %>/SvCerrarSesion'">Cerrar Sesión</button>
+                -->
             </div>
-            <div style="flex: 1; background-color: #000; color: #FFF;">
-                <iframe id="dynamic-content" style="width: 100%; height: 100%; border: none;" src=""></iframe>
+            
+            <div style="flex: 1; background-color: #000; color: #FFF; padding-bottom: 40px;">
+                <iframe id="dynamic-content" style="width: 100%; height: calc(100% - 40px); border: none;" src=""></iframe>
             </div>
 
-            <!-- Panel derecho para el reproductor de música -->
-            <div class="right-panel">
-                <div class="top-right-image" style="width: 50px; height: 50px; background-color: #FFF; border-radius: 50%; margin-bottom: 20px;"></div>
-                <div class="dynamic-image" style="
-                     width: 200px;
-                     height: 200px;
-                     background-image: url('<%= request.getContextPath()%>/images/noImageSong.png');
-                     background-size: cover;
-                     background-position: center;
-                     border-radius: 10px;
-                     margin-bottom: 20px;">
+            <!-- Footer con controles, imagen y texto -->
+            <div class="footer">
+                <div class="footer-content">
+                    <div class="image-and-label">
+                        <div class="dynamic-image"></div> <!-- Imagen de la canción -->
+                        <span class="song-label">Nombre de la canción</span> <!-- Etiqueta de texto -->
+                    </div>
+                    <div class="footer-controls">
+                        <div class="controls">
+                            <button>&#9664;&#9664;</button> <!-- Botón de retroceso -->
+                            <button>&#9654;</button> <!-- Botón de reproducción -->
+                            <button>&#9654;&#9654;</button> <!-- Botón de adelanto -->
+                        </div>
+                        <input type="range" min="0" max="100" value="0" class="slider"> <!-- Barra de progreso -->
+                    </div>
                 </div>
-
-                <div class="controls">
-                    <button>&#9664;&#9664;</button> <!-- Previous button -->
-                    <button>&#9654;</button> <!-- Play button -->
-                    <button>&#9654;&#9654;</button> <!-- Next button -->
-                </div>
-                <input type="range" min="0" max="100" value="50" class="slider">
             </div>
         </div>
     </body>
