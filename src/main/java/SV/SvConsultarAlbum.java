@@ -107,8 +107,8 @@ public class SvConsultarAlbum extends HttpServlet {
                             .append(request.getContextPath()) // Esto obtiene el contexto de la aplicación, e.g., /EspotifyWeb
                             .append("/").append(tema.getDireccion()) // Ruta completa desde el contexto raíz
                             .append("' download>")
-                            .append("<button>Descargar</button></a>");
-                            
+                            .append("<button>Descargar</button></a>")
+                            .append("</p>");
 
                     String direccion = tema.getDireccion();
                     boolean isMp3 = direccion.toLowerCase().endsWith(".mp3");
@@ -129,6 +129,7 @@ public class SvConsultarAlbum extends HttpServlet {
                                 .append(videoId).append("\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen></iframe>");
                     } else if (isMp3) {
                         // Reproductor de audio para archivos MP3 con controles completos
+                        direccion =  request.getContextPath() + "/" + tema.getDireccion();
                         albumData.append("<audio id=\"audio-").append(tema.getIdTema()).append("\" controls>")
                                 .append("<source src=\"").append(direccion).append("\" type=\"audio/mpeg\">")
                                 .append("Tu navegador no soporta el elemento de audio.")
@@ -157,7 +158,7 @@ public class SvConsultarAlbum extends HttpServlet {
                                 // Asegúrate de que la URL real tiene la estructura correcta
                                 String encodedUrl = java.net.URLEncoder.encode(realUrl, "UTF-8");
                                 // Reproducir la pista de SoundCloud en un iframe
-                                albumData.append("<iframe width=\"100%\" height=\"166\" scrolling=\"no\" frameborder=\"no\"")
+                                albumData.append("<iframe width='100%' height='166' scrolling='no' frameborder='no'")
                                         .append(" src=\"https://w.soundcloud.com/player/?url=").append(encodedUrl)
                                         .append("&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false\"></iframe>");
                             } catch (Exception e) {
@@ -248,10 +249,11 @@ public class SvConsultarAlbum extends HttpServlet {
                     }
 
                     // Mostrar el iframe de YouTube con el ID extraído
-                    if (direccion.startsWith("https://youtu.be") || direccion.startsWith("https://www.youtube.com")) {
+                    if (tema.getDireccion().startsWith("https://youtu.be") || tema.getDireccion().startsWith("https://www.youtube.com")) {
                         albumData.append("<iframe width=\"220\" height=\"135\" src=\"https://www.youtube.com/embed/")
                                 .append(videoId).append("\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen></iframe>");
                     } else if (isMp3) {
+                        direccion = request.getContextPath() + "/" + tema.getDireccion();
                         // Reproductor de audio para archivos MP3 con controles completos
                         albumData.append("<audio id=\"audio-").append(tema.getIdTema()).append("\" controls>")
                                 .append("<source src=\"").append(direccion).append("\" type=\"audio/mpeg\">")
@@ -277,16 +279,13 @@ public class SvConsultarAlbum extends HttpServlet {
 
                         // Si realUrl es nula, significa que no hubo redirección, así que lo gestionamos
                         if (realUrl != null) {
-                            try {
                                 // Asegúrate de que la URL real tiene la estructura correcta
                                 String encodedUrl = java.net.URLEncoder.encode(realUrl, "UTF-8");
                                 // Reproducir la pista de SoundCloud en un iframe
-                                albumData.append("<iframe width=\"100%\" height=\"166\" scrolling=\"no\" frameborder=\"no\"")
+                                albumData.append("<iframe width='100%' height='166' scrolling='no' frameborder='no'")
                                         .append(" src=\"https://w.soundcloud.com/player/?url=").append(encodedUrl)
                                         .append("&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false\"></iframe>");
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
+                            
                         } else {
                             // Mensaje en caso de que no se pueda obtener la URL
                             albumData.append("<p>No se pudo redirigir el enlace de Bit.ly.</p>");

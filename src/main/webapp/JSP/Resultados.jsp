@@ -16,6 +16,8 @@
     List<DataTema> temas = ctrl.buscadorTema(query);
     List<String> part = ctrl.buscadorPart(query);
     List<String> pd = ctrl.buscadorPD(query);
+    List<String> clientes = ctrl.buscadorCliente(query);
+    List<String> artistas = ctrl.buscadorArtista(query);
 %>
 
 <!DOCTYPE html>
@@ -69,7 +71,17 @@
 </head>
 <body>
     <h1>Resultados de Búsqueda para "<%= query %>"</h1>
-
+    
+    <h3>Artistas</h3>
+    <% for (String art : artistas) { %>
+        <p><%= art %></p>
+    <% } %>
+    
+    <h3>Clientes</h3>
+    <% for (String cli : clientes) { %>
+        <p><%= cli %></p>
+    <% } %>
+    
     <h3>Álbumes</h3>
     <% for (String album : albums) { %>
         <p><%= album %></p>
