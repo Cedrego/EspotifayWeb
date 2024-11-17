@@ -95,6 +95,35 @@
                 };
                 xhr.send();        
             }
+            
+            function incrementarPuntajeTema(nombreTema, nombreAlbum, tipoPuntaje) {
+                const xhr = new XMLHttpRequest();
+                const contextPath = "${pageContext.request.contextPath}";
+
+                // Configura la solicitud como POST y apunta al servlet
+                xhr.open('POST', contextPath + '/SvConsultarLista', true);
+
+                // Configura el encabezado para indicar que se enviarán datos en formato de formulario
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+                // Maneja la respuesta del servlet (opcional)
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState === XMLHttpRequest.DONE) {
+                        if (xhr.status === 200) {
+                            console.log('Puntaje incrementado con éxito');
+                        } else {
+                            console.error('Error al incrementar el puntaje');
+                        }
+                    }
+                };
+
+                // Envía los datos en el cuerpo de la solicitud en formato `application/x-www-form-urlencoded`
+                const params = 'nombreTema=' + nombreTema + 
+                               '&nombreAlbum=' + nombreAlbum +
+                               '&tipoPuntaje='+ tipoPuntaje;
+
+                xhr.send(params);
+            }
         </SCRIPT>
         <style>
             /* Fondo y estilos de texto */

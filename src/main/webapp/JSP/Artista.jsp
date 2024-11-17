@@ -5,7 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@ page import="jakarta.servlet.http.HttpSession" %>
+<%@ page import="javax.servlet.http.HttpSession" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -246,6 +246,8 @@
             <!-- Left Sidebar -->
             <div class="sidebar">
                 <button onclick="loadContent('<%= request.getContextPath()%>/JSP/AltaAlbum.jsp')">Alta de Álbum</button>
+                <button onclick="loadContent('<%= request.getContextPath()%>/JSP/ConsultarAlbum.jsp')">Consulta de Álbum</button>
+                <button onclick="loadContent('<%= request.getContextPath()%>/JSP/ConsultarLista.jsp')">Consulta de Lista de Reproducción</button>
             </div>
 
             <div style="flex: 1; background-color: #000; color: #FFF; padding-bottom: 40px;">

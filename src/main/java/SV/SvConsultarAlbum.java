@@ -12,12 +12,12 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -106,7 +106,7 @@ public class SvConsultarAlbum extends HttpServlet {
                             .append(" - <a href='")
                             .append(request.getContextPath()) // Esto obtiene el contexto de la aplicación, e.g., /EspotifyWeb
                             .append("/").append(tema.getDireccion()) // Ruta completa desde el contexto raíz
-                            .append("' download>")
+                            .append("' download onclick=\"incrementarPuntajeTema('").append(tema.getNombre()).append("','").append(tema.getAlbum()).append("','Descargas')\">")
                             .append("<button>Descargar</button></a>")
                             .append("</p>");
 
@@ -126,11 +126,13 @@ public class SvConsultarAlbum extends HttpServlet {
                     // Mostrar el iframe de YouTube con el ID extraído
                     if (direccion.startsWith("https://youtu.be") || direccion.startsWith("https://www.youtube.com")) {
                         albumData.append("<iframe width=\"220\" height=\"135\" src=\"https://www.youtube.com/embed/")
-                                .append(videoId).append("\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen></iframe>");
+                                .append(videoId).append("\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen")
+                                .append(" onplay=\"incrementarPuntajeTema('").append(tema.getNombre()).append("','").append(tema.getAlbum()).append("','Reproducciones')\"></iframe>");
                     } else if (isMp3) {
                         // Reproductor de audio para archivos MP3 con controles completos
                         direccion =  request.getContextPath() + "/" + tema.getDireccion();
-                        albumData.append("<audio id=\"audio-").append(tema.getIdTema()).append("\" controls>")
+                        albumData.append("<audio id=\"audio-").append(tema.getIdTema()).append("\" controls ")
+                                .append("onplay=\"incrementarPuntajeTema('").append(tema.getNombre()).append("','").append(tema.getAlbum()).append("','Reproducciones')\">")
                                 .append("<source src=\"").append(direccion).append("\" type=\"audio/mpeg\">")
                                 .append("Tu navegador no soporta el elemento de audio.")
                                 .append("</audio>");
@@ -160,7 +162,8 @@ public class SvConsultarAlbum extends HttpServlet {
                                 // Reproducir la pista de SoundCloud en un iframe
                                 albumData.append("<iframe width='100%' height='166' scrolling='no' frameborder='no'")
                                         .append(" src=\"https://w.soundcloud.com/player/?url=").append(encodedUrl)
-                                        .append("&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false\"></iframe>");
+                                        .append("&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false\"")
+                                        .append(" onplay=\"incrementarPuntajeTema('").append(tema.getNombre()).append("','").append(tema.getAlbum()).append("','Reproducciones')\"></iframe>");
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
@@ -231,7 +234,7 @@ public class SvConsultarAlbum extends HttpServlet {
                             .append(" - <a href='")
                             .append(request.getContextPath()) // Esto obtiene el contexto de la aplicación, e.g., /EspotifyWeb
                             .append("/").append(tema.getDireccion()) // Ruta completa desde el contexto raíz
-                            .append("' download>")
+                            .append("' download onclick=\"incrementarPuntajeTema('").append(tema.getNombre()).append("','").append(tema.getAlbum()).append("','Descargas')\">")
                             .append("<button>Descargar</button></a>")
                             .append("</p>");
 
@@ -251,11 +254,13 @@ public class SvConsultarAlbum extends HttpServlet {
                     // Mostrar el iframe de YouTube con el ID extraído
                     if (tema.getDireccion().startsWith("https://youtu.be") || tema.getDireccion().startsWith("https://www.youtube.com")) {
                         albumData.append("<iframe width=\"220\" height=\"135\" src=\"https://www.youtube.com/embed/")
-                                .append(videoId).append("\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen></iframe>");
+                                .append(videoId).append("\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen")
+                                .append(" onplay=\"incrementarPuntajeTema('").append(tema.getNombre()).append("','").append(tema.getAlbum()).append("','Reproducciones')\"></iframe>");
                     } else if (isMp3) {
                         direccion = request.getContextPath() + "/" + tema.getDireccion();
                         // Reproductor de audio para archivos MP3 con controles completos
-                        albumData.append("<audio id=\"audio-").append(tema.getIdTema()).append("\" controls>")
+                        albumData.append("<audio id=\"audio-").append(tema.getIdTema()).append("\" controls ")
+                                .append("onplay=\"incrementarPuntajeTema('").append(tema.getNombre()).append("','").append(tema.getAlbum()).append("','Reproducciones')\">")
                                 .append("<source src=\"").append(direccion).append("\" type=\"audio/mpeg\">")
                                 .append("Tu navegador no soporta el elemento de audio.")
                                 .append("</audio>");
@@ -284,7 +289,8 @@ public class SvConsultarAlbum extends HttpServlet {
                                 // Reproducir la pista de SoundCloud en un iframe
                                 albumData.append("<iframe width='100%' height='166' scrolling='no' frameborder='no'")
                                         .append(" src=\"https://w.soundcloud.com/player/?url=").append(encodedUrl)
-                                        .append("&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false\"></iframe>");
+                                        .append("&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false\"")
+                                        .append(" onplay=\"incrementarPuntajeTema('").append(tema.getNombre()).append("','").append(tema.getAlbum()).append("','Reproducciones')\"></iframe>");
                             
                         } else {
                             // Mensaje en caso de que no se pueda obtener la URL
@@ -312,7 +318,11 @@ public class SvConsultarAlbum extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        String nombreTema = request.getParameter("nombreTema");
+        String nombreAlbum = request.getParameter("nombreAlbum");
+        String tipoPuntaje = request.getParameter("tipoPuntaje");
+        ctrl.aumentarPuntajeTema(nombreTema, nombreAlbum, tipoPuntaje);
+        response.setStatus(HttpServletResponse.SC_OK);
     }
 
     /**
