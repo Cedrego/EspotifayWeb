@@ -57,8 +57,8 @@
     <body>
         <div class="container">
             <h1>Seguro que desea eliminar su cuenta?</h1>
-            <button onclick="window.location.href='<%= request.getContextPath()%>/SvCerrarSesion'">Confirmar</button>
-            <button onclick="window.location.href='<%= request.getContextPath()%>/Artista'">Cancelar</button>
+            <button onclick="window.location.href='<%= request.getContextPath()%>/SvArtistaEliminar'">Confirmar</button>
+            <button onclick="window.location.href='<%= request.getContextPath()%>/JSP/Artista.jsp'">Cancelar</button>
         </div>
     </body>
 </html>

@@ -182,6 +182,18 @@
                 opacity: 0.7;
                 transition: opacity .2s;
             }
+            #dropdown-menu a {
+                color: #FFF;
+                text-decoration: none;
+                display: block;
+                padding: 5px 10px;
+                transition: background-color 0.3s ease; /* Animación de transición */
+            }
+
+            /* Efecto de hover */
+            #dropdown-menu a:hover {
+                background-color: #9e9e9e;
+            }
         </style>
         <script>
             function loadContent(url) {

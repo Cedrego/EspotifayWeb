@@ -4,6 +4,8 @@
  */
 package SV;
 
+import Logica.Factory;
+import Logica.ICtrl;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -11,6 +13,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -18,7 +21,10 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet(name = "SvArtistaEliminar", urlPatterns = {"/SvArtistaEliminar"})
 public class SvArtistaEliminar extends HttpServlet {
-
+    Factory fabric = Factory.getInstance();
+    ICtrl ctrl = fabric.getICtrl();
+    
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -57,7 +63,28 @@ public class SvArtistaEliminar extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        // Redirigir a una página de error o a index si el método GET no es soportado
+        response.setContentType("text/html;charset=UTF-8");
+
+        // Obtener la sesión activa
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            // Si no hay sesión, redirigir al login
+            response.sendRedirect(request.getContextPath() + "/login.jsp");
+            return;
+        }
+
+        // Obtener el nickname del usuario en sesión
+        String nickname = (String) session.getAttribute("NickSesion");
+        if (nickname == null || nickname.isEmpty()) {
+            // Si el nickname no está en la sesión, redirigir o mostrar error
+            response.sendRedirect(request.getContextPath() + "/error.jsp");
+            return;
+        }
+
+        ctrl.DeleteArtista(nickname);
+        session.invalidate();
+        response.sendRedirect(request.getContextPath() + "/index.jsp");
     }
 
     /**
