@@ -271,6 +271,7 @@
         <div class="content">
             <!-- Left Sidebar -->
             <div class="sidebar">
+                <button onclick="loadContent('<%= request.getContextPath()%>/JSP/RankingUsuarios.jsp')">Ranking de Usuarios</button>
                 <button onclick="loadContent('<%= request.getContextPath()%>/JSP/AltaAlbum.jsp')">Alta de Álbum</button>
                 <button onclick="loadContent('<%= request.getContextPath()%>/JSP/ConsultarAlbum.jsp')">Consulta de Álbum</button>
                 <button onclick="loadContent('<%= request.getContextPath()%>/JSP/ConsultarLista.jsp')">Consulta de Lista de Reproducción</button>

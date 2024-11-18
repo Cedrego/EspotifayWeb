@@ -254,6 +254,7 @@
             <!-- Left Sidebar -->
             <div class="sidebar">
                 <button onclick="loadContent('<%= request.getContextPath()%>/JSP/LoadingScreen.jsp')">Consulta de Perfiles</button>
+                <button onclick="loadContent('<%= request.getContextPath()%>/JSP/RankingUsuarios.jsp')">Ranking de Usuarios</button>
                 <button onclick="loadContent('<%= request.getContextPath()%>/JSP/ConsultarAlbum.jsp')">Consulta de Albumes</button>
                 <button onclick="loadContent('<%= request.getContextPath()%>/JSP/ConsultarLista.jsp')">Consulta de Listas</button>
             </div>
