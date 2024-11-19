@@ -95,19 +95,15 @@
                 xhr.send();
             };
             
-            //SOLUCION TEMPORAL PARA TESTEAR, CAMBIAR LO ANTES POSIBLE
-            function mostrarDetallesUsuario(nickUsuario, tipoUsuario) {
-                var xhr = new XMLHttpRequest();
-                var contextPath = "${pageContext.request.contextPath}";
-                xhr.open('GET', contextPath + '/SvDetallesUsuario?nickUsuario=' + nickUsuario + '&tipoUsuario='+tipoUsuario+'&_=' + new Date().getTime(), true);
-                xhr.onreadystatechange = function() {
-                    if (xhr.readyState === 4 && xhr.status === 200) {
-                        var detailsContainer = document.getElementById('detallesUsuario' + nickUsuario);
-                        detailsContainer.innerHTML = xhr.responseText;
-                        detailsContainer.style.display = 'block';
-                    }
-                };
-                xhr.send();
+            function mostrarDetallesUsuario(nickUsuario) {
+                const detailsRow = document.getElementById('detallesUsuario' + nickUsuario);
+
+                // Mostrar la fila de detalles si está oculta, o ocultarla si está visible
+                if (detailsRow.style.display === 'none' || detailsRow.style.display === '') {
+                    detailsRow.style.display = 'table-row'; // Mostrar la fila
+                } else {
+                    detailsRow.style.display = 'none'; // Ocultar la fila
+                }
             }
             
             window.onload = function() {

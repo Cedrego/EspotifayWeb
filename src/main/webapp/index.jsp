@@ -198,6 +198,77 @@
                 opacity: 0.7;
                 transition: opacity .2s;
             }
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            body {
+                font-family: 'Poppins', sans-serif;
+                height: 100vh;
+                margin: 0;
+            }
+
+            /* Estilo para computadoras */
+            .desktop-view {
+                display: flex;
+                flex-direction: column;
+                height: 100%;
+            }
+
+            .mobile-view {
+                display: none;
+            }
+
+            /* Estilo para dispositivos móviles */
+            @media (max-width: 768px) {
+                body {
+                    background-color: #000; /* Fondo negro para móviles */
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                }
+
+                .desktop-view {
+                    display: none; /* Ocultar vista de escritorio */
+                }
+
+                .mobile-view {
+                    display: flex; /* Mostrar vista móvil */
+                    flex-direction: column;
+                    align-items: center;
+                    gap: 20px; /* Espaciado entre elementos */
+                }
+
+                /* Estilo para los campos de entrada */
+                .mobile-view input {
+                    width: 90%; /* Anchura adaptable */
+                    padding: 15px; /* Tamaño del campo */
+                    font-size: 18px; /* Tamaño del texto */
+                    border: none; /* Sin bordes */
+                    border-radius: 5px; /* Bordes redondeados */
+                    background-color: #333; /* Fondo gris oscuro */
+                    color: white; /* Texto blanco */
+                }
+
+                .mobile-view input::placeholder {
+                    color: #ccc; /* Color del texto del placeholder */
+                }
+
+                .mobile-view button {
+                    background-color: #1db954; /* Fondo verde */
+                    color: black; /* Texto negro */
+                    padding: 15px 30px; /* Tamaño del botón */
+                    border: none;
+                    border-radius: 10px; /* Bordes redondeados */
+                    font-size: 18px; /* Tamaño del texto */
+                    cursor: pointer;
+                }
+
+                .mobile-view button:hover {
+                    background-color: #1ed760; /* Verde más brillante al pasar el ratón */
+                }
         </style>
         <script>
             function loadContent(url) {
@@ -224,62 +295,72 @@
             }
             
             function loadDynamicImage(imagePath) {
-                document.getElementById('dynamic-image').style.backgroundImage = `url('${imagePath}')`;
+                document.getElementById('dynamic-image').style.backgroundImage = url('${imagePath}');
             }
             // loadDynamicImage('path/to/your/image.jpg'); // Uncomment and replace with your image path
         </script>
     </head>
     <body>
-        <!-- Top Bar -->
-        <div class="top-bar">
-                <div class="logo-container">
-                    <div class="logo"></div> <!-- Logo aquí -->
-                    <div>Espotify</div>
-                </div>
-            <form onsubmit="buscarResultados(); return false;" style="display: flex; align-items: center; gap: 10px;">
-                <input type="text" id="query" name="query" placeholder="Buscar álbumes, temas, listas de reproducción" 
-                       style="width: 300px; padding: 10px; border-radius: 5px; border: none; font-size: 16px; color: #000; background-color: #FFF;">
-                <button type="submit" style="background-color: #1db954; color: black; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; font-weight: bold; transition: box-shadow 0.3s ease;">
-                    Buscar
-                </button>
-            </form>
-                <div class="top-bar-buttons">
-                    <button onclick="redirect('Iniciar Sesion')">Iniciar Sesion</button>
-                    <button onclick="redirect('Registrarse')">Registrarse</button>
-                </div>
-        </div>
+        <div class="desktop-view">
+            <!-- Top Bar -->
+            <div class="top-bar">
+                    <div class="logo-container">
+                        <div class="logo"></div> <!-- Logo aquí -->
+                        <div>Espotify</div>
+                    </div>
+                <form onsubmit="buscarResultados(); return false;" style="display: flex; align-items: center; gap: 10px;">
+                    <input type="text" id="query" name="query" placeholder="Buscar álbumes, temas, listas de reproducción" 
+                           style="width: 300px; padding: 10px; border-radius: 5px; border: none; font-size: 16px; color: #000; background-color: #FFF;">
+                    <button type="submit" style="background-color: #1db954; color: black; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; font-weight: bold; transition: box-shadow 0.3s ease;">
+                        Buscar
+                    </button>
+                </form>
+                    <div class="top-bar-buttons">
+                        <button onclick="redirect('Iniciar Sesion')">Iniciar Sesion</button>
+                        <button onclick="redirect('Registrarse')">Registrarse</button>
+                    </div>
+            </div>
 
-        <!-- Main Content -->
-        <div class="content">
-            <!-- Left Sidebar -->
-            <div class="sidebar">
-                <button onclick="loadContent('<%= request.getContextPath()%>/JSP/LoadingScreen.jsp')">Consulta de Perfiles</button>
-                <button onclick="loadContent('<%= request.getContextPath()%>/JSP/RankingUsuarios.jsp')">Ranking de Usuarios</button>
-                <button onclick="loadContent('<%= request.getContextPath()%>/JSP/ConsultarAlbum.jsp')">Consulta de Albumes</button>
-                <button onclick="loadContent('<%= request.getContextPath()%>/JSP/ConsultarLista.jsp')">Consulta de Listas</button>
-            </div>
-            
-            <div style="flex: 1; background-color: #000; color: #FFF; padding-bottom: 40px;">
-                <iframe id="dynamic-content" style="width: 100%; height: calc(100% - 40px); border: none;" src=""></iframe>
-            </div>
-            
-            <!-- Footer with Controls, Image, and Text -->
-            <div class="footer">
-                <div class="footer-content">
-                    <div class="image-and-label">
-                        <div class="dynamic-image"></div> <!-- Imagen de la canción -->
-                        <span class="song-label">Nombre de la canción</span> <!-- Etiqueta de texto -->
-                    </div>
-                    <div class="footer-controls">
-                        <div class="controls">
-                            <button>&#9664;&#9664;</button> <!-- Previous button -->
-                            <button>&#9654;</button> <!-- Play button -->
-                            <button>&#9654;&#9654;</button> <!-- Next button -->
+            <!-- Main Content -->
+            <div class="content">
+                <!-- Left Sidebar -->
+                <div class="sidebar">
+                    <button onclick="loadContent('<%= request.getContextPath()%>/JSP/LoadingScreen.jsp')">Consulta de Perfiles</button>
+                    <button onclick="loadContent('<%= request.getContextPath()%>/JSP/RankingUsuarios.jsp')">Ranking de Usuarios</button>
+                    <button onclick="loadContent('<%= request.getContextPath()%>/JSP/ConsultarAlbum.jsp')">Consulta de Albumes</button>
+                    <button onclick="loadContent('<%= request.getContextPath()%>/JSP/ConsultarLista.jsp')">Consulta de Listas</button>
+                </div>
+
+                <div style="flex: 1; background-color: #000; color: #FFF; padding-bottom: 40px;">
+                    <iframe id="dynamic-content" style="width: 100%; height: calc(100% - 40px); border: none;" src=""></iframe>
+                </div>
+
+                <!-- Footer with Controls, Image, and Text -->
+                <div class="footer">
+                    <div class="footer-content">
+                        <div class="image-and-label">
+                            <div class="dynamic-image"></div> <!-- Imagen de la canción -->
+                            <span class="song-label">Nombre de la canción</span> <!-- Etiqueta de texto -->
                         </div>
-                        <input type="range" min="0" max="100" value="0" class="slider"> <!-- Barra de progreso -->
+                        <div class="footer-controls">
+                            <div class="controls">
+                                <button>&#9664;&#9664;</button> <!-- Previous button -->
+                                <button>&#9654;</button> <!-- Play button -->
+                                <button>&#9654;&#9654;</button> <!-- Next button -->
+                            </div>
+                            <input type="range" min="0" max="100" value="0" class="slider"> <!-- Barra de progreso -->
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </body>
+        <!-- Vista para móviles -->
+        <div class="mobile-view"> 
+            <form action="${pageContext.request.contextPath}/SvIngreso" method="POST">
+                <input type="text" name="NOE" placeholder="Nombre de usuario o correo" required>
+                <input type="password" name="pass" placeholder="Contraseña" required>
+                <button type="submit" class="login-button">Iniciar Sesión</button>
+            </form>
+        </div>
+    </body>
 </html>
