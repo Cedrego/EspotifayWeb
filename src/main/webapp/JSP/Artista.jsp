@@ -182,31 +182,6 @@
                 opacity: 0.7;
                 transition: opacity .2s;
             }
-            /* Menú desplegable */
-            #dropdown-menu {
-                display: none;
-                position: absolute;
-                top: 100%;
-                right: 0;
-                background-color: #1a1a1a;
-                border: 1px solid #333;
-                border-radius: 5px;
-                padding: 10px;
-                box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-            }
-
-            #dropdown-menu a {
-                color: #FFF;
-                text-decoration: none;
-                display: block;
-                padding: 5px 10px;
-                transition: background-color 0.3s ease; /* Animación de transición */
-            }
-
-            /* Efecto de hover */
-            #dropdown-menu a:hover {
-                background-color: #9e9e9e;
-            }
         </style>
         <script>
             function loadContent(url) {
@@ -222,20 +197,6 @@
                     loadContent("");
                 }
             }
-            // Función para mostrar/ocultar el menú desplegable
-        function toggleMenu() {
-            const menu = document.getElementById("dropdown-menu");
-            menu.style.display = menu.style.display === "none" ? "block" : "none";
-        }
-
-        // Oculta el menú si se hace clic fuera de él
-        window.addEventListener("click", function(event) {
-            const menu = document.getElementById("dropdown-menu");
-            const clientName = document.querySelector(".client-name");
-            if (menu.style.display === "block" && !clientName.contains(event.target)) {
-                menu.style.display = "none";
-            }
-        });
         </script>
     </head>
     <body>
@@ -254,27 +215,20 @@
                 </button>
             </form>
 
-            <div class="client-name" onclick="toggleMenu()" style="position: relative; cursor: pointer;">
+            <div class="client-name">
                 <%
                     String nick = (String) session.getAttribute("NickSesion"); // Obtener el nick de la sesión
                     out.print(nick); // Mostrar el nombre del cliente
-%>
-                <!-- Menú desplegable -->
-                <div id="dropdown-menu" style="display: none; position: absolute; top: 100%; right: 0; background-color: #1a1a1a; border: 1px solid #333; border-radius: 5px; padding: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.5);">
-                    <a onclick="loadContent('<%= request.getContextPath()%>/JSP/LoadingScreen.jsp')" style="color: #FFF; text-decoration: none; display: block; padding: 5px 10px;">Perfil</a>
-                    <a onclick="window.location.href='<%= request.getContextPath()%>/JSP/ArtistaEliminar.jsp'" style="color: #FFF; text-decoration: none; display: block; padding: 5px 10px;">Dar de Baja</a>
-                    <a onclick="window.location.href='<%= request.getContextPath()%>/SvCerrarSesion'" style="color: #FFF; text-decoration: none; display: block; padding: 5px 10px;">Cerrar Sesion</a>
-                </div>
+                %>
             </div>
         </div>
             <!-- Main Content -->
         <div class="content">
             <!-- Left Sidebar -->
             <div class="sidebar">
-                <button onclick="loadContent('<%= request.getContextPath()%>/JSP/RankingUsuarios.jsp')">Ranking de Usuarios</button>
                 <button onclick="loadContent('<%= request.getContextPath()%>/JSP/AltaAlbum.jsp')">Alta de Álbum</button>
-                <button onclick="loadContent('<%= request.getContextPath()%>/JSP/ConsultarAlbum.jsp')">Consulta de Álbum</button>
-                <button onclick="loadContent('<%= request.getContextPath()%>/JSP/ConsultarLista.jsp')">Consulta de Lista de Reproducción</button>
+                <button onclick="loadContent('<%= request.getContextPath()%>/JSP/LoadingScreen.jsp')">Consulta de Perfil de Usuario</button>
+                <button onclick="window.location.href='<%= request.getContextPath() %>/SvCerrarSesion'">Cerrar Sesión</button>
             </div>
 
             <div style="flex: 1; background-color: #000; color: #FFF; padding-bottom: 40px;">
