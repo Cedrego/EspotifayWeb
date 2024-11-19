@@ -222,20 +222,6 @@
                     loadContent("");
                 }
             }
-            // Función para mostrar/ocultar el menú desplegable
-        function toggleMenu() {
-            const menu = document.getElementById("dropdown-menu");
-            menu.style.display = menu.style.display === "none" ? "block" : "none";
-        }
-
-        // Oculta el menú si se hace clic fuera de él
-        window.addEventListener("click", function(event) {
-            const menu = document.getElementById("dropdown-menu");
-            const clientName = document.querySelector(".client-name");
-            if (menu.style.display === "block" && !clientName.contains(event.target)) {
-                menu.style.display = "none";
-            }
-        });
         </script>
     </head>
     <body>
@@ -254,7 +240,7 @@
                 </button>
             </form>
 
-            <div class="client-name" onclick="toggleMenu()" style="position: relative; cursor: pointer;">
+            <div class="client-name">
                 <%
                     String nick = (String) session.getAttribute("NickSesion"); // Obtener el nick de la sesión
                     out.print(nick); // Mostrar el nombre del cliente
@@ -271,10 +257,9 @@
         <div class="content">
             <!-- Left Sidebar -->
             <div class="sidebar">
-                <button onclick="loadContent('<%= request.getContextPath()%>/JSP/RankingUsuarios.jsp')">Ranking de Usuarios</button>
                 <button onclick="loadContent('<%= request.getContextPath()%>/JSP/AltaAlbum.jsp')">Alta de Álbum</button>
-                <button onclick="loadContent('<%= request.getContextPath()%>/JSP/ConsultarAlbum.jsp')">Consulta de Álbum</button>
-                <button onclick="loadContent('<%= request.getContextPath()%>/JSP/ConsultarLista.jsp')">Consulta de Lista de Reproducción</button>
+                <button onclick="loadContent('<%= request.getContextPath()%>/JSP/LoadingScreen.jsp')">Consulta de Perfil de Usuario</button>
+                <button onclick="window.location.href='<%= request.getContextPath() %>/SvCerrarSesion'">Cerrar Sesión</button>
             </div>
 
             <div style="flex: 1; background-color: #000; color: #FFF; padding-bottom: 40px;">
