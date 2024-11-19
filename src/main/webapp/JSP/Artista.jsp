@@ -182,6 +182,31 @@
                 opacity: 0.7;
                 transition: opacity .2s;
             }
+            /* Menú desplegable */
+            #dropdown-menu {
+                display: none;
+                position: absolute;
+                top: 100%;
+                right: 0;
+                background-color: #1a1a1a;
+                border: 1px solid #333;
+                border-radius: 5px;
+                padding: 10px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            }
+
+            #dropdown-menu a {
+                color: #FFF;
+                text-decoration: none;
+                display: block;
+                padding: 5px 10px;
+                transition: background-color 0.3s ease; /* Animación de transición */
+            }
+
+            /* Efecto de hover */
+            #dropdown-menu a:hover {
+                background-color: #9e9e9e;
+            }
         </style>
         <script>
             function loadContent(url) {
@@ -237,6 +262,7 @@
                 <!-- Menú desplegable -->
                 <div id="dropdown-menu" style="display: none; position: absolute; top: 100%; right: 0; background-color: #1a1a1a; border: 1px solid #333; border-radius: 5px; padding: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.5);">
                     <a onclick="loadContent('<%= request.getContextPath()%>/JSP/LoadingScreen.jsp')" style="color: #FFF; text-decoration: none; display: block; padding: 5px 10px;">Perfil</a>
+                    <a onclick="window.location.href='<%= request.getContextPath()%>/JSP/ArtistaEliminar.jsp'" style="color: #FFF; text-decoration: none; display: block; padding: 5px 10px;">Dar de Baja</a>
                     <a onclick="window.location.href='<%= request.getContextPath()%>/SvCerrarSesion'" style="color: #FFF; text-decoration: none; display: block; padding: 5px 10px;">Cerrar Sesion</a>
                 </div>
             </div>
@@ -273,5 +299,5 @@
                 </div>
             </div>
         </div>
-    </body>
+    </body>
 </html>
