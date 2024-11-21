@@ -180,7 +180,7 @@ public class SvDetallesUsuario extends HttpServlet {
             }
         }
         
-        if (dondeViene.equalsIgnoreCase("ranking")) {
+       /* if (dondeViene.equalsIgnoreCase("ranking")) {
             if (tipoUsuario.equalsIgnoreCase("Cliente")) {
                 DataClienteAlt DTA = ctrl.getDataClienteAlt(nickUsuario);
                 String pic = DTA.getPicture();
@@ -215,7 +215,7 @@ public class SvDetallesUsuario extends HttpServlet {
                 response.setContentType("text/html;charset=UTF-8");
                 out.write(datosUsuario.toString());
             }
-        }
+        }*/
     }
 
     @Override

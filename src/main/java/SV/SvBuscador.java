@@ -4,6 +4,7 @@
  */
 package SV;
 
+import Capa_Presentacion.DataAlbum;
 import Capa_Presentacion.DataTema;
 import Logica.Factory;
 import Logica.ICtrl;
@@ -15,6 +16,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import javax.servlet.RequestDispatcher;
 
 /**
  *
@@ -64,6 +66,17 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response) t
             out.println("<title>Resultados de Búsqueda</title>");
             out.println("<style>body { color: white; background-color: #000; }</style>");
             out.println("<script type='text/javascript'>");
+
+            // Función JavaScript para reproducir un tema
+            out.println("function reproducirTema(url, nombre, imagen) {");
+            out.println("    document.getElementById('audio-player').src = url;");
+            out.println("    document.getElementById('song-name').textContent = nombre;");
+            out.println("    document.getElementById('album-image').src = imagen;");
+            out.println("    document.getElementById('audio-player').play();");
+            out.println("    const playPauseButton = document.getElementById('play-pause');");
+            out.println("    playPauseButton.innerHTML = \"&#10074;&#10074;\"; // Cambiar a ícono de pausa");
+            out.println("}");
+
 
             // Script para mostrar detalles del cliente
             out.println("function mostrarDetallesCliente(nickUsuario) {");
@@ -132,6 +145,7 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response) t
             if (artistas.isEmpty() && clientes.isEmpty() && albums.isEmpty() && temas.isEmpty() && part.isEmpty() && pd.isEmpty()) {
                 out.println("<h3>No se encontraron resultados para la búsqueda.</h3>");
             } else {
+                
                 // Mostrar resultados
                 if (!artistas.isEmpty()) {
                     out.println("<h3>Artistas</h3>");
@@ -148,7 +162,7 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response) t
                         out.println("<div id='detallesCliente" + cli + "' style='display: none; padding-left: 20px;'></div>");
                     }
                 }
-
+               
                 if (!albums.isEmpty()) {
                     out.println("<h3>Álbumes</h3>");
                     for (String album : albums) {
@@ -161,7 +175,15 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response) t
                 if (!temas.isEmpty()) {
                     out.println("<h3>Temas</h3>");
                     for (DataTema tema : temas) {
-                        out.println("<p onclick=\"reproducirTema('" + tema.getDireccion() + "')\">" + tema.getNombre() + "</p>");
+                        DataAlbum da = ctrl.obtenerDataAlbum(tema.getAlbum());
+                        String pic = da.getPic();
+                        if (pic == null || pic.isBlank()) {
+                            pic = "images/noImageSong.png"; // Imagen predeterminada si no hay imagen
+                        }
+                        String imagen = request.getContextPath() + "/" +pic;
+                        String direccion =  request.getContextPath() + "/" + tema.getDireccion();
+                        out.println("<p onclick=\"reproducirTema('" + direccion + "', '" + tema.getNombre() + "', '" + imagen +"')\" style='cursor: pointer; color: lightblue;'>" + tema.getNombre() + "</p>");
+                        
                     }
                 }
 

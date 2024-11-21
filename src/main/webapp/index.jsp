@@ -3,6 +3,8 @@
     Created on : 15 oct. 2024, 7:50:40 p. m.
     Author     : cedre
 --%>
+<!-- Reproductor -->
+<jsp:include page="/JSP/reproductor.jsp" />
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -327,6 +329,7 @@
                 <div class="sidebar">
                     <button onclick="loadContent('<%= request.getContextPath()%>/JSP/LoadingScreen.jsp')">Consulta de Perfiles</button>
                     <button onclick="loadContent('<%= request.getContextPath()%>/JSP/RankingUsuarios.jsp')">Ranking de Usuarios</button>
+                    <button onclick="loadContent('<%= request.getContextPath()%>/JSP/RankingCanciones.jsp')">Canciones Recomendadas</button>
                     <button onclick="loadContent('<%= request.getContextPath()%>/JSP/ConsultarAlbum.jsp')">Consulta de Albumes</button>
                     <button onclick="loadContent('<%= request.getContextPath()%>/JSP/ConsultarLista.jsp')">Consulta de Listas</button>
                 </div>
@@ -335,23 +338,26 @@
                     <iframe id="dynamic-content" style="width: 100%; height: calc(100% - 40px); border: none;" src=""></iframe>
                 </div>
 
-                <!-- Footer with Controls, Image, and Text -->
-                <div class="footer">
+                
+                <!--<div class="footer">
                     <div class="footer-content">
                         <div class="image-and-label">
-                            <div class="dynamic-image"></div> <!-- Imagen de la canción -->
-                            <span class="song-label">Nombre de la canción</span> <!-- Etiqueta de texto -->
+                            <div class="dynamic-image"></div> 
+                            <span class="song-label">Nombre de la canción</span> 
                         </div>
                         <div class="footer-controls">
                             <div class="controls">
-                                <button>&#9664;&#9664;</button> <!-- Previous button -->
-                                <button>&#9654;</button> <!-- Play button -->
-                                <button>&#9654;&#9654;</button> <!-- Next button -->
+                                <button>&#9664;&#9664;</button> 
+                                <button>&#9654;</button> 
+                                <button>&#9654;&#9654;</button> 
                             </div>
-                            <input type="range" min="0" max="100" value="0" class="slider"> <!-- Barra de progreso -->
+                            <input type="range" min="0" max="100" value="0" class="slider"> 
                         </div>
                     </div>
-                </div>
+                </div> -->
+                
+                
+
             </div>
         </div>
         <!-- Vista para móviles -->

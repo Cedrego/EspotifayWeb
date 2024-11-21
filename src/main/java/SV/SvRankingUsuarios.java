@@ -4,6 +4,7 @@
  */
 package SV;
 
+import Capa_Presentacion.DataArtistaAlt;
 import Capa_Presentacion.DataClienteAlt;
 import Logica.Factory;
 import Logica.ICtrl;
@@ -79,8 +80,6 @@ public class SvRankingUsuarios extends HttpServlet {
                         .append("<img src=\"").append(imagen).append("\" style=\"width:100px; height:100px; object-fit:cover; border-radius:50%; box-shadow: 0 0 10px #1db954;\"/>")
                         .append("<p><strong>Nombre:</strong> ").append(DTA.getNombre()).append("</p>")
                         .append("<p><strong>Correo:</strong> ").append(DTA.getCorreo()).append("</p>")
-                        .append("<p><strong>Fecha de nacimiento:</strong> ").append(DTA.getFecha().getDia()).append("/")
-                        .append(DTA.getFecha().getMes()).append("/").append(DTA.getFecha().getAnio()).append("</p>")
                         .append("<div style='margin-top:10px;'>")
                         .append("<p><strong>Listas:</strong></p>")
                         .append("<ul style='list-style:none; padding:0;'>");
@@ -96,7 +95,39 @@ public class SvRankingUsuarios extends HttpServlet {
                         .append("</div>")
                         .append("</div>");
             }
+            
+            if (tipoUsuario.equalsIgnoreCase("Artista")) {
+                DataArtistaAlt DTA = ctrl.getDataArtistaAlt(nickname);
+                String pic = DTA.getPicture();
+                if (pic == null || pic.isBlank()) {
+                    pic = "images/profiles/blank.png"; // Imagen predeterminada si no hay imagen
+                }
 
+                String imagen = request.getContextPath() + "/" + pic;
+
+                datosUsuario.append("<div style='display:flex; flex-direction:column; align-items:center; text-align:center; gap:10px; padding:10px;'>")
+                        .append("<img src=\"").append(imagen).append("\" style=\"width:100px; height:100px; object-fit:cover; border-radius:50%; box-shadow: 0 0 10px #1db954;\"/>")
+                        .append("<p><strong>Nombre:</strong> ").append(DTA.getNombre()).append("</p>")
+                        .append("<p><strong>Apellido:</strong> ").append(DTA.getApellido()).append("</p>")
+                        .append("<p><strong>Correo:</strong> ").append(DTA.getCorreo()).append("</p>")
+                        .append("<p><strong>Fecha de nacimiento:</strong> ").append(DTA.getFecha().getDia()).append("/")
+                        .append(DTA.getFecha().getMes()).append("/").append(DTA.getFecha().getAnio()).append("</p>")
+                        .append("<div style='margin-top:10px;'>")
+                        .append("<p><strong>Albumes:</strong></p>")
+                        .append("<ul style='list-style:none; padding:0;'>");
+
+                // Mostrar los nombres de las listas
+                DTA.getDataalbumes().forEach(album -> {
+                    datosUsuario.append("<li style='margin:5px 0; background-color:#1db954; color:black; padding:10px; border-radius:5px; font-weight:bold;'>")
+                            .append(album.getNombre())
+                            .append("</li>");
+                });
+
+                datosUsuario.append("</ul>")
+                        .append("</div>")
+                        .append("</div>");
+            }
+            
             out.print("<td colspan='3' style='text-align:center;'>" + datosUsuario.toString() + "</td>");
             out.println("</tr>");
 

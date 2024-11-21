@@ -57,7 +57,7 @@
             function buscar() {
                 let query = document.getElementById("query").value;
 
-                if (query.length > 1) { // para que ejecute la búsqueda solo si hay al menos 3 caracteres
+                if (query.length > 1) { // para que ejecute la búsqueda solo si hay al menos 2 caracteres
                     fetch("<%= request.getContextPath() %>/SvBuscador?query=" + query)
                         .then(response => response.text())
                         .then(data => {
@@ -67,14 +67,6 @@
                 } else {
                     document.getElementById("resultados").innerHTML = ""; //limpio si no hay consulta
                 }
-            }
-            
-            
-            // Función para reproducir un tema cuando se hace clic
-            function reproducirTema(direccion) {
-                const audio = document.getElementById("audioPlayer");
-                audio.src = direccion;
-                audio.play();
             }
         </script>
     </head>
