@@ -67,14 +67,14 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response) t
             out.println("<style>body { color: white; background-color: #000; }</style>");
             out.println("<script type='text/javascript'>");
 
-            // Función JavaScript para reproducir un tema
             out.println("function reproducirTema(url, nombre, imagen) {");
-            out.println("    document.getElementById('audio-player').src = url;");
-            out.println("    document.getElementById('song-name').textContent = nombre;");
-            out.println("    document.getElementById('album-image').src = imagen;");
-            out.println("    document.getElementById('audio-player').play();");
-            out.println("    const playPauseButton = document.getElementById('play-pause');");
-            out.println("    playPauseButton.innerHTML = \"&#10074;&#10074;\"; // Cambiar a ícono de pausa");
+            out.println("    const audioPlayer = document.getElementById('audio-player');");
+            out.println("    const songLabel = document.getElementById('song-name');");
+            out.println("    const albumImage = document.getElementById('album-image');");
+            out.println("    audioPlayer.src = url;");
+            out.println("    songLabel.innerText = nombre;");
+            out.println("    albumImage.src = imagen;");
+            out.println("    audioPlayer.play();");
             out.println("}");
 
 
@@ -175,15 +175,23 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response) t
                 if (!temas.isEmpty()) {
                     out.println("<h3>Temas</h3>");
                     for (DataTema tema : temas) {
-                        DataAlbum da = ctrl.obtenerDataAlbum(tema.getAlbum());
-                        String pic = da.getPic();
-                        if (pic == null || pic.isBlank()) {
-                            pic = "images/noImageSong.png"; // Imagen predeterminada si no hay imagen
+                        String direccion = tema.getDireccion();
+                        boolean isMp3 = direccion.toLowerCase().endsWith(".mp3");
+                        if (isMp3){
+                            DataAlbum da = ctrl.obtenerDataAlbum(tema.getAlbum());
+                            String pic = da.getPic();
+                            if (pic == null || pic.isBlank()) {
+                                pic = "images/noImageSong.png"; // Imagen predeterminada si no hay imagen
+                            }
+                            String imagen = request.getContextPath() + "/" +pic;
+                            direccion =  request.getContextPath() + "/" + tema.getDireccion();
+                            out.println("<p onclick=\"reproducirTema('" + direccion + "', '" + tema.getNombre() + "', '" + imagen +"')\" style='cursor: pointer; color: lightblue;'>" + tema.getNombre() + ", click para cargar</p>");
+                            out.println("<audio id='audio-player' controls>");
+                            out.println("    <p>Tu navegador no soporta audio.</p>");
+                            out.println("</audio>");
+                        }else{
+                            out.println("<p style='cursor: pointer; color: lightblue;'>" + tema.getNombre() + "</p>");
                         }
-                        String imagen = request.getContextPath() + "/" +pic;
-                        String direccion =  request.getContextPath() + "/" + tema.getDireccion();
-                        out.println("<p onclick=\"reproducirTema('" + direccion + "', '" + tema.getNombre() + "', '" + imagen +"')\" style='cursor: pointer; color: lightblue;'>" + tema.getNombre() + "</p>");
-                        
                     }
                 }
 
