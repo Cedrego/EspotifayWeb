@@ -78,7 +78,7 @@ public class SvArtistaEliminar extends HttpServlet {
         String nickname = (String) session.getAttribute("NickSesion");
         if (nickname == null || nickname.isEmpty()) {
             // Si el nickname no está en la sesión, redirigir o mostrar error
-            response.sendRedirect(request.getContextPath() + "/error.jsp");
+            response.sendRedirect(request.getContextPath() + "/JSP/Artista.jsp");
             return;
         }
 

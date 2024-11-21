@@ -182,6 +182,32 @@
                 opacity: 0.7;
                 transition: opacity .2s;
             }
+            #toggle-menu a {
+                color: #1db954; /* Color inicial del texto */
+                text-decoration: none;
+                display: block;
+                margin-bottom: 10px;
+                padding: 10px;
+                border-radius: 5px; /* Bordes redondeados */
+                transition: background-color 0.3s ease, color 0.3s ease;
+            }
+
+            #toggle-menu a:hover {
+                background-color: #ff0000; /* Fondo rojo al hacer hover */
+                color: #333; /* Color de texto blanco para contraste */
+            }
+
+            #toggle-menu button {
+                display: block;
+                width: 100%;
+                margin-bottom: 10px;
+                background-color: #1db954;
+                color: black;
+                border: none;
+                border-radius: 5px;
+                padding: 10px;
+                cursor: pointer;
+            }
         </style>
         <script>
             function loadContent(url) {
@@ -211,7 +237,31 @@
                 loadContent("");
             }
         }
+        // Función para mostrar/ocultar el menú
+        function toggleMenu() {
+            const menu = document.getElementById('toggle-menu');
+            if (menu.style.display === 'none' || menu.style.display === '') {
+                menu.style.display = 'block'; // Mostrar el menú
+            } else {
+                menu.style.display = 'none'; // Ocultar el menú
+            }
+        }
 
+        document.addEventListener('click', function(event) {
+            const menu = document.getElementById('toggle-menu');
+            const clientNameLink = document.querySelector('.client-name a');
+
+            // Si el menú está abierto y no se hace clic en el enlace para abrirlo
+            if (menu.style.display === 'block' && event.target !== clientNameLink) {
+                menu.style.display = 'none'; // Cierra el menú
+            }
+        });
+
+        // Asegura que el enlace de cliente no cierre inmediatamente el menú
+        const clientNameLink = document.querySelector('.client-name a');
+        clientNameLink.addEventListener('click', function(event) {
+            event.stopPropagation(); // Evita que el clic cierre el menú
+        });
         </script>
 
     </head>
@@ -233,9 +283,17 @@
 
             <div class="client-name">
                 <%
-                    String nick = (String) session.getAttribute("NickSesion"); // Obtener el nick de la sesión
-                    out.print(nick); // Mostrar el nombre del cliente
+                String nick = (String) session.getAttribute("NickSesion"); // Obtener el nick de la sesión
                 %>
+                <a href="#" onclick="toggleMenu(); return false;" style="color: #FFF; text-decoration: none;">
+                    <%= nick%> <!-- Mostrar el nombre del cliente -->
+                </a>
+            </div>
+
+            <!-- Toggle Menu -->
+            <div id="toggle-menu" style="display: none; position: absolute; top: 50px; right: 20px; background-color: #1a1a1a; padding: 10px; border-radius: 5px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); z-index: 1000;">
+                <button onclick="loadContent('<%= request.getContextPath()%>/JSP/LoadingScreen.jsp')">Ver Perfil</button>
+                <button onclick="window.location.href='<%= request.getContextPath()%>/SvCerrarSesion'">Cerrar Sesión</button>
             </div>
         </div>
         <div class="content">
