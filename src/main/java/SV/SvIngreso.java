@@ -45,6 +45,28 @@ public class SvIngreso extends HttpServlet {
         String NOE = request.getParameter("NOE");
         String Contra = request.getParameter("pass");
         HttpSession misesion = request.getSession();
+
+        // Detectar si la solicitud proviene de un dispositivo móvil
+        String userAgent = request.getHeader("User-Agent");
+        boolean esCelular = userAgent != null && (userAgent.contains("Mobi") || userAgent.contains("Android") || userAgent.contains("iPhone"));
+
+        if (esCelular) {
+            // Si es celular, solo permitimos iniciar sesión como cliente
+            if (ctrl.obtenerNombresDeCliente().contains(NOE) || ctrl.obtenerMailDeCliente().contains(NOE)) {
+                if (ctrl.existePassC(NOE, Contra)) {
+                    List<String> sesion = ctrl.ContraXCliente(NOE, Contra);
+                    misesion.setAttribute("NickSesion", sesion.get(0));
+                    response.sendRedirect("JSP/Cliente.jsp");
+                } else {
+                    request.getRequestDispatcher("index.jsp").forward(request, response);
+                }
+            } else {
+                // Si es un artista en celular, mostramos error
+                request.getRequestDispatcher("index.jsp").forward(request, response);
+            }
+            return; // Salimos del método, no ejecutamos las verificaciones adicionales
+        }
+        
         if(ctrl.obtenerNombresDeCliente().contains(NOE) || ctrl.obtenerMailDeCliente().contains(NOE) ){//Verifico si ingreso bien el nick(DESPUES VER PARA EMAIL)
             if(ctrl.existePassC(NOE,Contra)){//Verifico si ingreso bien el pass
                 List<String>sesion = ctrl.ContraXCliente(NOE,Contra);
