@@ -253,7 +253,7 @@ public class SvRegistro extends HttpServlet {
                     System.out.println("No se pudo crear el directorio: " + uploadDir.getAbsolutePath());
                 }
             }
-
+            
             // Guardar el archivo en el servidor
             File file = new File(uploadDir, fileName);
             try (InputStream inputStream = filePart.getInputStream()) {
