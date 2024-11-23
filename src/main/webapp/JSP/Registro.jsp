@@ -143,7 +143,7 @@
         function toggleUploadType(type) {
             document.getElementById('uploadContainer').style.display = 'block'; // Mostrar el contenedor al seleccionar
 
-            if (type === 'file') {
+            if (type === 'imageFile') {
                 document.getElementById('fileInput').style.display = 'block';
                 document.getElementById('urlInput').style.display = 'none';
 
@@ -166,19 +166,20 @@
             <h2>Crear Cuenta</h2>
             <!--Subir imagenes-->
             <label for="uploadType">Agregar imagen:</label>
-            <button onclick="toggleUploadType('file')">Subir imagen</button>
-            <button onclick="toggleUploadType('url')">Usar URL</button>
-            <div id="uploadContainer" style="display: none;"> <!-- Mostrarlo inicialmente oculto -->
-                <div id="fileInput" style="display: none;">
-                    <input type="file" name="file" accept="image/*">
-                </div>
-                <div id="urlInput" style="display: none;">
-                    <input type="text" name="url" placeholder="Ingresa la URL">
-                </div>
-            </div>
+            <button onclick="toggleUploadType('imageFile')">Subir imagen</button>
+            <button onclick="toggleUploadType('urlInput')">Usar URL</button>
                 
             <!-- Registration Form -->
             <form action="${pageContext.request.contextPath}/SvRegistro" method="post" enctype="multipart/form-data">
+                <div id="uploadContainer" style="display: none;"> <!-- Mostrarlo inicialmente oculto -->
+                    <div id="fileInput" style="display: none;">
+                        <input type="file" name="imageFile" accept="image/*">
+                    </div>
+                    <div id="urlInput" style="display: none;">
+                        <input type="text" name="urlInput" placeholder="Ingresa la URL">
+                    </div>
+                </div>
+                
                 <input type="text" name="nick" placeholder="Nickname" required>
                 <input type="text" name="nom" placeholder="Nombre" required>
                 <input type="text" name="ape" placeholder="Apellido" required>

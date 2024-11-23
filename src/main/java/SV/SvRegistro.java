@@ -25,6 +25,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
+import java.nio.file.Paths;
 import javax.servlet.ServletContext;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.Part;
@@ -113,9 +114,14 @@ public class SvRegistro extends HttpServlet {
         
         //imagenes
         String imagen = saveImage(request);
-        String url = request.getParameter("url");
+        String url = request.getParameter("urlInput");
         
-        //date = año-mes-dia
+        System.out.println("=======================================");
+        System.out.println("Nickname: " + nick);
+        System.out.println("File Part: " + imagen);
+        System.out.println("URL: " + url);
+        System.out.println("=======================================");
+        
         LocalDate date = LocalDate.parse(fecha);
         int anio = date.getYear();
         int dia = date.getDayOfMonth();
@@ -198,21 +204,21 @@ public class SvRegistro extends HttpServlet {
         } else if (mails.contains(mail)) {
             error = "ERROR: ese correo ya esta en uso, elija otro";
         }
-        // Crear usuario
-        System.out.println("URL: "+url);
+        
         if (error != null) {
             sesion.setAttribute("error", error);
             request.getRequestDispatcher("JSP/Registro.jsp").forward(request, response); // Redirige al JSP
         } else {
             if (artista != null) {
                 //crear artista
-                if(imagen != null && imagen != ""){
+                if (imagen != null && imagen != "") {
                     ctrl.crearArtista(nick, nom, ape, pass, mail, dia, mes, anio, bio, web, imagen);
-                }else if(url != null && url != ""){
+                } else if (url != null && url != "") {
                     ctrl.crearArtista(nick, nom, ape, pass, mail, dia, mes, anio, bio, web, url);
-                }else{
+                } else {
                     ctrl.crearArtista(nick, nom, ape, pass, mail, dia, mes, anio, bio, web, null);
                 }
+
             } else {
                 //crear cliente
                 if(imagen != null && imagen != ""){
@@ -228,18 +234,17 @@ public class SvRegistro extends HttpServlet {
     }
     
     private String saveImage(HttpServletRequest request) throws IOException, ServletException {
-        Part filePart = request.getPart("file"); // Asegúrate de que el campo de formulario sea "file"
+        Part filePart = request.getPart("imageFile"); // Este es el nombre del campo del formulario
+
         if (filePart != null && filePart.getSize() > 0) {
             String fileName = filePart.getSubmittedFileName();
 
             // Obtener la ruta del directorio donde se ejecuta el servidor
             String projectDir = new File(getServletContext().getRealPath("/")).getParentFile().getParent();
-            System.out.println("DIRECCION: "+projectDir);
-            String uploadPath = projectDir + File.separator + "src"+ File.separator + "main"+ File.separator + "webapp" + File.separator + "images" + File.separator + "profiles";
+            System.out.println("DIRECCION: " + projectDir);
+            String uploadPath = projectDir + File.separator + "src" + File.separator + "main" + File.separator + "webapp" + File.separator + "images" + File.separator + "profiles";
 
             File uploadDir = new File(uploadPath);
-
-            // Verifica si el directorio de carga existe y crea si no existe
             if (!uploadDir.exists()) {
                 boolean dirCreated = uploadDir.mkdirs(); // Crea la carpeta si no existe
                 if (dirCreated) {
@@ -249,7 +254,7 @@ public class SvRegistro extends HttpServlet {
                 }
             }
 
-            // Archivo destino final en la carpeta "profiles"
+            // Guardar el archivo en el servidor
             File file = new File(uploadDir, fileName);
             try (InputStream inputStream = filePart.getInputStream()) {
                 Files.copy(inputStream, file.toPath(), java.nio.file.StandardCopyOption.REPLACE_EXISTING); // Copia el archivo
@@ -265,8 +270,7 @@ public class SvRegistro extends HttpServlet {
         return null; // Retorna null si no se sube ninguna imagen
     }
 
-
-
+    
     /**
      * Returns a short description of the servlet.
      *
