@@ -3,8 +3,6 @@
     Created on : 15 oct. 2024, 7:50:40 p. m.
     Author     : cedre
 --%>
-<!-- Reproductor -->
-<jsp:include page="/JSP/reproductor.jsp" />
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -271,6 +269,7 @@
                 .mobile-view button:hover {
                     background-color: #1ed760; /* Verde más brillante al pasar el ratón */
                 }
+            }
         </style>
         <script>
             function loadContent(url) {
@@ -355,18 +354,15 @@
                         </div>
                     </div>
                 </div> -->
-                
-                
-
             </div>
         </div>
         <!-- Vista para móviles -->
-        <div class="mobile-view"> 
+        <div class="mobile-view">
             <form action="${pageContext.request.contextPath}/SvIngreso" method="POST">
                 <input type="text" name="NOE" placeholder="Nombre de usuario o correo" required>
                 <input type="password" name="pass" placeholder="Contraseña" required>
                 <button type="submit" class="login-button">Iniciar Sesión</button>
             </form>
         </div>
-    </body>
+    </body>
 </html>

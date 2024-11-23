@@ -207,11 +207,11 @@ public class SvRegistro extends HttpServlet {
             if (artista != null) {
                 //crear artista
                 if(imagen != null && imagen != ""){
-                    ctrl.crearArtista(nick, nom, ape, mail, pass, dia, mes, anio, bio, web, imagen);
+                    ctrl.crearArtista(nick, nom, ape, pass, mail, dia, mes, anio, bio, web, imagen);
                 }else if(url != null && url != ""){
-                    ctrl.crearArtista(nick, nom, ape, mail, pass, dia, mes, anio, bio, web, url);
+                    ctrl.crearArtista(nick, nom, ape, pass, mail, dia, mes, anio, bio, web, url);
                 }else{
-                    ctrl.crearArtista(nick, nom, ape, mail, pass, dia, mes, anio, bio, web, null);
+                    ctrl.crearArtista(nick, nom, ape, pass, mail, dia, mes, anio, bio, web, null);
                 }
             } else {
                 //crear cliente
