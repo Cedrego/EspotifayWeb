@@ -305,10 +305,10 @@
         <div class="desktop-view">
             <!-- Top Bar -->
             <div class="top-bar">
-                <div class="logo-container">
-                    <div class="logo"></div> <!-- Logo aquí -->
-                    <div>Espotify</div>
-                </div>
+                    <div class="logo-container">
+                        <div class="logo"></div> <!-- Logo aquí -->
+                        <div>Espotify</div>
+                    </div>
                 <form onsubmit="buscarResultados(); return false;" style="display: flex; align-items: center; gap: 10px;">
                     <input type="text" id="query" name="query" placeholder="Buscar álbumes, temas, listas de reproducción" 
                            style="width: 300px; padding: 10px; border-radius: 5px; border: none; font-size: 16px; color: #000; background-color: #FFF;">
@@ -316,10 +316,10 @@
                         Buscar
                     </button>
                 </form>
-                <div class="top-bar-buttons">
-                    <button onclick="redirect('Iniciar Sesion')">Iniciar Sesion</button>
-                    <button onclick="redirect('Registrarse')">Registrarse</button>
-                </div>
+                    <div class="top-bar-buttons">
+                        <button onclick="redirect('Iniciar Sesion')">Iniciar Sesion</button>
+                        <button onclick="redirect('Registrarse')">Registrarse</button>
+                    </div>
             </div>
 
             <!-- Main Content -->
@@ -337,7 +337,7 @@
                     <iframe id="dynamic-content" style="width: 100%; height: calc(100% - 40px); border: none;" src=""></iframe>
                 </div>
 
-
+                
                 <!--<div class="footer">
                     <div class="footer-content">
                         <div class="image-and-label">
@@ -354,9 +354,6 @@
                         </div>
                     </div>
                 </div> -->
-
-
-
             </div>
         </div>
         <!-- Vista para móviles -->
